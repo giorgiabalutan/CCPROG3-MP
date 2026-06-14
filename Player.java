@@ -2,11 +2,20 @@ import java.util.Scanner;
 
 public class Player
 {
-    int gameStatus;
-
+    private int gameStatus;
+    private int currHP;
+    private int totalHP;
+    private int itemCount;
+    private int totalGold;
+ 
     public Player()
     {
         gameStatus = 1;
+        currHP = 3;
+        totalHP = 3;
+        itemCount = 0;
+        totalGold = 0;
+
     }
 
     public Player(int gameStatus)

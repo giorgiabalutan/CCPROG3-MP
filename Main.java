@@ -1,20 +1,24 @@
-public class Test
+public class Main
 {
     public static void main(String args[])
     {
-        MainMenu mm = new MainMenu();
+        
         Player p = new Player();
-        boolean quit = false;
         int gameStatus = p.getGameStatus();
+        MainMenu mm = new MainMenu(gameStatus);
+        boolean quit = false;
+        
         mm.displayMenu(gameStatus);
         do
         {
-            String choice = p.pickChoice(mm.getMainMenuChoices(gameStatus));
+            String choice = p.pickChoice(mm.getMainMenuChoices());
 
             if (choice.compareTo("N") == 0)
                 System.out.println("NEW GAME ALERT!");
             else if (choice.compareTo("S") == 0)
                 System.out.println("PRINT STATUS");
+            else if (choice.compareTo("H") == 0)
+                mm.displayManual();
             else 
                 quit = true;
 
