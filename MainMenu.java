@@ -1,40 +1,36 @@
-import java.util.Scanner;
-
 public class MainMenu
 {
-    boolean continueGame;
-
-    public MainMenu(boolean continueGame)
+    public MainMenu()
     {
-        this.continueGame = newGame;
+        
     }
 
-    public void displayMenu()
+    public void displayMenu(int gameStatus)
     {
         System.out.println("************************************************");
         System.out.println("*            Yohane The Parhelion!             *");
         System.out.println("*        The Siren in the Mirror World!        *");
         System.out.println("************************************************");
 
-        if(this.continueGame)
+        if(gameStatus == 1)
+            System.out.println("         [N]ew Game");
+        else if (gameStatus == 2)
+        {
             System.out.println("         [C]ontinue Game");
-        
-        System.out.println("         [N]ew Game");
+            System.out.println("         [N]ew Game");
+        }
+        else
+            System.out.println("         [N]ew Game+");
+            
         System.out.println("         [S]tatus");
         System.out.println("         [Q]uit");
     }
 
-    public String choice(String choices)
+    public String getMainMenuChoices(int gameStatus)
     {
-        Scanner sc = new Scanner(System.in);
-        String choice;
-        do
-        {
-            System.out.println("Your choice: ");
-            choice = sc.nextLine();
-        } while(!choices.contains(choice));
-        
-        return choice;
+        if (gameStatus == 2)
+            return "CNSQ";
+        else
+            return "NSQ";
     }
-
 }
