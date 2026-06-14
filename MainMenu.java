@@ -48,8 +48,6 @@ public class MainMenu
             "In this game, players will take on the role of Yoshiko Tsushima (otherwise known as “Yohane”),",
             "one of the nine members of the school idol group Aqours,",
             "to solve mysterious phenomena involving idols losing their voices everywhere."
-           
-
         ));
 
         P1.forEach(line -> System.out.println(line));

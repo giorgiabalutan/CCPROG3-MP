@@ -14,7 +14,7 @@ public class Main
             String choice = p.pickChoice(mm.getMainMenuChoices());
 
             if (choice.compareTo("N") == 0)
-                System.out.println("NEW GAME ALERT!");
+                p.newGame();
             else if (choice.compareTo("S") == 0)
                 System.out.println("PRINT STATUS");
             else if (choice.compareTo("H") == 0)
@@ -23,14 +23,7 @@ public class Main
                 quit = true;
 
         }while (!quit);
-
-
-        
-
-        
-        
-        
-        
-        
+  
     }
+
 }

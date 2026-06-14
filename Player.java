@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class Player
 {
@@ -40,6 +42,28 @@ public class Player
     public int getGameStatus()
     {
         return this.gameStatus;
+    }
+    
+    public void newGame()
+    {
+        int i, nIdols = 8, chosenIdols = 3;
+        int index;
+        ArrayList<Integer> numList = new ArrayList<Integer>();
+        ArrayList<Integer> idolList = new ArrayList<Integer>();
+        for (i = 1; i <= nIdols; i++)
+            numList.add(i);
+
+        Random r = new Random();
+        for (i = 0; i < chosenIdols; i++)
+        {
+            index = r.nextInt(numList.size());
+            idolList.add(numList.remove(index));
+        }
+        Idol idol1 = new Idol(idolList.get(0));
+        Idol idol2 = new Idol(idolList.get(1));
+        Idol idol3 = new Idol(idolList.get(2));
+
+        
     }
 
     
