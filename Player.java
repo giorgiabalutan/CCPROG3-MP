@@ -9,6 +9,9 @@ public class Player
     private int totalHP;
     private int itemCount;
     private int totalGold;
+    private int goldSpent;
+    private int gameOvers;
+    private Inventory inventory;
  
     public Player()
     {
@@ -17,6 +20,9 @@ public class Player
         totalHP = 3;
         itemCount = 0;
         totalGold = 0;
+        goldSpent = 0;
+        gameOvers = 0;
+        inventory = new Inventory();
     }
 
     public Player(int gameStatus)
@@ -29,38 +35,66 @@ public class Player
         return this.gameStatus;
     }
 
+    public int getCurrHP()
+    {
+        return this.currHP;
+    }
+
+    public int getTotalHP()
+    {
+        return this.totalHP;
+    }
+
+    public int getItemCount()
+    {
+        return this.itemCount;
+    }
+
+    public int getTotalGold()
+    {
+        return this.totalGold;
+    }
+
+    public int getGoldSpent()
+    {
+        return this.goldSpent;
+    }
+
+    public int getGameOvers()
+    {
+        return this.gameOvers;
+    }
+
     public String pickChoice(String choices)
     {
         Scanner sc = new Scanner(System.in);
         String choice;
         do
         {
-            System.out.println();
-            System.out.println("Your choice: ");
             choice = sc.nextLine();
         } while(!choices.contains(choice.toUpperCase()));
         
         return choice.toUpperCase();
     }
     
-    public void newGame()
+    public ArrayList<Idol> whoToSave()
     {
         int i, nIdols = 8, chosenIdols = 3;
-        int index;
+        int randIndex;
         ArrayList<Integer> numList = new ArrayList<Integer>();
         ArrayList<Idol> idolList = new ArrayList<Idol>();
+        
         for (i = 1; i <= nIdols; i++)
             numList.add(i);
 
         Random r = new Random();
         for (i = 0; i < chosenIdols; i++)
         {
-            index = r.nextInt(numList.size());
-            idolList.add(new Idol(numList.remove(index)));
+            randIndex = r.nextInt(numList.size());
+            idolList.add(new Idol(numList.remove(randIndex)));
         }
-        
 
-        
+        return idolList;
     }
 
     
