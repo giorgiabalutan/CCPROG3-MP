@@ -7,7 +7,6 @@ public class Player
     private int gameStatus;
     private int currHP;
     private int totalHP;
-    private int itemCount;
     private int totalGold;
     private int goldSpent;
     private int gameOvers;
@@ -18,7 +17,6 @@ public class Player
         gameStatus = 1;
         currHP = 3;
         totalHP = 3;
-        itemCount = 0;
         totalGold = 0;
         goldSpent = 0;
         gameOvers = 0;
@@ -45,11 +43,6 @@ public class Player
         return this.totalHP;
     }
 
-    public int getItemCount()
-    {
-        return this.itemCount;
-    }
-
     public int getTotalGold()
     {
         return this.totalGold;
@@ -65,12 +58,19 @@ public class Player
         return this.gameOvers;
     }
 
+    public Inventory getInventory()
+    {
+        return this.inventory;
+    }
+
     public String pickChoice(String choices)
     {
         Scanner sc = new Scanner(System.in);
         String choice;
         do
         {
+            System.out.println();
+            System.out.println("Your choice: ");
             choice = sc.nextLine();
         } while(!choices.contains(choice.toUpperCase()));
         

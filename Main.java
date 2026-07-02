@@ -14,25 +14,21 @@ public class Main
         ArrayList<Idol> idolList = player.whoToSave();
         
         UI.displayMainMenu(gameStatus);
+        
         do
         {
-           
-            String choice = player.pickChoice(UI.getMMChoices());
-
+            String choice = player.pickChoice(UI.getChoices());
             if (choice.compareTo("N") == 0)
-            {
-                UI.displayIntro(idolList);
-                UI.displayGamePlay(idolList, player.getCurrHP(), player.getTotalHP(), player.getTotalGold());
-            }
-            
+                new Gameplay(player, UI, idolList);
             else if (choice.compareTo("S") == 0)
                 System.out.println("PRINT STATUS");
             else if (choice.compareTo("H") == 0)
                 UI.displayManual();
             else 
                 quit = true;
+        }while(!quit);
+            
 
-        }while (!quit);
     }
 
 }

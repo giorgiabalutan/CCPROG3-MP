@@ -3,23 +3,28 @@ import java.util.ArrayList;
 
 public class Display
 {
-    private String mainMenuChoices;
+    private String choices;
 
     public Display(int gameStatus)
     {
         if (gameStatus == 2)
-            this.mainMenuChoices = "CNSHQ";
+            this.choices = "CNSHQ";
         else
-            this.mainMenuChoices = "NSHQ"; 
+            this.choices = "NSHQ"; 
     }
 
-    public String getMMChoices()
+    public String getChoices()
     {
-        return this.mainMenuChoices;
+        return this.choices;
     }
 
     public void displayMainMenu(int gameStatus)
     {
+        if (gameStatus == 2)
+            this.choices = "CNSHQ";
+        else
+            this.choices = "NSHQ";
+
         clearWithANSICodes();
         System.out.println("************************************************");
         System.out.println("*            Yohane The Parhelion!             *");
@@ -40,8 +45,6 @@ public class Display
         System.out.println("         [H]tow to play");
         System.out.println("         [Q]uit");
 
-        System.out.println();
-        System.out.println("Your choice: ");
     }
     
     public void displayIntro(ArrayList<Idol> idolList)
@@ -72,7 +75,7 @@ public class Display
         sc.nextLine();
     }
 
-    public void displayGamePlay(ArrayList<Idol> idolList, int currHP, int totalHP, int totalGold)
+    public void displayGamePlay(Player player, ArrayList<Idol> idolList)
     {
         int i;
         int size = idolList.size();
@@ -81,20 +84,41 @@ public class Display
 
         System.out.println("Lailaps: Yohane! Where should we go to now?");
 
-        System.out.print("HP: " + currHP + " / " + totalHP);
-        System.out.println("                  Total Gold: " + totalGold + " GP");
-        System.out.print("Item on hand: ");
+        System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
+        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
+        System.out.print("Item on hand: " + player.getInventory().getItems().get(0).getItemName());
         System.out.print("            [I]nventory");
         System.out.println("    [S]ave and Quit");
 
         System.out.println();
-        for (i = 0; i < size; i++)
+        for (i = 1; i <= size; i++)
         {
-            System.out.println("[" + i + "] " + idolList.get(i).getDungeonName());
+            System.out.println("[" + i + "] " + idolList.get(i-1).getDungeonName());
         }
 
-        System.out.println();
-        System.out.println("Your choice: ");
+        this.choices = "123IS";
+    }
+
+    public void displayInventory(Player player, Inventory inventory)
+    {
+        int size = inventory.getItems().size();
+        int i;
+
+        clearWithANSICodes();
+        System.out.println("Lailaps: These are the items you have, Yohane!");
+
+        System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
+        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
+        System.out.print("Items Available \n");
+
+        for (i = 1; i <= size; i++)
+        {
+            System.out.println("[" + i + "] " + inventory.getItems().get(i-1).getItemName() 
+            + "        " + inventory.getItems().get(i-1).getQuantity());
+        }
+
+        System.out.println("\n[R]eturn");
+        this.choices = "123R"; //not yet sure how this will go. probably make an array
     }
 
     public void displayManual()
