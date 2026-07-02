@@ -10,6 +10,7 @@ public class Player
     private int totalGold;
     private int goldSpent;
     private int gameOvers;
+    private Item itemOnHand;
     private Inventory inventory;
  
     public Player()
@@ -97,5 +98,8 @@ public class Player
         return idolList;
     }
 
-    
+    public void useItem()
+    {
+        
+    }
 }

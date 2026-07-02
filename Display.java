@@ -113,17 +113,16 @@ public class Display
 
         for (i = 1; i <= size; i++)
         {
-            System.out.println("[" + i + "] " + inventory.getItems().get(i-1).getItemName() 
+            System.out.println("" + i + ". " + inventory.getItems().get(i-1).getItemName() 
             + "        " + inventory.getItems().get(i-1).getQuantity());
         }
 
         System.out.println("\n[R]eturn");
-        this.choices = "123R"; //not yet sure how this will go. probably make an array
+        this.choices = "R"; 
     }
 
     public void displayManual()
     {
-        System.out.println("\f");
         System.out.println("Instructions");
     }
 
