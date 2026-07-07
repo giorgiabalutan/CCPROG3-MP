@@ -20,9 +20,4 @@ public class Inventory
     {
         return this.itemCount;
     }
-
-    // public Item switchItem()
-    // {
-
-    // }
 }
