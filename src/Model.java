@@ -16,9 +16,7 @@ public class Model
 
     //Save-Dungeon Info
     private Player player;
-    private Dungeon dungeon;
-    // private Item itemOnHand;
-    // private Inventory inventory;
+    //private Dungeon dungeon;
 
     //Constructors
 
@@ -33,7 +31,7 @@ public class Model
         this.ngPlusAvailable = false;
         this.playthroughExists = false;
         this.player = new Player();
-        this.dungeon = new Dungeon();
+        //this.dungeon = new Dungeon();
     }
 
     //Methods
@@ -133,8 +131,8 @@ public class Model
         return this.player;
     }
 
-    public Dungeon getDungeon()
-    {
-        return this.dungeon;
-    }
+    // public Dungeon getDungeon()
+    // {
+    //     return this.dungeon;
+    // }
 }

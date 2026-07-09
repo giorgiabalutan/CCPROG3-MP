@@ -35,9 +35,11 @@ public class Controller
                 case DUNGEON:
 
                     break;
+                /** SHOP NOT YET NEEDED FOR PHASE 1
                 case SHOP:
 
                     break;
+                */
             }
         }
     }
@@ -101,16 +103,29 @@ public class Controller
                 this.view.printInventory();
                 waitForContinue();
                 break;
+            case ' ':
+                this.model.getPlayer().useItem();
+                waitForContinue();
+                break;
+            case '[':
+                this.model.getPlayer().previousItem();
+                waitForContinue();
+                break;
+            case ']':
+                this.model.getPlayer().nextItem();
+                waitForContinue();
+                break;
             case 'S':
                 //Save
                 this.model.quit();
+            
         }
     }
 
     //Cutscenes
     private void startIntroSequence()
     {
-        for(int i=0;i<2;i++)
+        for(int i=0;i<3;i++)
         {
             this.view.printIntro(i);
             waitForContinue();
@@ -120,8 +135,11 @@ public class Controller
     //Generic Character Input
     private char input()
     {
-        String line = sc.nextLine().trim().toUpperCase();
-        return line.isEmpty() ? ' ' : line.charAt(0);
+        String line = sc.nextLine().toUpperCase();
+        if(line.trim().isEmpty())
+            return ' ';
+        else
+            return line.isEmpty() ? ' ' : line.charAt(0);
     }
     //Stalls until the user presses enter, drops whatever the line may have contained
     private void waitForContinue()

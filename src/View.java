@@ -58,17 +58,33 @@ public class View
                 System.out.println("----------------------------------");
                 break;
             case 1:
-                System.out.println("Lailaps: Yohane! Have you heard?!?");
-                System.out.println("Yoshiko: What's the matter, Lailaps?");
-                System.out.println("Lailaps: Some of the members have started to lose their voice!");
+                System.out.println("Hanamaru: Yoshiko! Have you heard?!?");
+                System.out.println("Yoshiko: What's the matter, Hana-chan?");
+                System.out.println("Hanamaru: Some of the idols have started to lose their voice!");
+                System.out.println("Chika: Everyone!! Dia-chan and Mari-chan have lost their voice already too!");
                 System.out.println("Yoshiko: Oh my! This is terrible. We have to do something!");
-
-                //dialogue to be continued
+                System.out.println("Yoshiko: I vow to unleash my inner fallen angel, come forth Yohane-chan.");
+                break;
+            case 2:
+                System.out.println("----------------------------------");
+                System.out.println("During a peaceful moment of slumber");
+                System.out.println("----------------------------------");
+                System.out.println("Lailaps: Yohane-chan! Wake up, we seem to be in an mirror world.");
+                System.out.println("Yohane: Lailaps? What is this mirror world you speak of?");
+                System.out.println("Lailaps: It seems that this world is the reason why idols' voices are disappearing.");
+                System.out.println("Lailaps: There is a siren lurking and stealing the voices!");
+                System.out.println("Yohane: Why is the siren doing that?");
+                System.out.println("Lailaps: To have the perfect singing voice Yohane-chan.");
+                System.out.println("Lailaps: We have to venture off to the dungeons where the voices are hidden!");
+                System.out.println("Lailaps: This way, we can retrieve the voices and end this madness!!");
+                System.out.println("Yohane: I got it. Lets go, Lailaps!!");
 
                 ArrayList<Idol> idolList = this.model.getIdolList();
                 int size = idolList.size();
 
-                System.out.println("\nTo save: ");
+                System.out.println("\n----------------------------------");
+                System.out.println("Voices to be retrieved");
+                System.out.println("----------------------------------");
                 for (int j = 0; j < size; j++)
                 {
                     System.out.println("" + idolList.get(j).getIdolName());
@@ -88,11 +104,12 @@ public class View
 
         System.out.println("Lailaps: Yohane! Where should we go to now?");
 
-        System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
+        System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
         System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
         if(player.getInventory().getItemCount() > 0)
         {
-            System.out.print("Item on hand: " + player.getInventory().getItems().get(0).getItemName());
+            System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
+            System.out.print(" (" + player.getItemOnHand().getQuantity() + ")");
         }else{
             System.out.print("Item on hand: None");
         }
@@ -111,7 +128,7 @@ public class View
         int i;
         Player player = this.model.getPlayer();
         Inventory inventory = player.getInventory();
-        int size = inventory.getItems().size(); //getItemCount()?
+        int size = inventory.getItemCount();
 
         clearWithANSICodes();
 

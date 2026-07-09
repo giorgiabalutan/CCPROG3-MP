@@ -1,21 +1,16 @@
 public class Item
 {
     private String itemName;
-    private boolean isEquipped;
-    private int quantity;
+    private int quantity = 0;
     private int price;
     private boolean isAvailable;
+    private int itemCode;
 
-    public Item()
+    public Item(int itemCode)
     {
-        this.itemName = "N/A";
-        this.isEquipped = false;
-        this.quantity = 0;
-    }
-
-    public Item(int idolNumber)
-    {
-        switch(idolNumber)
+        this.quantity += 1;
+        this.itemCode = itemCode;
+        switch(itemCode)
         {
             case 1: 
                 this.itemName = "Mikan Mochi";
@@ -45,17 +40,20 @@ public class Item
                 this.itemName = "Stewshine";
                 this.price = 1000;
                 break;
+            case 10:
+                this.itemName = "Tears of a fallen angel";
+                this.price = 30;
+                break;
+            case 11:
+                this.itemName = "Noppo Bread";
+                this.price = 100;
+                break;
         }
     }
 
     public String getItemName()
     {
         return this.itemName;
-    }
-
-    public boolean isEquipped()
-    {
-        return this.isEquipped;
     }
 
     public int getQuantity()
@@ -71,5 +69,15 @@ public class Item
     public boolean isAvailable()
     {
         return this.isAvailable();
+    }
+
+    public int getItemCode()
+    {
+        return this.itemCode;
+    }
+
+    public void reduceQuantity()
+    {
+        this.quantity -= 1;
     }
 }

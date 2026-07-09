@@ -8,7 +8,9 @@ public class Inventory
     public Inventory()
     {
         itemList = new ArrayList<Item>();
-        itemList.add(new Item());
+        itemList.add(new Item(10));
+        itemList.add(new Item(11));
+        itemCount = itemList.size();
     }
 
     public ArrayList<Item> getItems()
@@ -21,8 +23,11 @@ public class Inventory
         return this.itemCount;
     }
 
-    // public Item switchItem()
-    // {
-
-    // }
+    public void removeUsedItem(Item itemOnHand)
+    {
+        int index = this.itemList.indexOf(itemOnHand);
+        this.itemList.remove(index);
+        this.itemList.trimToSize();
+        this.itemCount--;
+    }
 }
