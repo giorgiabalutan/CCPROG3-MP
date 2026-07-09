@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controller
@@ -33,7 +34,9 @@ public class Controller
                     processOverworldInput();
                     break;
                 case DUNGEON:
-
+                    this.view.printDungeon();
+                    this.view.printChoicePrompt();
+                    processDungeonInput();
                     break;
                 /** SHOP NOT YET NEEDED FOR PHASE 1
                 case SHOP:
@@ -96,29 +99,52 @@ public class Controller
             case '2':
             case '3':
                 //Start dungeon
-                
-                this.model.setGameState(GameState.DUNGEON);
+                int index = choice-'1';
+                ArrayList<Idol> idolList = this.model.getIdolList();
+                if(index >= 0 && index < idolList.size())
+                {
+                    this.model.getDungeon().generateDungeon(idolList.get(index));
+                    this.model.setGameState(GameState.DUNGEON);
+                }else{
+                    this.model.setErrorMessage("Idol already saved");
+                }
                 break;
             case 'I':
                 this.view.printInventory();
                 waitForContinue();
                 break;
-            case ' ':
-                this.model.getPlayer().useItem();
-                waitForContinue();
-                break;
-            case '[':
-                this.model.getPlayer().previousItem();
-                waitForContinue();
-                break;
-            case ']':
-                this.model.getPlayer().nextItem();
-                waitForContinue();
-                break;
+            // case ' ':
+            //     this.model.getPlayer().useItem();
+            //     waitForContinue();
+            //     break;
+            // case '[':
+            //     this.model.getPlayer().previousItem();
+            //     waitForContinue();
+            //     break;
+            // case ']':
+            //     this.model.getPlayer().nextItem();
+            //     waitForContinue();
+            //     break;
             case 'S':
                 //Save
                 this.model.quit();
             
+        }
+    }
+
+    //Process Dungeon Input
+    private void processDungeonInput()
+    {
+        char choice = input();
+        if(this.model.tickDungeon(choice))
+        {
+            //Cutscene
+            Idol savedIdol = this.model.getDungeon().getIdol();
+            this.model.getIdolList().remove(savedIdol);
+            
+            System.out.println("Cutscene?");
+            waitForContinue();
+            this.model.setGameState(GameState.OVERWORLD);
         }
     }
 

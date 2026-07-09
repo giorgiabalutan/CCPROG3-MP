@@ -16,7 +16,7 @@ public class Model
 
     //Save-Dungeon Info
     private Player player;
-    //private Dungeon dungeon;
+    private Dungeon dungeon;
 
     //Constructors
 
@@ -31,7 +31,7 @@ public class Model
         this.ngPlusAvailable = false;
         this.playthroughExists = false;
         this.player = new Player();
-        //this.dungeon = new Dungeon();
+        this.dungeon = new Dungeon(player);
     }
 
     //Methods
@@ -60,6 +60,15 @@ public class Model
             }
 
         }
+    }
+
+    //Updates Dungeon Status
+    public boolean tickDungeon(char choice){
+        if(this.dungeon.tick(choice))
+        {
+            return true;
+        }
+        return false;
     }
 
     //Getters and Setters
@@ -131,8 +140,8 @@ public class Model
         return this.player;
     }
 
-    // public Dungeon getDungeon()
-    // {
-    //     return this.dungeon;
-    // }
+    public Dungeon getDungeon()
+    {
+        return this.dungeon;
+    }
 }

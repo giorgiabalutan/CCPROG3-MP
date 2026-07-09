@@ -146,6 +146,63 @@ public class View
     }
 
     //Dungeon
+    public void printDungeon()
+    {
+        //Get data from model
+        Dungeon dungeon = this.model.getDungeon();
+        Floor floor = dungeon.getFloor();
+        int sizeY = floor.getSizeY();
+        int sizeX = floor.getSizeX();
+        Tile[][] grid = floor.getGrid();
+        Player player = this.model.getPlayer();
+
+        clearWithANSICodes();
+
+        //Print Status
+        System.out.println("Dungeon #" + dungeon.getOrder() + ": " + dungeon.getName());
+        System.out.println("Floor " + (dungeon.getFloorNum()+1) + " of " + dungeon.getMaxFloor());
+        System.out.println();
+
+        //Old?
+        // System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
+        // System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
+        // if(player.getInventory().getItemCount() > 0)
+        // {
+        //     System.out.println("Item on hand: " + player.getInventory().getItems().get(0).getItemName());
+        // }else{
+        //     System.out.println("Item on hand: None");
+        // }
+
+        System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
+        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
+        if(player.getInventory().getItemCount() > 0)
+        {
+            System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
+            System.out.print(" (" + player.getItemOnHand().getQuantity() + ")");
+        }else{
+            System.out.print("Item on hand: None");
+        }
+
+        //Print Floor
+        System.out.println();
+        for(int i = 0; i < sizeY; i++)
+        {
+            // System.err.println("test");
+            for(int j = 0; j < sizeX; j++)
+            {
+                if(player.getPosition().getPosY() == i && player.getPosition().getPosX() == j)
+                {
+                    System.out.print("Y");
+                }else{
+                    System.out.print(grid[i][j].getTileChar());
+                }
+            }
+            System.out.println();
+        }
+
+        //Debug Print Player Position
+        // System.out.println(player.getPosition().getPosY()+" "+player.getPosition().getPosX());
+    }
 
     //Generic
     public void printChoicePrompt()

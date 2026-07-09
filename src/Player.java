@@ -1,4 +1,3 @@
-
 public class Player
 {
     private double currHP;
@@ -7,6 +6,8 @@ public class Player
     private int goldSpent;
     private Item itemOnHand;
     private Inventory inventory;
+    private double attack;
+    private Position pos;
 
     //Constructor
     public Player()
@@ -15,8 +16,15 @@ public class Player
         totalHP = 3;
         totalGold = 0;
         goldSpent = 0;
+        attack = 1;
         inventory = new Inventory();
         itemOnHand = inventory.getItems().get(0);
+        pos = new Position();
+    }
+
+    //Methods
+    public void damage(double dmg){
+        currHP -= dmg;
     }
 
     public void useItem()
@@ -112,9 +120,19 @@ public class Player
         return this.totalHP;
     }
 
+    public boolean isDead()
+    {
+        return this.currHP <= 0;
+    }
+
     public int getTotalGold()
     {
         return this.totalGold;
+    }
+
+    public void gainGold(int gold)
+    {
+        this.totalGold += gold;
     }
 
     public int getGoldSpent()
@@ -130,5 +148,24 @@ public class Player
     public Item getItemOnHand()
     {
         return this.itemOnHand;
+    }
+
+    public double getAttack(){
+        return this.attack;
+    }
+
+    public Position getPosition()
+    {
+        return this.pos;
+    }
+
+    public void setPosition(int y, int x)
+    {
+        this.pos.setPosition(y, x);
+    }
+
+    public void move(int y, int x)
+    {
+        this.pos.move(y, x);
     }
 }
