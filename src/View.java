@@ -204,7 +204,12 @@ public class View
     public void finishedFloor(Idol idol)
     {
         clearWithANSICodes();
-        System.out.println("Cutscene?");
+        System.out.println("************************************************************");
+        System.out.println("                     Dungeon Cleared!                       ");
+        System.out.println("           "+idol.getDungeonName()+" Completed!          ");
+        System.out.println("                "+idol.getIdolName()+" rescued!                 ");
+        System.out.println("************************************************************");
+
     }
 
     //Generic
