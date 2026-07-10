@@ -6,19 +6,19 @@ public class Idol
     /**
      * The name of the Idol.
      */
-    String name;
+    private String name;
     /**
      * The name of the {@link Dungeon} that the Idol is trapped in.
      */
-    String dungeonName;
+    private String dungeonName;
     /**
      * The {@link DungeonCode} of the {@code Dungeon} that the Idol is trapped in.
      */
-    DungeonCode dungeonCode;
+    private DungeonCode dungeonCode;
     /**
      * How many times the Idol has been saved.
      */
-    int timesSaved;
+    private int timesSaved;
 
     /**
      * Constructs an Idol based on the provided idolNumber. The following numbers correspond to:
