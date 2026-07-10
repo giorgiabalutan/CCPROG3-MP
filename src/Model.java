@@ -7,6 +7,7 @@ public class Model
     private boolean gameActive;
     private GameState gameState;
     private String errorMessage;
+    private String[] errorMessages;
 
     //Save Info
     private boolean ngPlusAvailable;
@@ -97,6 +98,15 @@ public class Model
     public void setErrorMessage(String msg)
     {
         this.errorMessage = msg;
+    }
+
+    public String[] getErrorMessages()
+    {
+        return this.errorMessages;
+    }
+    public void setErrorMessages(String[] msg)
+    {
+        this.errorMessages = msg;
     }
 
     public boolean isNgPlusAvailable()

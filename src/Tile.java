@@ -6,6 +6,7 @@ public class Tile
     private ArrayList<Loot> loots;
     private ArrayList<Creature> creatures;
     private char displayChar;
+    private String color;
 
     public Tile()
     {
@@ -45,20 +46,20 @@ public class Tile
         return this.creatures;
     }
 
-    public char getTileChar()
+    public String getTileChar()
     {
         for(Creature creature : creatures)
         {
-            return creature.getDisplayChar();
+            return creature.getColor() + creature.getDisplayChar();
         }
         for(Loot loot : loots)
         {
-            return loot.getDisplayChar();
+            return loot.getColor() + loot.getDisplayChar();
         }
         for(Structure structure : structures)
         {
-            return structure.getDisplayChar();
+            return structure.getColor() + structure.getDisplayChar();
         }
-        return '.';
+        return Color.reset + '.';
     }
 }

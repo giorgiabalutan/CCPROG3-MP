@@ -50,15 +50,15 @@ public class Floor
                 interact(y,x, 0, 1);
                 break;
             case '[':
-                this.player.previousItem();
+                // this.player.previousItem(); Being called in Controller for ErrorMessage
                 idle(y,x);
                 break;
             case ']':
-                this.player.nextItem();
+                // this.player.nextItem(); Being called in Controller for ErrorMessage
                 idle(y,x);
                 break;
             case ' ':
-                this.player.useItem();
+                // this.player.useItem(); Being called in Controller for ErrorMessage
                 idle(y,x);
                 break;
             default:
@@ -194,10 +194,10 @@ public class Floor
         switch(i)
         {
             case 0:
-                convertLayout(Reference);
+                convertLayout(Layouts.Reference);
                 break;
             case 1:
-                convertLayout(BatWaterTest);
+                convertLayout(Layouts.BatWaterTest);
                 break; 
         }
     }
@@ -280,11 +280,11 @@ public class Floor
         }
     }
 
-    public void damagePlayer(double dmg){
+    public void damagePlayer(double dmg, String source){
         this.player.damage(dmg);
         if(this.player.isDead())
         {
-            //Death Sequence
+            this.player.setCauseOfDeath(source);
         }
     }
 
@@ -366,35 +366,4 @@ public class Floor
     {
         return this.dungeonCode;
     }
-
-    //Preset Layouts
-    private static final String[] Reference = {
-        "*******************************************************",
-        "*.....x.............x.................................*",
-        "*..T..x....h........x...............b.................*",
-        "*.....x....hh.......x.......ww........xx..............*",
-        "*.....xx.......b...xx.......ww........xx....x...b.....*",
-        "*.....x....v.......xx..x....ww........xx.b..x.........*",
-        "*.x...x....x.......vx..x....ww........xx....x.........*",
-        "*.x..Sx....x.......vx.......ww........xx..vvv...xxxbxx*",
-        "*..x..vvvvvvvvvvvvv....vvvvvww........xx.h.....vv.....*",
-        "*..x....x.................vvv............h.....vv.....*",
-        "*.......x..................v.......b.....h.....vv.b..E*",
-        "*******************************************************"
-    };
-
-    private static final String[] BatWaterTest = {
-        "*******************************************************",
-        "*.....x.............x.................................*",
-        "*..T..x....h........x...............b.................*",
-        "*.....x....hh.......x.......ww........xx..............*",
-        "*.....xx.......b...xx.......ww........xx....x...b.....*",
-        "*.....x....v.......xx..x....ww........xx.b..x.........*",
-        "*.x...x....x.......vx..x....wwww......xx....x.........*",
-        "*.x..Sx....x.......vx.......wwbw......xx..vvv...xxxbxx*",
-        "*..x..vvvvvvvvvvvvv....vvvvvwwww......xx.h.....vv.....*",
-        "*..x....x.................vvv............h.....vv.....*",
-        "*.......x..................v.......b.....h.....vv.b..E*",
-        "*******************************************************"
-    };
 }

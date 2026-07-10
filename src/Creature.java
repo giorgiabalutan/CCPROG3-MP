@@ -3,6 +3,7 @@ public abstract class Creature{
     private double hp;
     private CreatureType type;
     private char displayChar;
+    private String color;
     private Position pos;
     private boolean flying;
 
@@ -10,6 +11,7 @@ public abstract class Creature{
     {
         this.type = CreatureType.BAT;
         this.displayChar = 'b';
+        this.color = Color.red;
         this.maxHp = 1;
         this.hp = maxHp;
         this.pos = new Position();
@@ -23,6 +25,7 @@ public abstract class Creature{
         {
             case CreatureType.BAT:
                 this.displayChar = 'b';
+                this.color = Color.red;
                 this.maxHp = 1;
                 this.flying = true;
                 break;
@@ -43,6 +46,7 @@ public abstract class Creature{
         {
             case CreatureType.BAT:
                 this.displayChar = 'b';
+                this.color = Color.red;
                 break;
         }
         pos = new Position();
@@ -50,6 +54,10 @@ public abstract class Creature{
 
     public char getDisplayChar(){
         return this.displayChar;
+    }
+
+    public String getColor(){
+        return this.color;
     }
 
     public Position getPosition()

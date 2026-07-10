@@ -80,4 +80,9 @@ public class Item
     {
         this.quantity -= 1;
     }
+
+    public void addQuantity(int qt)
+    {
+        this.quantity += qt;
+    }
 }

@@ -13,6 +13,23 @@ public class Inventory
         itemCount = itemList.size();
     }
 
+    public void addItem(Item item)
+    {
+        boolean inItemList = false;
+        for(Item listItem: this.itemList)
+        {
+            if(listItem.getItemCode() == item.getItemCode())
+            {
+                inItemList = true;
+                listItem.addQuantity(item.getQuantity());
+            }
+        }
+        if(!inItemList)
+        {
+            itemList.add(item);
+        }
+    }
+
     public ArrayList<Item> getItems()
     {
         return this.itemList;

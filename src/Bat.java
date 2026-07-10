@@ -44,7 +44,7 @@ public class Bat extends Creature
             if(floor.checkForPlayer(y-1, x) || floor.checkForPlayer(y+1, x) || floor.checkForPlayer(y, x-1) || floor.checkForPlayer(y, x+1))
             {
                 //Attack
-                floor.damagePlayer(damage);
+                floor.damagePlayer(damage, "Bat");
             }else{
                 //Move
                 int directions[][] = new int[8][2];

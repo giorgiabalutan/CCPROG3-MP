@@ -8,6 +8,7 @@ public class Player
     private Inventory inventory;
     private double attack;
     private Position pos;
+    private String causeOfDeath;
 
     //Constructor
     public Player()
@@ -17,6 +18,7 @@ public class Player
         totalGold = 0;
         goldSpent = 0;
         attack = 1;
+        causeOfDeath = "";
         inventory = new Inventory();
         itemOnHand = inventory.getItems().get(0);
         pos = new Position();
@@ -27,9 +29,10 @@ public class Player
         currHP -= dmg;
     }
 
-    public void useItem()
+    public String[] useItem()
     {
         int itemCode = this.itemOnHand.getItemCode();
+        String[] messages = {};
         switch(itemCode)
         {
             case 1: 
@@ -54,16 +57,18 @@ public class Player
                 this.totalHP++;
                 break;
             case 10:
-                heal();
+                messages = heal();
                 break;
             case 11:
-                heal();
+                messages = heal();
                 break;
         }
+        return messages;
     }
 
-    public void heal()
+    public String[] heal()
     {
+        String[] messages;
         if (this.currHP < this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
             System.out.println("Healing...");
@@ -72,15 +77,24 @@ public class Player
 
             if (this.itemOnHand.getQuantity() == 0)
                 updateItemOnHand();
+            
+            messages = new String[]{};
         }
         else if (this.currHP == this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
-            System.out.println("Lailaps: You're still fully healed Yohane-chan");
-            System.out.println("Lailaps: Stop being nervous eh");
+            // System.out.println("Lailaps: You're still fully healed Yohane-chan");
+            // System.out.println("Lailaps: Stop being nervous eh");
+            messages = new String[]{
+                "Lailaps: You're still fully healed Yohane-chan",
+                "Lailaps: Stop being nervous eh"
+            };
         }
         else
-            System.out.println("Lailaps: You've used up all your items Yohane-chan.");
-            
+        {
+            // System.out.println("Lailaps: You've used up all your items Yohane-chan.");
+            messages = new String[]{"Lailaps: You've used up all your items Yohane-chan."};
+        }
+        return messages;
     }
 
     //if one item is used up, remove that item and put the other one
@@ -91,22 +105,31 @@ public class Player
             this.itemOnHand = inventory.getItems().get(0);
     }
 
-    public void previousItem()
+    public String previousItem()
     {
         int currentIndex = this.inventory.getItems().indexOf(this.itemOnHand);
+        String message = "";
         if (this.inventory.getItemCount() > 0 && currentIndex > 0)
             this.itemOnHand = inventory.getItems().get(currentIndex - 1);
         else if (this.inventory.getItemCount() == 0)
-            System.out.println("Lailaps: You've used up all your items Yohane-chan.");
+            message = "Lailaps: You've used up all your items Yohane-chan.";
+        return message;
     }
 
-    public void nextItem()
+    public void pickUpItem(Item item)
+    {
+        this.inventory.addItem(item);
+    }
+
+    public String nextItem()
     {
         int currentIndex = this.inventory.getItems().indexOf(this.itemOnHand);
+        String message = "";
         if (this.inventory.getItemCount() > 0 && currentIndex + 1 < this.inventory.getItemCount())  
             this.itemOnHand = inventory.getItems().get(currentIndex + 1);
         else if (this.inventory.getItemCount() == 0)
-            System.out.println("Lailaps: You've used up all your items Yohane-chan.");
+            message = "Lailaps: You've used up all your items Yohane-chan.";
+        return message;
     }
 
     //Getter methods
@@ -167,5 +190,14 @@ public class Player
     public void move(int y, int x)
     {
         this.pos.move(y, x);
+    }
+
+    public String getCauseOfDeath()
+    {
+        return this.causeOfDeath;
+    }
+    public void setCauseOfDeath(String cause)
+    {
+        this.causeOfDeath = cause;
     }
 }

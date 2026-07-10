@@ -1,12 +1,14 @@
 public abstract class Loot{
     private LootType type;
     private char displayChar;
+    private String color;
     private Position pos;
 
     public Loot()
     {
         this.type = LootType.GOLD;
         this.displayChar = 'g';
+        this.color = Color.yellow;
         pos = new Position();
     }
 
@@ -17,9 +19,11 @@ public abstract class Loot{
         {
             case LootType.GOLD:
                 this.displayChar = 'g';
+                this.color = Color.yellow;
                 break;
             case LootType.TREASURE:
                 this.displayChar = 'T';
+                this.color = Color.green;
                 break;
         }
         pos = new Position();
@@ -35,9 +39,11 @@ public abstract class Loot{
         {
             case LootType.GOLD:
                 this.displayChar = 'g';
+                this.color = Color.yellow;
                 break;
             case LootType.TREASURE:
                 this.displayChar = 'T';
+                this.color = Color.green;
                 break;
         }
         pos = new Position();
@@ -45,6 +51,10 @@ public abstract class Loot{
 
     public char getDisplayChar(){
         return this.displayChar;
+    }
+
+    public String getColor(){
+        return this.color;
     }
 
     public Position getPosition()

@@ -9,7 +9,7 @@ public class Spike extends Structure
     public boolean interact(Floor floor)
     {
         //Don't deal damage if Shovel upgraded
-        floor.damagePlayer(0.5);
+        floor.damagePlayer(0.5, "Spike");
         return true;
     }
 

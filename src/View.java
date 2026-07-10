@@ -163,18 +163,8 @@ public class View
         System.out.println("Floor " + (dungeon.getFloorNum()+1) + " of " + dungeon.getMaxFloor());
         System.out.println();
 
-        //Old?
-        // System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
-        // System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
-        // if(player.getInventory().getItemCount() > 0)
-        // {
-        //     System.out.println("Item on hand: " + player.getInventory().getItems().get(0).getItemName());
-        // }else{
-        //     System.out.println("Item on hand: None");
-        // }
-
         System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
+        System.out.println("                  Total Gold: " + Color.yellow + player.getTotalGold() + " GP" + Color.reset);
         if(player.getInventory().getItemCount() > 0)
         {
             System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
@@ -192,16 +182,29 @@ public class View
             {
                 if(player.getPosition().getPosY() == i && player.getPosition().getPosX() == j)
                 {
-                    System.out.print("Y");
+                    System.out.print(Color.purple + "Y" + Color.reset);
                 }else{
                     System.out.print(grid[i][j].getTileChar());
                 }
             }
-            System.out.println();
+            System.out.println(Color.reset);
         }
 
         //Debug Print Player Position
         // System.out.println(player.getPosition().getPosY()+" "+player.getPosition().getPosX());
+    }
+
+    public void deathMessage(String cause)
+    {
+        clearWithANSICodes();
+        System.out.println(Color.darkRed + "GAME OVER" + Color.reset);
+        System.out.println(Color.purple + "Yohane " + Color.reset + "has fallen due to " + Color.darkRed + cause + Color.reset);
+    }
+
+    public void finishedFloor(Idol idol)
+    {
+        clearWithANSICodes();
+        System.out.println("Cutscene?");
     }
 
     //Generic
@@ -213,6 +216,15 @@ public class View
         {
             System.out.println(errorMessage);
             this.model.setErrorMessage("");
+        }
+        String[] errorMessages = this.model.getErrorMessages();
+        if(errorMessages != null && errorMessages.length > 0)
+        {
+            for(String msg : errorMessages)
+            {
+                System.out.println(msg);
+            }
+            this.model.setErrorMessages(new String[0]);
         }
         System.out.print("Your choice: ");
     }

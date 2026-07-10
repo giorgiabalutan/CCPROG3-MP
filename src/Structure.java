@@ -1,12 +1,14 @@
 public abstract class Structure{
     private StructureType type;
     private char displayChar;
+    private String color;
     private Position pos;
 
     public Structure()
     {
         this.type = StructureType.WALL;
         this.displayChar = 'v';
+        this.color = Color.reset;
         this.pos = new Position();
     }
 
@@ -17,24 +19,31 @@ public abstract class Structure{
         {
             case StructureType.SPAWN:
                 this.displayChar = '.';
+                this.color = Color.reset;
                 break;
             case StructureType.EXIT:
                 this.displayChar = 'E';
+                this.color = Color.yellow;
                 break;
             case StructureType.BORDER:
                 this.displayChar = '*';
+                this.color = Color.reset;
                 break;
             case StructureType.WALL:
                 this.displayChar = 'v';
+                this.color = Color.reset;
                 break;
             case StructureType.SPIKE:
                 this.displayChar = 'x';
+                this.color = Color.reset;
                 break;
             case StructureType.WATER:
                 this.displayChar = 'w';
+                this.color = Color.blue;
                 break;
             case StructureType.HEAT:
                 this.displayChar = 'h';
+                this.color = Color.orange;
                 break;
         }
         this.pos = new Position();
@@ -57,24 +66,31 @@ public abstract class Structure{
         {
             case StructureType.SPAWN:
                 this.displayChar = '.';
+                this.color = Color.reset;
                 break;
             case StructureType.EXIT:
                 this.displayChar = 'E';
+                this.color = Color.yellow;
                 break;
             case StructureType.BORDER:
                 this.displayChar = '*';
+                this.color = Color.reset;
                 break;
             case StructureType.WALL:
                 this.displayChar = 'v';
+                this.color = Color.reset;
                 break;
             case StructureType.SPIKE:
                 this.displayChar = 'x';
+                this.color = Color.reset;
                 break;
             case StructureType.WATER:
                 this.displayChar = 'w';
+                this.color = Color.blue;
                 break;
             case StructureType.HEAT:
                 this.displayChar = 'h';
+                this.color = Color.orange;
                 break;
         }
         pos = new Position();
@@ -82,6 +98,10 @@ public abstract class Structure{
 
     public char getDisplayChar(){
         return this.displayChar;
+    }
+
+    public String getColor(){
+        return this.color;
     }
 
     public Position getPosition()

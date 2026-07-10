@@ -113,22 +113,24 @@ public class Controller
                 this.view.printInventory();
                 waitForContinue();
                 break;
-            // case ' ':
-            //     this.model.getPlayer().useItem();
-            //     waitForContinue();
-            //     break;
-            // case '[':
-            //     this.model.getPlayer().previousItem();
-            //     waitForContinue();
-            //     break;
-            // case ']':
-            //     this.model.getPlayer().nextItem();
-            //     waitForContinue();
-            //     break;
+            case ' ':
+                String[] msg = this.model.getPlayer().useItem();
+                this.model.setErrorMessages(msg);
+                break;
+            case '[':
+                String message1 = this.model.getPlayer().previousItem();
+                this.model.setErrorMessage(message1);
+                break;
+            case ']':
+                String message2 = this.model.getPlayer().nextItem();
+                this.model.setErrorMessage(message2);
+                break;
             case 'S':
                 //Save
                 this.model.quit();
-            
+            default:
+                this.model.setErrorMessage("Command not Found");
+                break;
         }
     }
 
@@ -136,15 +138,34 @@ public class Controller
     private void processDungeonInput()
     {
         char choice = input();
+        switch(choice){
+            case ' ':
+                String[] msg = this.model.getPlayer().useItem();
+                this.model.setErrorMessages(msg);
+                break;
+            case '[':
+                String message1 = this.model.getPlayer().previousItem();
+                this.model.setErrorMessage(message1);
+                break;
+            case ']':
+                String message2 = this.model.getPlayer().nextItem();
+                this.model.setErrorMessage(message2);
+                break;
+        }
         if(this.model.tickDungeon(choice))
         {
             //Cutscene
             Idol savedIdol = this.model.getDungeon().getIdol();
             this.model.getIdolList().remove(savedIdol);
             
-            System.out.println("Cutscene?");
+            this.view.finishedFloor(savedIdol);
             waitForContinue();
             this.model.setGameState(GameState.OVERWORLD);
+        }
+        if(this.model.getPlayer().isDead())
+        {
+            this.view.deathMessage(this.model.getPlayer().getCauseOfDeath());
+            waitForContinue();
         }
     }
 

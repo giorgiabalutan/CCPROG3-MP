@@ -20,7 +20,7 @@ public class Heat extends Structure
     @Override
     public boolean idle(Floor floor)
     {
-        floor.damagePlayer(1);
+        floor.damagePlayer(1, "Heat");
         return false;
     }
 

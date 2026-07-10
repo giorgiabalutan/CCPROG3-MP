@@ -11,11 +11,16 @@ public class Treasure extends Loot
     public boolean pickUpLoot(Floor floor)
     {
         Random rand = floor.getRand();
-        if(rand.nextInt(2) == 0)
+        int table = rand.nextInt(2);
+        // System.out.println(table);
+        switch(table)
         {
-            floor.getPlayer().gainGold(rand.nextInt(91) + 10);
-        }else{
-            //Get Item
+            case 0:
+                floor.getPlayer().gainGold(rand.nextInt(91) + 10);
+                break;
+            case 1:
+                floor.getPlayer().pickUpItem(new Item(11));
+                break;
         }
         return true;
     }
