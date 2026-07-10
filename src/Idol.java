@@ -1,10 +1,40 @@
+/**
+ * Represents Idols that the player must rescue.
+ */
 public class Idol
 {
+    /**
+     * The name of the Idol.
+     */
     String name;
+    /**
+     * The name of the {@link Dungeon} that the Idol is trapped in.
+     */
     String dungeonName;
+    /**
+     * The {@link DungeonCode} of the {@code Dungeon} that the Idol is trapped in.
+     */
     DungeonCode dungeonCode;
+    /**
+     * How many times the Idol has been saved.
+     */
     int timesSaved;
 
+    /**
+     * Constructs an Idol based on the provided idolNumber. The following numbers correspond to:
+     * <ul>
+     * <li>1 - Chika Takami trapped in Yasudaya Ryokan.
+     * <li>2 - You Watanabe trapped in Izu-Mito Sea Paradise.
+     * <li>3 - Riko Sakurauchi trapped in Numazu Deep Sea Aquarium.
+     * <li>4 - Hanamaru Kunikida trapped in Shougetsu Confectionary.
+     * <li>5 - Ruby Kurosawa trapped in Nagahama Castle Ruins.
+     * <li>6 - Dia Kurosawa trapped in Numazugoyotei.
+     * <li>7 - Kanan Matsuura trapped in Uchiura Bay Pier.
+     * <li>8 - Mari Ohara trapped in Awashima Marine Park.
+     * </ul>
+     * 
+     * @param idolNumber determines which Idol to construct.
+     */
     public Idol(int idolNumber)
     {
         switch(idolNumber)
@@ -52,16 +82,29 @@ public class Idol
         }
     }
 
+    /**
+     * Returns the Idol's name.
+     * 
+     * @return the idol name.
+     */
     public String getIdolName()
     {
         return this.name;
     }
-
+    /**
+     * Returns the {@code Dungeon}'s name.
+     * 
+     * @return the {@code Dungeon} name.
+     */
     public String getDungeonName()
     {
         return this.dungeonName;
     }
-
+    /**
+     * Returns the {@code DungeonCode}.
+     * 
+     * @return the {@code DungeonCode}.
+     */
     public DungeonCode getDungeonCode()
     {
         return this.dungeonCode;

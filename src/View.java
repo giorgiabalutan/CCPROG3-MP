@@ -1,10 +1,22 @@
 import java.util.ArrayList;
-
+/**
+ * Contains all of the Console Print methods.
+ * <p>
+ * Contains the printing methods for the different parts of the game.
+ */
 public class View
 {
+    /**
+     * The access to the data in {@link Model} for printing information from it.
+     */
     private Model model;
 
     //Constructors
+    /**
+     * Constructs the View with access to the {@code Model} object.
+     * 
+     * @param model the model of the program.
+     */
     public View(Model model)
     {
         this.model = model;
@@ -12,6 +24,12 @@ public class View
 
     //Methods
     //Main Menu
+    /**
+     * Prints the graphics and choices for the Main Menu.
+     * <p>
+     * Prints the choice to check Status, How to Play, and Quit.
+     * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
+     */
     public void printMainMenu()
     {
         clearWithANSICodes();
@@ -34,16 +52,30 @@ public class View
         System.out.println("         [H]ow to play");
         System.out.println("         [Q]uit");
     }
+    /**
+     * Prints the lifetime stats of the {@link Player}.
+     */
     public void printStatus()
     {
         System.out.println("PRINT STATUS");
     }
+    /**
+     * Prints a manual on how to play the game.
+     */
     public void printManual()
     {
         System.out.println("Instructions");
     }
 
     //Overworld
+    /**
+     * Prints the Intro sequence of the overworld.
+     * <p>
+     * Called by {@link Controller#startIntroSequence() Controller.startIntroSequence} in order to print only parts of the output.
+     * It iterates through each of the cases here, with a {@link Controller#waitForContinue() Controller.waitForContinue} call between prints.
+     * 
+     * @param i indicates which set of prints to do.
+     */
     public void printIntro(int i)
     {
         clearWithANSICodes();
@@ -93,6 +125,12 @@ public class View
         }
     }
     
+    /**
+     * Prints the options for the player to choose from in the Overworld.
+     * <p>
+     * Shows the options to start one of three {@link Dungeon Dungeons}, use items, check their inventory, and quit.
+     * It also shows the {@code Player}'s hp and gold.
+     */
     public void printOverworldOptions()
     {
         int i;
@@ -123,6 +161,9 @@ public class View
         }
     }
 
+    /**
+     * Displays the contents of the {@code Player}'s {@link Inventory}.
+     */
     public void printInventory()
     {
         int i;
@@ -146,6 +187,11 @@ public class View
     }
 
     //Dungeon
+    /**
+     * Displays the current {@link Floor} of the {@code Dungeon}.
+     * <p>
+     * Prints the {@code Dungeon} information, {@code Dungeon} information, and the current {@code Floor}.
+     */
     public void printDungeon()
     {
         //Get data from model
@@ -164,7 +210,7 @@ public class View
         System.out.println();
 
         System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + Color.yellow + player.getTotalGold() + " GP" + Color.reset);
+        System.out.println("                  Total Gold: " + Color.YELLOW + player.getTotalGold() + " GP" + Color.RESET);
         if(player.getInventory().getItemCount() > 0)
         {
             System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
@@ -182,25 +228,35 @@ public class View
             {
                 if(player.getPosition().getPosY() == i && player.getPosition().getPosX() == j)
                 {
-                    System.out.print(Color.purple + "Y" + Color.reset);
+                    System.out.print(Color.PURPLE + "Y" + Color.RESET);
                 }else{
                     System.out.print(grid[i][j].getTileChar());
                 }
             }
-            System.out.println(Color.reset);
+            System.out.println(Color.RESET);
         }
 
         //Debug Print Player Position
         // System.out.println(player.getPosition().getPosY()+" "+player.getPosition().getPosX());
     }
 
+    /**
+     * Prints a death message if the {@code Player} dies.
+     * 
+     * @param cause a string holding the name of the entity that caused the death.
+     */
     public void deathMessage(String cause)
     {
         clearWithANSICodes();
-        System.out.println(Color.darkRed + "GAME OVER" + Color.reset);
-        System.out.println(Color.purple + "Yohane " + Color.reset + "has fallen due to " + Color.darkRed + cause + Color.reset);
+        System.out.println(Color.DARK_RED + "GAME OVER" + Color.RESET);
+        System.out.println(Color.PURPLE + "Yohane " + Color.RESET + "has fallen due to " + Color.DARK_RED + cause + Color.RESET);
     }
 
+    /**
+     * Prints a victory message if the {@code Player} clears a {@code Dungeon}.
+     * 
+     * @param idol the {@link Idol} that the player rescued.
+     */
     public void finishedFloor(Idol idol)
     {
         clearWithANSICodes();
@@ -213,6 +269,11 @@ public class View
     }
 
     //Generic
+    /**
+     * Prints the prompt asking for the player's next choice.
+     * <p>
+     * Also prints an error message or list of error messages grabbed from {@code Model} if any exist.
+     */
     public void printChoicePrompt()
     {
         System.out.println();
@@ -233,11 +294,18 @@ public class View
         }
         System.out.print("Your choice: ");
     }
+    /**
+     * Prints a prompt asking for the player to enter anything to continue.
+     * Used for cutscenes where the player's input does not matter.
+     */
     public void printContinuePrompt()
     {
         System.out.println();
         System.out.print("Press ENTER to continue: ");
     }
+    /**
+     * Clears the current screen using ANSI codes.
+     */
     private static void clearWithANSICodes() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

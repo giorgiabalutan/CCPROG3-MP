@@ -1,13 +1,41 @@
-
+/**
+ * Represents the generic flying creature Bat.
+ * <p>
+ * Extends the {@link Creature} class.
+ * Bats have varying statistics depending on which dungeon it is in.
+ */
 public class Bat extends Creature
 {
-    int order;
-    double damage;
-    int moveInterval;
-    int curCooldown;
-    int gold;
+    /**
+     * The order of the {@link Dungeon} the bat spawned in.
+     */
+    private int order;
+    /**
+     * The amount of damage the bat deals on attack.
+     */
+    private double damage;
+    /**
+     * How many ticks it takes for the Bat to take its turn.
+     */
+    private int moveInterval;
+    /**
+     * The current number of remaining ticks until it takes its next turn.
+     */
+    private int curCooldown;
+    /**
+     * The amount of gold the Bat drops as {@link Loot}.
+     */
+    private int gold;
 
-    Bat(int order)
+    /**
+     * Constructs a bat depending on the current {@code Dungeon}.
+     * <p>
+     * Constructs a Bat Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
+     * Its characteristics depend on the {@code order} of the {@code Dungeon}.
+     * 
+     * @param order the order of the dungeon currently being challenged.
+     */
+    public Bat(int order)
     {
         super(CreatureType.BAT);
         this.order = order;
@@ -31,14 +59,22 @@ public class Bat extends Creature
         this.curCooldown = this.moveInterval;
     }
 
+    /**
+     * Reduces the Bat's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
+     * If the {@link Player} is adjacent to the Bat on its turn, the Bat attacks the {@code Player},
+     * else the bat moves to a random valid adjacent space.
+     * The bat is also able to move diagonally on the 3rd {@code Dungeon}.
+     * The bat also triggers any Structure Idle effects if it does not move during its turn.
+     * 
+     * @param floor the {@link Floor} the Bat is on, allows the Bat to search and move on it.
+     * @return {@code true} if the Bat died as a result of its turn.
+     */
     @Override
     public boolean tick(Floor floor)
     {
-        // System.out.println("TEST " + this.getPosition().getPosY() + " " + this.getPosition().getPosX());
         this.curCooldown -= 1;
         if(this.curCooldown <= 0)
         {
-            //Check if Yohane is adjacent
             int y = this.getPosition().getPosY();
             int x = this.getPosition().getPosX();
             if(floor.checkForPlayer(y-1, x) || floor.checkForPlayer(y+1, x) || floor.checkForPlayer(y, x-1) || floor.checkForPlayer(y, x+1))
@@ -95,13 +131,17 @@ public class Bat extends Creature
         return false;
     }
 
+    /**
+     * Drops a small amount of gold on death.
+     * 
+     * @param floor the {@code Floor} the Bat is on, allows the Bat to create {@link Gold} there.
+     */
     @Override
-    public boolean dropLoot(Floor floor){
+    public void dropLoot(Floor floor){
         Loot goldDrop = new Gold(this.gold);
         int curY = this.getPosition().getPosY();
         int curX = this.getPosition().getPosX();
         floor.getLoot().add(goldDrop);
         floor.getGrid()[curY][curX].addLoot(goldDrop);
-        return true;
     }
 }

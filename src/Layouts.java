@@ -1,7 +1,31 @@
+/**
+ * A library to hold preset layouts for {@link Floor} maps.
+ * <p>
+ * Each layout is an array of Strings where each character represents a {@link Tile}.
+ * Each character represents:
+ * <ul>
+ * <li>S - {@link Spawn}
+ * <li>E - {@link Exit}
+ * <li>* - {@link Border}
+ * <li>v - {@link Wall}
+ * <li>x - {@link Spike}
+ * <li>w - {@link Water}
+ * <li>h - {@link Heat}
+ * <li>b - {@link Bat}
+ * <li>T - {@link Treasure}
+ * <li>. - Empty {@code Tile}
+ * </ul>
+ */
 public class Layouts
 {
-    //Preset Layouts
-    public static final String[] Reference = {
+    /**
+     * Private Constructor to prevent Instantiation. This class is meant to provide static data.
+     */
+    private Layouts(){}
+    /**
+     * The reference level found in the specs.
+     */
+    public static final String[] REFERENCE = {
         "*******************************************************",
         "*.....x.............x.................................*",
         "*..T..x....h........x...............b.................*",
@@ -15,8 +39,10 @@ public class Layouts
         "*.......x..................v.......b.....h.....vv.b..E*",
         "*******************************************************"
     };
-
-    public static final String[] BatWaterTest = {
+    /**
+     * A level to test Bat movement on Water Tiles.
+     */
+    public static final String[] BAT_WATER_TEST = {
         "*******************************************************",
         "*.....x.............x.................................*",
         "*..T..x....h........x...............b.................*",

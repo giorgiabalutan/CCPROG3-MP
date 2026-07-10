@@ -1,16 +1,53 @@
+/**
+ * Tracks the data related to the Player's character.
+ * <p>
+ * Tracks and manages their hp, gold, {@link Inventory}, {@link Position}, and cause of death.
+ */
 public class Player
 {
+    /**
+     * The current hp of the player.
+     */
     private double currHP;
+    /**
+     * The highest amount of hp the player can have.
+     */
     private double totalHP;
+    /**
+     * The lifetime amount of gold the player has obtained.
+     */
     private int totalGold;
+    /**
+     * The amount of the gold that is currently spent.
+     */
     private int goldSpent;
+    /**
+     * The {@link Item} the player is currently holding.
+     */
     private Item itemOnHand;
+    /**
+     * The {@code Inventory} of the player, tracking the whole list of {@code Items} they have.
+     */
     private Inventory inventory;
+    /**
+     * The amount of damage the player can deal with an attack.
+     */
     private double attack;
+    /**
+     * The current {@code Position} of the player on the map of the {@link Floor}.
+     */
     private Position pos;
+    /**
+     * Stores the name of the entity that caused the player to die.
+     */
     private String causeOfDeath;
 
     //Constructor
+    /**
+     * Constructs the player class.
+     * <p>
+     * Sets their initial statistics and initialzies their {@code Inventory} and {@code Position}.
+     */
     public Player()
     {
         currHP = 3;
@@ -25,10 +62,23 @@ public class Player
     }
 
     //Methods
+    /**
+     * Deals damage to the Player.
+     * 
+     * @param dmg the amount of damage to deal to the Player's current hp.
+     */
     public void damage(double dmg){
         currHP -= dmg;
     }
 
+    /**
+     * Uses the {@code Item} the {@code Player} is currently holding.
+     * Returns an array of error messages depending on why the {@code Item} could not be used.
+     * The error message is printed at the next call of {@link View#printChoicePrompt() printChoicePrompt} to notify the {@code Player}.
+     * If there was no error, an empty String array is returned causing no errors to print.
+     * 
+     * @return array of error messages stating why the {@code Item} could not be used.
+     */
     public String[] useItem()
     {
         int itemCode = this.itemOnHand.getItemCode();
@@ -65,7 +115,15 @@ public class Player
         }
         return messages;
     }
-
+    /**
+     * Attempts to use the {@code Player}'s held {@code Item} to heal.
+     * On a success, it reduces the quantity of the {@code Item}.
+     * If the quantity drops to 0, the held item gets updated.
+     * On a fail, it returns an array of error messages stating why it failed.
+     * If there was no error, an empty String array is returned causing no errors to print.
+     * 
+     * @return array of error messages stating why the {@code Item} could not be used.
+     */
     public String[] heal()
     {
         String[] messages;
@@ -82,8 +140,6 @@ public class Player
         }
         else if (this.currHP == this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
-            // System.out.println("Lailaps: You're still fully healed Yohane-chan");
-            // System.out.println("Lailaps: Stop being nervous eh");
             messages = new String[]{
                 "Lailaps: You're still fully healed Yohane-chan",
                 "Lailaps: Stop being nervous eh"
@@ -91,12 +147,17 @@ public class Player
         }
         else
         {
-            // System.out.println("Lailaps: You've used up all your items Yohane-chan.");
             messages = new String[]{"Lailaps: You've used up all your items Yohane-chan."};
         }
         return messages;
     }
 
+    /**
+     * Updates which {@code Item} the {@code Player} is holding.
+     * Removes the current {@code Item} that reached quantity 0.
+     * If there is another {@code Item} available in the inventory,
+     * it switches the held {@code Item} to the first one.
+     */
     //if one item is used up, remove that item and put the other one
     public void updateItemOnHand()
     {
@@ -104,100 +165,192 @@ public class Player
         if (this.inventory.getItemCount() > 0)
             this.itemOnHand = inventory.getItems().get(0);
     }
-
+    /**
+     * Switches the held {@code Item} to the previous one in the {@code Inventory}.
+     * Wraps back around to the last {@code Item} on the list if the held {@code Item} is the first.
+     * Returns an error message if there are no {@code Items} left.
+     * 
+     * @return an error message stating there are no {@code Items} left.
+     */
     public String previousItem()
     {
         int currentIndex = this.inventory.getItems().indexOf(this.itemOnHand);
         String message = "";
-        if (this.inventory.getItemCount() > 0 && currentIndex > 0)
-            this.itemOnHand = inventory.getItems().get(currentIndex - 1);
+        if (this.inventory.getItemCount() > 0)
+        {
+            if(currentIndex > 0)
+            {
+                this.itemOnHand = inventory.getItems().get(currentIndex - 1);
+            }else{
+                this.itemOnHand = inventory.getItems().get(this.inventory.getItemCount()-1);
+            }
+        }
         else if (this.inventory.getItemCount() == 0)
             message = "Lailaps: You've used up all your items Yohane-chan.";
         return message;
     }
-
+    /**
+     * Adds an item obtained through looting or shopping to the inventory.
+     * 
+     * @param item the item obtained through looting or shopping.
+     */
     public void pickUpItem(Item item)
     {
         this.inventory.addItem(item);
     }
-
+    /**
+     * Switches the held {@code Item} to the next one in the {@code Inventory}.
+     * Wraps back around to the first {@code Item} on the list if the held {@code Item} is the last.
+     * Returns an error message if there are no {@code Items} left.
+     * 
+     * @return an error message stating there are no {@code Items} left.
+     */
     public String nextItem()
     {
         int currentIndex = this.inventory.getItems().indexOf(this.itemOnHand);
         String message = "";
-        if (this.inventory.getItemCount() > 0 && currentIndex + 1 < this.inventory.getItemCount())  
-            this.itemOnHand = inventory.getItems().get(currentIndex + 1);
+        if (this.inventory.getItemCount() > 0)
+        {
+            if (currentIndex + 1 < this.inventory.getItemCount()) {
+                this.itemOnHand = inventory.getItems().get(currentIndex + 1);
+            }else{
+                this.itemOnHand = inventory.getItems().get(0);
+            }
+        }
         else if (this.inventory.getItemCount() == 0)
             message = "Lailaps: You've used up all your items Yohane-chan.";
         return message;
     }
 
-    //Getter methods
-    public double getCurrHP()
-    {
-        return this.currHP;
-    }
-
-    public double getTotalHP()
-    {
-        return this.totalHP;
-    }
-
-    public boolean isDead()
-    {
-        return this.currHP <= 0;
-    }
-
-    public int getTotalGold()
-    {
-        return this.totalGold;
-    }
-
+    //Setter Methods
+    /**
+     * Adds a certain amount of gold to the player character.
+     * 
+     * @param gold the amount of gold to add.
+     */
     public void gainGold(int gold)
     {
         this.totalGold += gold;
     }
-
-    public int getGoldSpent()
-    {
-        return this.goldSpent;
-    }
-
-    public Inventory getInventory()
-    {
-        return this.inventory;
-    }
-
-    public Item getItemOnHand()
-    {
-        return this.itemOnHand;
-    }
-
-    public double getAttack(){
-        return this.attack;
-    }
-
-    public Position getPosition()
-    {
-        return this.pos;
-    }
-
+    /**
+     * Sets the player character's current position to the given coordinates.
+     * 
+     * @param y distance from the top edge of the map.
+     * @param x distance from the left edge of the map.
+     */
     public void setPosition(int y, int x)
     {
         this.pos.setPosition(y, x);
     }
-
+    /**
+     * Moves the player character's current position by the given offsets.
+     * 
+     * @param y how many spaces down to move.
+     * @param x how many spaces right to move.
+     */
     public void move(int y, int x)
     {
         this.pos.move(y, x);
     }
-
-    public String getCauseOfDeath()
-    {
-        return this.causeOfDeath;
-    }
+    /**
+     * Set the cause of the player character's death.
+     * 
+     * @param cause the name of the entity that caused the player character to die.
+     */
     public void setCauseOfDeath(String cause)
     {
         this.causeOfDeath = cause;
     }
+
+    //Getter methods
+    /**
+     * Returns how much of the player character's hp remains.
+     * 
+     * @return the character's current hp.
+     */
+    public double getCurrHP()
+    {
+        return this.currHP;
+    }
+    /**
+     * Returns the max possible hp the player character can have.
+     * 
+     * @return the character's total hp.
+     */
+    public double getTotalHP()
+    {
+        return this.totalHP;
+    }
+    /**
+     * Checks if the player character is dead.
+     * 
+     * @return {@code true} if the current hp is at 0 or less, {@code false} otherwise.
+     */
+    public boolean isDead()
+    {
+        return this.currHP <= 0;
+    }
+    /**
+     * Returns the total amount of gold the player has ever obtained.
+     * 
+     * @return the total gold obtained.
+     */
+    public int getTotalGold()
+    {
+        return this.totalGold;
+    }
+    /**
+     * Returns the amount of gold the player has currently spent.
+     * 
+     * @return the gold spent.
+     */
+    public int getGoldSpent()
+    {
+        return this.goldSpent;
+    }
+    /**
+     * Returns the player character's {@code Inventory}.
+     * 
+     * @return the player character's {@code Inventory}.
+     */
+    public Inventory getInventory()
+    {
+        return this.inventory;
+    }
+    /**
+     * Returns the {@code Item} that the player is currently holding.
+     * 
+     * @return the item on Hand.
+     */
+    public Item getItemOnHand()
+    {
+        return this.itemOnHand;
+    }
+    /**
+     * Get how much damage the player character would deal.
+     * 
+     * @return the player character's attack stat.
+     */
+    public double getAttack(){
+        return this.attack;
+    }
+    /**
+     * Get the current {@code Position} of the player on the map.
+     * 
+     * @return the player character's {@code Position}.
+     */
+    public Position getPosition()
+    {
+        return this.pos;
+    }
+    /**
+     * Get the cause of the player character's death.
+     * 
+     * @return the name of the entity that caused the player character to die.
+     */
+    public String getCauseOfDeath()
+    {
+        return this.causeOfDeath;
+    }
+
 }
