@@ -1,9 +1,11 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * Manages all of the player's inputs and interactions.
  */
-public class Controller
+public class Controller implements ActionListener
 {
     //Components
     /**
@@ -18,6 +20,7 @@ public class Controller
      * A {@code Scanner} to take player inputs.
      */
     private Scanner sc;
+    
 
     //Constructors
     /**
@@ -30,6 +33,7 @@ public class Controller
     {
         this.model = model;
         this.view = view;
+        this.view.setActionListener(this);
         sc = new Scanner(System.in);
     }
 
@@ -42,15 +46,12 @@ public class Controller
      */
     public void run()
     {
-        while(this.model.isGameActive())
-        {
             switch(model.getGameState())
             {
                 case MAIN_MENU:
                     this.view.printMainMenu();
-                    this.view.printChoicePrompt();
-                    processMenuInput();
-                    break;
+                    //waitForContinue();
+                    break;  
                 case OVERWORLD:
                     this.view.printOverworldOptions();
                     this.view.printChoicePrompt();
@@ -67,9 +68,17 @@ public class Controller
                     break;
                 */
             }
+    }
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        switch(model.getGameState())
+        {
+            case MAIN_MENU:
+                processMenuInput(e.getActionCommand());
+                break;
         }
     }
-
     //Methods
     //Process Menu Input
     /**
@@ -78,12 +87,11 @@ public class Controller
      * It can Start a New Game, New Game Plus, or Continue a Game.
      * It can also print the player's Status, a Help Manual, or Quit the game.
      */
-    private void processMenuInput()
+    private void processMenuInput(String command)
     {
-        char choice = input();
-        switch(choice)
+        switch(command)
         {
-            case 'N':
+            case "N":
                 if(this.model.isNgPlusAvailable())
                 {
                     //Start New Game +
@@ -94,7 +102,7 @@ public class Controller
                     this.model.setGameState(GameState.OVERWORLD);
                 }
                 break;
-            case 'C':
+            case "C":
                 if(this.model.isPlaythroughExists())
                 {
                     //Continue Game
@@ -102,19 +110,16 @@ public class Controller
                     this.model.setErrorMessage("No Save Found");
                 }
                 break;
-            case 'S':
+            case "S":
                 this.view.printStatus();
                 waitForContinue();
                 break;
-            case 'H':
+            case "H":
                 this.view.printManual();
                 waitForContinue();
                 break;
-            case 'Q':
+            case "Q":
                 this.model.quit();
-                break;
-            default:
-                this.model.setErrorMessage("Command not Found");
                 break;
         }
     }

@@ -8,7 +8,6 @@ public class Color
     /**
      * Private Constructor to prevent Instantiation. This class is meant to provide static data.
      */
-    private Color(){}
     /**
      * Resets the text to the default console style
      */

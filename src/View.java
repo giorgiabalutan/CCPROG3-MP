@@ -1,16 +1,25 @@
 import java.util.ArrayList;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
 /**
  * Contains all of the Console Print methods.
  * <p>
  * Contains the printing methods for the different parts of the game.
  */
-public class View
+public class View extends JFrame
 {
     /**
      * The access to the data in {@link Model} for printing information from it.
      */
     private Model model;
-
+   
+    private int frameWidth = 1100;
+    private int frameHeight = 544;
+    
+    private MainMenuPanel mainMenuPanel;
+    private ActionListener listener;
     //Constructors
     /**
      * Constructs the View with access to the {@code Model} object.
@@ -20,8 +29,19 @@ public class View
     public View(Model model)
     {
         this.model = model;
+        
+        this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(frameWidth, frameHeight);
+        this.setLayout(new GridBagLayout());
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
-
+   
+    public void setActionListener(ActionListener listener)
+    {
+        this.listener = listener;
+    }
     //Methods
     //Main Menu
     /**
@@ -31,26 +51,13 @@ public class View
      * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
      */
     public void printMainMenu()
-    {
-        clearWithANSICodes();
-        System.out.println("************************************************");
-        System.out.println("*            Yohane The Parhelion!             *");
-        System.out.println("*        The Siren in the Mirror World!        *");
-        System.out.println("************************************************");
-
-        if(model.isPlaythroughExists())
-        {
-            System.out.println("         [C]ontinue Game");
-        }
-        if(model.isNgPlusAvailable())
-        {
-            System.out.println("         [N]ew Game+");
-        }else{
-            System.out.println("         [N]ew Game");
-        }
-        System.out.println("         [S]tatus");
-        System.out.println("         [H]ow to play");
-        System.out.println("         [Q]uit");
+    {   
+        mainMenuPanel = new MainMenuPanel(this.model, this.listener);
+        this.add(mainMenuPanel);
+        this.pack();
+        this.setVisible(true);
+        
+        
     }
     /**
      * Prints the lifetime stats of the {@link Player}.
