@@ -16,10 +16,13 @@ public class View extends JFrame
     private Model model;
    
     private int frameWidth = 1100;
-    private int frameHeight = 544;
+    private int frameHeight = 540;
+    
+    private CardLayout cardLayout;
+    private Container contentPane;
     
     private MainMenuPanel mainMenuPanel;
-    private ActionListener listener;
+    private OverworldPanel overworldPanel;
     //Constructors
     /**
      * Constructs the View with access to the {@code Model} object.
@@ -29,18 +32,33 @@ public class View extends JFrame
     public View(Model model)
     {
         this.model = model;
+        this.cardLayout = new CardLayout();
+        this.contentPane = getContentPane();
+        this.contentPane.setLayout(cardLayout);
+        
+        mainMenuPanel = new MainMenuPanel(this.model, this.frameWidth, this.frameHeight);
+        overworldPanel = new OverworldPanel(this.model, this.frameWidth, this.frameHeight);
+        
+        contentPane.add(mainMenuPanel, "MAIN_MENU");
+        contentPane.add(overworldPanel, "OVERWORLD");
         
         this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(frameWidth, frameHeight);
-        this.setLayout(new GridBagLayout());
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        this.pack();
+        this.setVisible(true);
     }
    
     public void setActionListener(ActionListener listener)
     {
-        this.listener = listener;
+        this.mainMenuPanel.setButtonActionListener(listener);
+    }
+    
+    public void showPanel(String panelName)
+    {
+        cardLayout.show(contentPane, panelName);
     }
     //Methods
     //Main Menu
@@ -50,15 +68,7 @@ public class View extends JFrame
      * Prints the choice to check Status, How to Play, and Quit.
      * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
      */
-    public void printMainMenu()
-    {   
-        mainMenuPanel = new MainMenuPanel(this.model, this.listener);
-        this.add(mainMenuPanel);
-        this.pack();
-        this.setVisible(true);
-        
-        
-    }
+   
     /**
      * Prints the lifetime stats of the {@link Player}.
      */
@@ -132,41 +142,6 @@ public class View extends JFrame
         }
     }
     
-    /**
-     * Prints the options for the player to choose from in the Overworld.
-     * <p>
-     * Shows the options to start one of three {@link Dungeon Dungeons}, use items, check their inventory, and quit.
-     * It also shows the {@code Player}'s hp and gold.
-     */
-    public void printOverworldOptions()
-    {
-        int i;
-        Player player = this.model.getPlayer();
-        ArrayList<Idol> idolList = this.model.getIdolList();
-        int size = idolList.size();
-
-        clearWithANSICodes();
-
-        System.out.println("Lailaps: Yohane! Where should we go to now?");
-
-        System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
-        if(player.getInventory().getItemCount() > 0)
-        {
-            System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
-            System.out.print(" (" + player.getItemOnHand().getQuantity() + ")");
-        }else{
-            System.out.print("Item on hand: None");
-        }
-        System.out.print("            [I]nventory");
-        System.out.println("    [S]ave and Quit");
-
-        System.out.println();
-        for (i = 1; i <= size; i++)
-        {
-            System.out.println("[" + i + "] " + idolList.get(i-1).getDungeonName());
-        }
-    }
 
     /**
      * Displays the contents of the {@code Player}'s {@link Inventory}.
@@ -217,7 +192,7 @@ public class View extends JFrame
         System.out.println();
 
         System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + Color.YELLOW + player.getTotalGold() + " GP" + Color.RESET);
+        System.out.println("                  Total Gold: " + Color.YELLOW + player.getTotalGold() + " GP");
         if(player.getInventory().getItemCount() > 0)
         {
             System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
@@ -235,12 +210,11 @@ public class View extends JFrame
             {
                 if(player.getPosition().getPosY() == i && player.getPosition().getPosX() == j)
                 {
-                    System.out.print(Color.PURPLE + "Y" + Color.RESET);
+                    System.out.print("Y" );
                 }else{
                     System.out.print(grid[i][j].getTileChar());
                 }
             }
-            System.out.println(Color.RESET);
         }
 
         //Debug Print Player Position
@@ -255,8 +229,8 @@ public class View extends JFrame
     public void deathMessage(String cause)
     {
         clearWithANSICodes();
-        System.out.println(Color.DARK_RED + "GAME OVER" + Color.RESET);
-        System.out.println(Color.PURPLE + "Yohane " + Color.RESET + "has fallen due to " + Color.DARK_RED + cause + Color.RESET);
+        System.out.println("GAME OVER");
+        System.out.println("Yohane has fallen due to " + cause);
     }
 
     /**

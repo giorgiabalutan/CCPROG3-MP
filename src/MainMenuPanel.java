@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -6,10 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;/*
@@ -32,15 +29,12 @@ public class MainMenuPanel extends JPanel{
         private JButton howToPlayButton;
         private JButton quitButton;
         
-        private ActionListener listener;
-        
         private JPanel buttonPanel;
 
-        public MainMenuPanel(Model model, ActionListener listener)
+        public MainMenuPanel(Model model, int panelWidth, int panelHeight)
         {
             this.model = model;
-            this.listener = listener;
-            this.setPreferredSize(new Dimension(1100, 540));
+            this.setPreferredSize(new Dimension(panelWidth, panelHeight));
             this.setLayout(null);
             this.bgImage = new ImageIcon(getClass().getResource("/assets/mainMenuImage.png")).getImage();
             
@@ -83,7 +77,8 @@ public class MainMenuPanel extends JPanel{
             
             quitButton = new JButton("Quit");
             styleButton(quitButton);
-            quitButton.setActionCommand("H");
+            quitButton.setActionCommand("Q");
+            
             
             if (this.model.isNgPlusAvailable())
                 this.buttonPanel.add(newGamePlusButton);
@@ -100,10 +95,18 @@ public class MainMenuPanel extends JPanel{
             
         }
         
+        public void setButtonActionListener(ActionListener actionListener)
+        {
+            this.newGameButton.addActionListener(actionListener);
+            this.newGamePlusButton.addActionListener(actionListener);
+            this.continueButton.addActionListener(actionListener);
+            this.statusButton.addActionListener(actionListener);
+            this.howToPlayButton.addActionListener(actionListener);
+            this.quitButton.addActionListener(actionListener);
+        }
+        
         public void styleButton(JButton button)
         {
-            button.addActionListener(this.listener);
-            
             button.setFocusable(false);
             button.setForeground(java.awt.Color.blue);
             button.setContentAreaFilled(false);

@@ -46,16 +46,34 @@ public class Controller implements ActionListener
      */
     public void run()
     {
-            switch(model.getGameState())
+        updateView();
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        switch(model.getGameState())
+        {
+            case MAIN_MENU:
+                processMenuInput(e.getActionCommand());
+                break;
+        }
+        if (this.model.isGameActive())
+            updateView();
+        else
+            this.view.dispose();
+    }
+    
+    public void updateView()
+    {
+        switch(model.getGameState())
             {
                 case MAIN_MENU:
-                    this.view.printMainMenu();
-                    //waitForContinue();
+                    this.view.showPanel("MAIN_MENU");
                     break;  
                 case OVERWORLD:
-                    this.view.printOverworldOptions();
-                    this.view.printChoicePrompt();
-                    processOverworldInput();
+                    this.view.showPanel("OVERWORLD");
+                    //processOverworldInput();
                     break;
                 case DUNGEON:
                     this.view.printDungeon();
@@ -68,17 +86,9 @@ public class Controller implements ActionListener
                     break;
                 */
             }
+        
     }
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        switch(model.getGameState())
-        {
-            case MAIN_MENU:
-                processMenuInput(e.getActionCommand());
-                break;
-        }
-    }
+    
     //Methods
     //Process Menu Input
     /**
@@ -100,6 +110,7 @@ public class Controller implements ActionListener
                     this.model.generateSaveList();
                     startIntroSequence();
                     this.model.setGameState(GameState.OVERWORLD);
+                    
                 }
                 break;
             case "C":
@@ -131,46 +142,46 @@ public class Controller implements ActionListener
      */
     private void processOverworldInput()
     {
-        char choice = input();
-        switch(choice)
-        {
-            case '1':
-            case '2':
-            case '3':
-                //Start dungeon
-                int index = choice-'1';
-                ArrayList<Idol> idolList = this.model.getIdolList();
-                if(index >= 0 && index < idolList.size())
-                {
-                    this.model.getDungeon().generateDungeon(idolList.get(index));
-                    this.model.setGameState(GameState.DUNGEON);
-                }else{
-                    this.model.setErrorMessage("Idol already saved");
-                }
-                break;
-            case 'I':
-                this.view.printInventory();
-                waitForContinue();
-                break;
-            case ' ':
-                String[] msg = this.model.getPlayer().useItem();
-                this.model.setErrorMessages(msg);
-                break;
-            case '[':
-                String message1 = this.model.getPlayer().previousItem();
-                this.model.setErrorMessage(message1);
-                break;
-            case ']':
-                String message2 = this.model.getPlayer().nextItem();
-                this.model.setErrorMessage(message2);
-                break;
-            case 'S':
-                //Save
-                this.model.quit();
-            default:
-                this.model.setErrorMessage("Command not Found");
-                break;
-        }
+//        char choice = input();
+//        switch(choice)
+//        {
+//            case '1':
+//            case '2':
+//            case '3':
+//                //Start dungeon
+//                int index = choice-'1';
+//                ArrayList<Idol> idolList = this.model.getIdolList();
+//                if(index >= 0 && index < idolList.size())
+//                {
+//                    this.model.getDungeon().generateDungeon(idolList.get(index));
+//                    this.model.setGameState(GameState.DUNGEON);
+//                }else{
+//                    this.model.setErrorMessage("Idol already saved");
+//                }
+//                break;
+//            case 'I':
+//                this.view.printInventory();
+//                waitForContinue();
+//                break;
+//            case ' ':
+//                String[] msg = this.model.getPlayer().useItem();
+//                this.model.setErrorMessages(msg);
+//                break;
+//            case '[':
+//                String message1 = this.model.getPlayer().previousItem();
+//                this.model.setErrorMessage(message1);
+//                break;
+//            case ']':
+//                String message2 = this.model.getPlayer().nextItem();
+//                this.model.setErrorMessage(message2);
+//                break;
+//            case 'S':
+//                //Save
+//                this.model.quit();
+//            default:
+//                this.model.setErrorMessage("Command not Found");
+//                break;
+//        }
     }
 
     //Process Dungeon Input

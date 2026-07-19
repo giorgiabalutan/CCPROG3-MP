@@ -51,7 +51,6 @@ public abstract class Creature{
         {
             case CreatureType.BAT:
                 this.displayChar = 'b';
-                this.color = Color.RED;
                 this.maxHp = 1;
                 this.flying = true;
                 break;
