@@ -1,11 +1,13 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * Manages all of the player's inputs and interactions.
  */
-public class Controller implements ActionListener
+public class Controller implements ActionListener, KeyListener
 {
     //Components
     /**
@@ -34,6 +36,7 @@ public class Controller implements ActionListener
         this.model = model;
         this.view = view;
         this.view.setActionListener(this);
+        this.view.addKeyListener(this);
         sc = new Scanner(System.in);
     }
 
@@ -58,11 +61,28 @@ public class Controller implements ActionListener
                 processMenuInput(e.getActionCommand());
                 break;
         }
+        
         if (this.model.isGameActive())
             updateView();
         else
             this.view.dispose();
     }
+    
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        switch(model.getGameState())
+        {
+            case OVERWORLD:
+                processOverworldInput(KeyEvent.getKeyText(e.getKeyCode()));
+        }
+        
+        if(this.model.isGameActive())
+            updateView();
+        else
+            this.view.dispose();
+    }
+    
     
     public void updateView()
     {
@@ -73,7 +93,7 @@ public class Controller implements ActionListener
                     break;  
                 case OVERWORLD:
                     this.view.showPanel("OVERWORLD");
-                    //processOverworldInput();
+                    this.view.repaintOverworld();
                     break;
                 case DUNGEON:
                     this.view.printDungeon();
@@ -140,48 +160,53 @@ public class Controller implements ActionListener
      * <p>
      * It can start a {@link Dungeon}, open the {@link Inventory}, manage held {@link Item Items}, or save and quit the game.
      */
-    private void processOverworldInput()
+    private void processOverworldInput(String command)
     {
-//        char choice = input();
-//        switch(choice)
-//        {
-//            case '1':
-//            case '2':
-//            case '3':
-//                //Start dungeon
-//                int index = choice-'1';
-//                ArrayList<Idol> idolList = this.model.getIdolList();
-//                if(index >= 0 && index < idolList.size())
-//                {
-//                    this.model.getDungeon().generateDungeon(idolList.get(index));
-//                    this.model.setGameState(GameState.DUNGEON);
-//                }else{
-//                    this.model.setErrorMessage("Idol already saved");
-//                }
-//                break;
-//            case 'I':
-//                this.view.printInventory();
-//                waitForContinue();
-//                break;
-//            case ' ':
+        switch(command)
+        {
+            case "1":
+            case "2":
+            case "3":
+                //Start dungeon
+                int index = 0;
+                ArrayList<Idol> idolList = this.model.getIdolList();
+                if(index >= 0 && index < idolList.size())
+                {
+                    this.model.getDungeon().generateDungeon(idolList.get(index));
+                    this.model.setGameState(GameState.DUNGEON);
+                }else{
+                    this.model.setErrorMessage("Idol already saved");
+                }
+                break;
+            case "I":
+                this.model.getPlayer().setIsInventoryOpen(true);
+                break;
+            case "R":
+                if(this.model.getPlayer().isInventoryOpen())
+                    this.model.getPlayer().setIsInventoryOpen(false);
+                break;
+            case "Space":
+                System.out.println("Command: " + command);
 //                String[] msg = this.model.getPlayer().useItem();
 //                this.model.setErrorMessages(msg);
-//                break;
-//            case '[':
+                break;
+            case "Open Bracket":
+                System.out.println("Command: " + command);
 //                String message1 = this.model.getPlayer().previousItem();
 //                this.model.setErrorMessage(message1);
-//                break;
-//            case ']':
+                break;
+            case "Close Bracket":
+                System.out.println("Command: " + command);
 //                String message2 = this.model.getPlayer().nextItem();
 //                this.model.setErrorMessage(message2);
-//                break;
-//            case 'S':
-//                //Save
-//                this.model.quit();
-//            default:
-//                this.model.setErrorMessage("Command not Found");
-//                break;
-//        }
+                break;
+            case "S":
+                //Save
+                this.model.quit();
+            default:
+                this.model.setErrorMessage("Command not Found");
+                break;
+        }
     }
 
     //Process Dungeon Input
@@ -271,4 +296,10 @@ public class Controller implements ActionListener
         this.view.printContinuePrompt();
         sc.nextLine();
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }

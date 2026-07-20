@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 /**
  * Contains all of the Console Print methods.
@@ -45,9 +46,9 @@ public class View extends JFrame
         this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(frameWidth, frameHeight);
+        this.pack();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.pack();
         this.setVisible(true);
     }
    
@@ -56,9 +57,19 @@ public class View extends JFrame
         this.mainMenuPanel.setButtonActionListener(listener);
     }
     
+    public void setKeyListener(KeyListener keyListener)
+    {
+        this.overworldPanel.setKeyListener(keyListener);
+    }
+    
     public void showPanel(String panelName)
     {
         cardLayout.show(contentPane, panelName);
+    }
+    
+    public void repaintOverworld()
+    {
+        this.overworldPanel.repaint();
     }
     //Methods
     //Main Menu
@@ -139,32 +150,6 @@ public class View extends JFrame
                     System.out.println("" + idolList.get(j).getIdolName());
                 }
                 break;
-        }
-    }
-    
-
-    /**
-     * Displays the contents of the {@code Player}'s {@link Inventory}.
-     */
-    public void printInventory()
-    {
-        int i;
-        Player player = this.model.getPlayer();
-        Inventory inventory = player.getInventory();
-        int size = inventory.getItemCount();
-
-        clearWithANSICodes();
-
-        System.out.println("Lailaps: These are the items you have, Yohane!");
-
-        System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
-        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
-        System.out.print("Items Available \n");
-
-        for (i = 1; i <= size; i++)
-        {
-            System.out.println("" + i + ". " + inventory.getItems().get(i-1).getItemName() 
-            + "        " + inventory.getItems().get(i-1).getQuantity());
         }
     }
 

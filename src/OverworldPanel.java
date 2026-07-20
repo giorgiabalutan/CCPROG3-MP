@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -25,16 +26,29 @@ public class OverworldPanel extends JPanel{
     private Model model;
     private Image overworldBackground;
     private Image lailapsAndYohaneImage;
+    private Image introBackground;
+    private Image yohaneInventoryImage;
     
     Font defaultFont;
+    
+    private String lailapsText;
+    private String yohaneText;
     
     
     public OverworldPanel(Model model, int panelWidth, int panelHeight)
     {
         this.model = model;
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
+        this.introBackground = new ImageIcon(getClass().getResource("/assets/introBackground.png")).getImage();
         this.overworldBackground = new ImageIcon(getClass().getResource("/assets/overworldBackground.png")).getImage();
         this.lailapsAndYohaneImage = new ImageIcon(getClass().getResource("/assets/lailapsAndYohaneImage.png")).getImage();
+        this.yohaneInventoryImage = new ImageIcon(getClass().getResource("/assets/yohaneInventoryImage.png")).getImage();
+        defaultFont = new Font("Courier New", Font.BOLD, 20);
+    }
+    
+    public void setKeyListener(KeyListener keyListener)
+    {
+        this.addKeyListener(keyListener);
     }
     
     @Override
@@ -42,28 +56,28 @@ public class OverworldPanel extends JPanel{
     {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
+        
+        //g2D.drawImage(this.introBackground, 0, 0, null);
+        
         g2D.drawImage(this.overworldBackground, 0, 0, null);
-        g2D.drawImage(this.lailapsAndYohaneImage, 0, 10, null);
         
-        drawChoicesBox(g2D);
-        
+        if(this.model.getPlayer().isInventoryOpen())
+            drawInventory(g2D);
+        else
+            drawChoicesBox(g2D);
         
     }
     
     public void drawChoicesBox(Graphics2D g2D)
     {
-        defaultFont = new Font("Courier New", Font.BOLD, 20);
         int x = 19; 
         int y = 340;
         int width = 1065;
         int height = 189;
         
-        int i;
         Player player = this.model.getPlayer();
         ArrayList<Idol> idolList = this.model.getIdolList();
-        int size = idolList.size();
         
-        FontMetrics fontMetrics = g2D.getFontMetrics();
         
         String hpText = String.format("HP: %.1f / %.1f", player.getCurrHP(), player.getTotalHP());
         String itemOnHandText = "Item on Hand: " + player.getItemOnHand().getItemName();
@@ -73,6 +87,8 @@ public class OverworldPanel extends JPanel{
         String dungeon1 = "[1] " + idolList.get(0).getDungeonName();
         String dungeon2 = "[2] " + idolList.get(1).getDungeonName();
         String dungeon3 = "[3] " + idolList.get(2).getDungeonName();
+        
+        g2D.drawImage(this.lailapsAndYohaneImage, 0, 10, null);
         
         //Choices box
         drawBox(g2D, x, y, width, height);
@@ -88,8 +104,8 @@ public class OverworldPanel extends JPanel{
         
         //Dialogue box between Yohane and Lailaps
         drawBox(g2D, 360, 46, 405, 100);
-        String lailapsText = "Lailaps: Yohane! What should we\ndo next?";
-        String yohaneText = "Yohane: Hmmmmm...";
+        this.lailapsText = "Lailaps: Yohane! What should we\ndo next?";
+        this.yohaneText = "Yohane: Hmmmmm...";
         
         y = 75;
         for(String line : lailapsText.split("\n"))
@@ -99,6 +115,74 @@ public class OverworldPanel extends JPanel{
         }
         
         g2D.drawString(yohaneText, 376, 125);
+    }
+    
+    public void drawInventory(Graphics2D g2D)
+    {
+        int x = 298; 
+        int y = 43;
+        int width = 415;
+        int height = 100;
+        
+        int i;
+        Player player = this.model.getPlayer();
+        Inventory inventory = player.getInventory();
+        int size = inventory.getItemCount();
+
+        
+        String hpText = String.format("HP: %.1f / %.1f", player.getCurrHP(), player.getTotalHP());
+        String totalGoldText = String.format("Total gold: " + player.getTotalGold());
+        String itemsAvailableTextLabel = "Items available:";
+        String itemsAvailableList[] = new String[size];
+        for (i = 0; i < size; i++)
+        {
+            itemsAvailableList[i] = String.format(inventory.getItems().get(i).getItemName() + "      " + 
+                    inventory.getItems().get(i).getQuantity());
+        }
+        String returnText = "[R]eturn";
+
+        g2D.drawImage(this.yohaneInventoryImage, 0, 10, null);
+        
+        //Dialogue box of Yohane
+        drawBox(g2D, x, y, width, height);
+        g2D.setFont(defaultFont);
+        this.yohaneText = "Yohane: Behold! My sacred relics\nthat will help us in this\njourney!";
+        
+        y += 30;
+        x = 314;
+        for(String line : yohaneText.split("\n"))
+        {
+             g2D.drawString(line, x, y);
+             y += 20;
+        }
+        
+        //Inventory box
+        x = 298;
+        y = 201;
+        width = 748;
+        height = 325;
+        drawBox(g2D, x, y, width, height);
+        
+        g2D.drawString(hpText, 314, 230);
+        g2D.drawString(totalGoldText, 750, 230);
+        g2D.drawString(itemsAvailableTextLabel, 314, 250);
+        y = 290;
+        for (i = 0; i < size; i++)
+        {
+            g2D.drawString(itemsAvailableList[i], 314, y);
+            y+=20;
+        }
+        g2D.drawString(returnText, 310, y+40);
+    }
+    
+    public void setLailapsText(String lailapsText)
+    {
+        this.lailapsText = lailapsText;
+    }
+    
+    public void setYohaneText(String yohaneText)
+    {
+        this.yohaneText = yohaneText;
     }
     
     public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
