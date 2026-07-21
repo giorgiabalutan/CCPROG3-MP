@@ -38,11 +38,9 @@ public abstract class Loot{
         {
             case LootType.GOLD:
                 this.displayChar = 'g';
-                this.color = Color.YELLOW;
                 break;
             case LootType.TREASURE:
                 this.displayChar = 'T';
-                this.color = Color.GREEN;
                 break;
         }
         pos = new Position();

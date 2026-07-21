@@ -41,6 +41,8 @@ public class Player
      * Stores the name of the entity that caused the player to die.
      */
     private String causeOfDeath;
+    
+    private boolean isInventoryOpen;
 
     //Constructor
     /**
@@ -59,6 +61,7 @@ public class Player
         inventory = new Inventory();
         itemOnHand = inventory.getItems().get(0);
         pos = new Position();
+        isInventoryOpen = false;
     }
 
     //Methods
@@ -351,6 +354,16 @@ public class Player
     public String getCauseOfDeath()
     {
         return this.causeOfDeath;
+    }
+    
+    public boolean isInventoryOpen()
+    {
+        return this.isInventoryOpen;
+    }
+    
+    public void setIsInventoryOpen(boolean isInventoryOpen)
+    {
+        this.isInventoryOpen = isInventoryOpen;
     }
 
 }

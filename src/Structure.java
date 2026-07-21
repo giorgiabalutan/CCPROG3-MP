@@ -38,31 +38,24 @@ public abstract class Structure{
         {
             case StructureType.SPAWN:
                 this.displayChar = '.';
-                this.color = Color.RESET;
                 break;
             case StructureType.EXIT:
                 this.displayChar = 'E';
-                this.color = Color.YELLOW;
                 break;
             case StructureType.BORDER:
                 this.displayChar = '*';
-                this.color = Color.RESET;
                 break;
             case StructureType.WALL:
                 this.displayChar = 'v';
-                this.color = Color.RESET;
                 break;
             case StructureType.SPIKE:
                 this.displayChar = 'x';
-                this.color = Color.RESET;
                 break;
             case StructureType.WATER:
                 this.displayChar = 'w';
-                this.color = Color.BLUE;
                 break;
             case StructureType.HEAT:
                 this.displayChar = 'h';
-                this.color = Color.ORANGE;
                 break;
         }
         this.pos = new Position();

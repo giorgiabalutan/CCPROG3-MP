@@ -1,9 +1,13 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
  * Manages all of the player's inputs and interactions.
  */
-public class Controller
+public class Controller implements ActionListener, KeyListener
 {
     //Components
     /**
@@ -18,6 +22,7 @@ public class Controller
      * A {@code Scanner} to take player inputs.
      */
     private Scanner sc;
+    
 
     //Constructors
     /**
@@ -30,6 +35,8 @@ public class Controller
     {
         this.model = model;
         this.view = view;
+        this.view.setActionListener(this);
+        this.view.addKeyListener(this);
         sc = new Scanner(System.in);
     }
 
@@ -42,19 +49,51 @@ public class Controller
      */
     public void run()
     {
-        while(this.model.isGameActive())
+        updateView();
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        switch(model.getGameState())
         {
-            switch(model.getGameState())
+            case MAIN_MENU:
+                processMenuInput(e.getActionCommand());
+                break;
+        }
+        
+        if (this.model.isGameActive())
+            updateView();
+        else
+            this.view.dispose();
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        switch(model.getGameState())
+        {
+            case OVERWORLD:
+                processOverworldInput(KeyEvent.getKeyText(e.getKeyCode()));
+        }
+        
+        if(this.model.isGameActive())
+            updateView();
+        else
+            this.view.dispose();
+    }
+    
+    
+    public void updateView()
+    {
+        switch(model.getGameState())
             {
                 case MAIN_MENU:
-                    this.view.printMainMenu();
-                    this.view.printChoicePrompt();
-                    processMenuInput();
-                    break;
+                    this.view.showPanel("MAIN_MENU");
+                    break;  
                 case OVERWORLD:
-                    this.view.printOverworldOptions();
-                    this.view.printChoicePrompt();
-                    processOverworldInput();
+                    this.view.showPanel("OVERWORLD");
+                    this.view.repaintOverworld();
                     break;
                 case DUNGEON:
                     this.view.printDungeon();
@@ -67,9 +106,9 @@ public class Controller
                     break;
                 */
             }
-        }
+        
     }
-
+    
     //Methods
     //Process Menu Input
     /**
@@ -78,23 +117,23 @@ public class Controller
      * It can Start a New Game, New Game Plus, or Continue a Game.
      * It can also print the player's Status, a Help Manual, or Quit the game.
      */
-    private void processMenuInput()
+    private void processMenuInput(String command)
     {
-        char choice = input();
-        switch(choice)
+        switch(command)
         {
-            case 'N':
+            case "N":
                 if(this.model.isNgPlusAvailable())
                 {
                     //Start New Game +
                 }else{
                     //Start New Game
                     this.model.generateSaveList();
-                    startIntroSequence();
+                    this.model.setIsIntroPlaying(true);
                     this.model.setGameState(GameState.OVERWORLD);
+                    
                 }
                 break;
-            case 'C':
+            case "C":
                 if(this.model.isPlaythroughExists())
                 {
                     //Continue Game
@@ -102,19 +141,16 @@ public class Controller
                     this.model.setErrorMessage("No Save Found");
                 }
                 break;
-            case 'S':
+            case "S":
                 this.view.printStatus();
                 waitForContinue();
                 break;
-            case 'H':
+            case "H":
                 this.view.printManual();
                 waitForContinue();
                 break;
-            case 'Q':
+            case "Q":
                 this.model.quit();
-                break;
-            default:
-                this.model.setErrorMessage("Command not Found");
                 break;
         }
     }
@@ -124,16 +160,27 @@ public class Controller
      * <p>
      * It can start a {@link Dungeon}, open the {@link Inventory}, manage held {@link Item Items}, or save and quit the game.
      */
-    private void processOverworldInput()
+    private void processOverworldInput(String command)
     {
-        char choice = input();
-        switch(choice)
+        if(this.model.isIntroPlaying())
         {
-            case '1':
-            case '2':
-            case '3':
+            int currentIndex = this.model.getIntroIndex();
+            if("Enter".equals(command) && this.model.getIntroIndex() < 5)
+            {
+                currentIndex++;
+                this.model.setIntroIndex(currentIndex);
+            }
+            else
+                this.model.setIsIntroPlaying(false);
+        }
+        
+        switch(command)
+        {
+            case "1":
+            case "2":
+            case "3":
                 //Start dungeon
-                int index = choice-'1';
+                int index = 0;
                 ArrayList<Idol> idolList = this.model.getIdolList();
                 if(index >= 0 && index < idolList.size())
                 {
@@ -143,23 +190,29 @@ public class Controller
                     this.model.setErrorMessage("Idol already saved");
                 }
                 break;
-            case 'I':
-                this.view.printInventory();
-                waitForContinue();
+            case "I":
+                this.model.getPlayer().setIsInventoryOpen(true);
                 break;
-            case ' ':
-                String[] msg = this.model.getPlayer().useItem();
-                this.model.setErrorMessages(msg);
+            case "R":
+                if(this.model.getPlayer().isInventoryOpen())
+                    this.model.getPlayer().setIsInventoryOpen(false);
                 break;
-            case '[':
-                String message1 = this.model.getPlayer().previousItem();
-                this.model.setErrorMessage(message1);
+            case "Space":
+                System.out.println("Command: " + command);
+//                String[] msg = this.model.getPlayer().useItem();
+//                this.model.setErrorMessages(msg);
                 break;
-            case ']':
-                String message2 = this.model.getPlayer().nextItem();
-                this.model.setErrorMessage(message2);
+            case "Open Bracket":
+                System.out.println("Command: " + command);
+//                String message1 = this.model.getPlayer().previousItem();
+//                this.model.setErrorMessage(message1);
                 break;
-            case 'S':
+            case "Close Bracket":
+                System.out.println("Command: " + command);
+//                String message2 = this.model.getPlayer().nextItem();
+//                this.model.setErrorMessage(message2);
+                break;
+            case "S":
                 //Save
                 this.model.quit();
             default:
@@ -220,14 +273,6 @@ public class Controller
      * Calls the intro sequence in parts.
      * Waits for a player input before showing the next part.
      */
-    private void startIntroSequence()
-    {
-        for(int i=0;i<3;i++)
-        {
-            this.view.printIntro(i);
-            waitForContinue();
-        }
-    }
 
     //Generic Character Input
     /**
@@ -255,4 +300,10 @@ public class Controller
         this.view.printContinuePrompt();
         sc.nextLine();
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }

@@ -1,16 +1,30 @@
 import java.util.ArrayList;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+
 /**
  * Contains all of the Console Print methods.
  * <p>
  * Contains the printing methods for the different parts of the game.
  */
-public class View
+public class View extends JFrame
 {
     /**
      * The access to the data in {@link Model} for printing information from it.
      */
     private Model model;
-
+   
+    private int frameWidth = 1100;
+    private int frameHeight = 540;
+    
+    private CardLayout cardLayout;
+    private Container contentPane;
+    
+    private MainMenuPanel mainMenuPanel;
+    private OverworldPanel overworldPanel;
+    
     //Constructors
     /**
      * Constructs the View with access to the {@code Model} object.
@@ -20,8 +34,44 @@ public class View
     public View(Model model)
     {
         this.model = model;
+        this.cardLayout = new CardLayout();
+        this.contentPane = getContentPane();
+        this.contentPane.setLayout(cardLayout);
+        
+        mainMenuPanel = new MainMenuPanel(this.model, this.frameWidth, this.frameHeight);
+        overworldPanel = new OverworldPanel(this.model, this.frameWidth, this.frameHeight);
+        
+        contentPane.add(mainMenuPanel, "MAIN_MENU");
+        contentPane.add(overworldPanel, "OVERWORLD");
+        
+        this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(frameWidth, frameHeight);
+        this.pack();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
-
+   
+    public void setActionListener(ActionListener listener)
+    {
+        this.mainMenuPanel.setButtonActionListener(listener);
+    }
+    
+    public void setKeyListener(KeyListener keyListener)
+    {
+        this.overworldPanel.setKeyListener(keyListener);
+    }
+    
+    public void showPanel(String panelName)
+    {
+        cardLayout.show(contentPane, panelName);
+    }
+    
+    public void repaintOverworld()
+    {
+        this.overworldPanel.repaint();
+    }
     //Methods
     //Main Menu
     /**
@@ -30,28 +80,7 @@ public class View
      * Prints the choice to check Status, How to Play, and Quit.
      * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
      */
-    public void printMainMenu()
-    {
-        clearWithANSICodes();
-        System.out.println("************************************************");
-        System.out.println("*            Yohane The Parhelion!             *");
-        System.out.println("*        The Siren in the Mirror World!        *");
-        System.out.println("************************************************");
-
-        if(model.isPlaythroughExists())
-        {
-            System.out.println("         [C]ontinue Game");
-        }
-        if(model.isNgPlusAvailable())
-        {
-            System.out.println("         [N]ew Game+");
-        }else{
-            System.out.println("         [N]ew Game");
-        }
-        System.out.println("         [S]tatus");
-        System.out.println("         [H]ow to play");
-        System.out.println("         [Q]uit");
-    }
+   
     /**
      * Prints the lifetime stats of the {@link Player}.
      */
@@ -68,123 +97,6 @@ public class View
     }
 
     //Overworld
-    /**
-     * Prints the Intro sequence of the overworld.
-     * <p>
-     * Called by {@link Controller#startIntroSequence() Controller.startIntroSequence} in order to print only parts of the output.
-     * It iterates through each of the cases here, with a {@link Controller#waitForContinue() Controller.waitForContinue} call between prints.
-     * 
-     * @param i indicates which set of prints to do.
-     */
-    public void printIntro(int i)
-    {
-        clearWithANSICodes();
-
-        //Switch Case is being iterated through in startIntroSequence() in Controller.java
-        //Update the loop there if adding more cases here
-        switch(i)
-        {
-            case 0:
-                System.out.println("----------------------------------");
-                System.out.println("Numazu, Shizouka prefecture, Japan");
-                System.out.println("----------------------------------");
-                break;
-            case 1:
-                System.out.println("Hanamaru: Yoshiko! Have you heard?!?");
-                System.out.println("Yoshiko: What's the matter, Hana-chan?");
-                System.out.println("Hanamaru: Some of the idols have started to lose their voice!");
-                System.out.println("Chika: Everyone!! Dia-chan and Mari-chan have lost their voice already too!");
-                System.out.println("Yoshiko: Oh my! This is terrible. We have to do something!");
-                System.out.println("Yoshiko: I vow to unleash my inner fallen angel, come forth Yohane-chan.");
-                break;
-            case 2:
-                System.out.println("----------------------------------");
-                System.out.println("During a peaceful moment of slumber");
-                System.out.println("----------------------------------");
-                System.out.println("Lailaps: Yohane-chan! Wake up, we seem to be in an mirror world.");
-                System.out.println("Yohane: Lailaps? What is this mirror world you speak of?");
-                System.out.println("Lailaps: It seems that this world is the reason why idols' voices are disappearing.");
-                System.out.println("Lailaps: There is a siren lurking and stealing the voices!");
-                System.out.println("Yohane: Why is the siren doing that?");
-                System.out.println("Lailaps: To have the perfect singing voice Yohane-chan.");
-                System.out.println("Lailaps: We have to venture off to the dungeons where the voices are hidden!");
-                System.out.println("Lailaps: This way, we can retrieve the voices and end this madness!!");
-                System.out.println("Yohane: I got it. Lets go, Lailaps!!");
-
-                ArrayList<Idol> idolList = this.model.getIdolList();
-                int size = idolList.size();
-
-                System.out.println("\n----------------------------------");
-                System.out.println("Voices to be retrieved");
-                System.out.println("----------------------------------");
-                for (int j = 0; j < size; j++)
-                {
-                    System.out.println("" + idolList.get(j).getIdolName());
-                }
-                break;
-        }
-    }
-    
-    /**
-     * Prints the options for the player to choose from in the Overworld.
-     * <p>
-     * Shows the options to start one of three {@link Dungeon Dungeons}, use items, check their inventory, and quit.
-     * It also shows the {@code Player}'s hp and gold.
-     */
-    public void printOverworldOptions()
-    {
-        int i;
-        Player player = this.model.getPlayer();
-        ArrayList<Idol> idolList = this.model.getIdolList();
-        int size = idolList.size();
-
-        clearWithANSICodes();
-
-        System.out.println("Lailaps: Yohane! Where should we go to now?");
-
-        System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
-        if(player.getInventory().getItemCount() > 0)
-        {
-            System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
-            System.out.print(" (" + player.getItemOnHand().getQuantity() + ")");
-        }else{
-            System.out.print("Item on hand: None");
-        }
-        System.out.print("            [I]nventory");
-        System.out.println("    [S]ave and Quit");
-
-        System.out.println();
-        for (i = 1; i <= size; i++)
-        {
-            System.out.println("[" + i + "] " + idolList.get(i-1).getDungeonName());
-        }
-    }
-
-    /**
-     * Displays the contents of the {@code Player}'s {@link Inventory}.
-     */
-    public void printInventory()
-    {
-        int i;
-        Player player = this.model.getPlayer();
-        Inventory inventory = player.getInventory();
-        int size = inventory.getItemCount();
-
-        clearWithANSICodes();
-
-        System.out.println("Lailaps: These are the items you have, Yohane!");
-
-        System.out.print("HP: " + player.getCurrHP() + " / " + player.getTotalHP());
-        System.out.println("                  Total Gold: " + player.getTotalGold() + " GP");
-        System.out.print("Items Available \n");
-
-        for (i = 1; i <= size; i++)
-        {
-            System.out.println("" + i + ". " + inventory.getItems().get(i-1).getItemName() 
-            + "        " + inventory.getItems().get(i-1).getQuantity());
-        }
-    }
 
     //Dungeon
     /**
@@ -210,7 +122,7 @@ public class View
         System.out.println();
 
         System.out.printf("HP: %.1f / %.1f", player.getCurrHP() , player.getTotalHP());
-        System.out.println("                  Total Gold: " + Color.YELLOW + player.getTotalGold() + " GP" + Color.RESET);
+        System.out.println("                  Total Gold: " + Color.YELLOW + player.getTotalGold() + " GP");
         if(player.getInventory().getItemCount() > 0)
         {
             System.out.print("Item on hand: " + player.getItemOnHand().getItemName());
@@ -228,12 +140,11 @@ public class View
             {
                 if(player.getPosition().getPosY() == i && player.getPosition().getPosX() == j)
                 {
-                    System.out.print(Color.PURPLE + "Y" + Color.RESET);
+                    System.out.print("Y" );
                 }else{
                     System.out.print(grid[i][j].getTileChar());
                 }
             }
-            System.out.println(Color.RESET);
         }
 
         //Debug Print Player Position
@@ -248,8 +159,8 @@ public class View
     public void deathMessage(String cause)
     {
         clearWithANSICodes();
-        System.out.println(Color.DARK_RED + "GAME OVER" + Color.RESET);
-        System.out.println(Color.PURPLE + "Yohane " + Color.RESET + "has fallen due to " + Color.DARK_RED + cause + Color.RESET);
+        System.out.println("GAME OVER");
+        System.out.println("Yohane has fallen due to " + cause);
     }
 
     /**

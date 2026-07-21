@@ -95,20 +95,20 @@ public class Tile
      * 
      * @return the character representation of the Tile with the {@link Color} of the Tile.
      */
-    public String getTileChar()
+    public char getTileChar()
     {
         for(Creature creature : creatures)
         {
-            return creature.getColor() + creature.getDisplayChar();
+            return creature.getDisplayChar();
         }
         for(Loot loot : loots)
         {
-            return loot.getColor() + loot.getDisplayChar();
+            return loot.getDisplayChar();
         }
         for(Structure structure : structures)
         {
-            return structure.getColor() + structure.getDisplayChar();
+            return structure.getDisplayChar();
         }
-        return Color.RESET + '.';
+        return '.';
     }
 }
