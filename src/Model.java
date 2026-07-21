@@ -52,7 +52,8 @@ public class Model
      * Tracks the data related to the {@code Dungeons} that the player needs to challenge.
      */
     private Dungeon dungeon;
-
+    private boolean isIntroPlaying;
+    private int introIndex = 0;
     //Constructors
     /**
      * Initializes the Model in the Main Menu
@@ -69,6 +70,7 @@ public class Model
         this.playthroughExists = false;
         this.player = new Player();
         this.dungeon = new Dungeon(player);
+        this.isIntroPlaying = false;
     }
 
     //Methods
@@ -285,5 +287,25 @@ public class Model
     public Dungeon getDungeon()
     {
         return this.dungeon;
+    }
+    
+    public void setIsIntroPlaying(boolean isIntroPlaying)
+    {
+        this.isIntroPlaying = isIntroPlaying;
+    }
+    
+    public boolean isIntroPlaying()
+    {
+        return this.isIntroPlaying;
+    }
+    
+    public void setIntroIndex(int introIndex)
+    {
+        this.introIndex = introIndex;
+    }
+    
+    public int getIntroIndex()
+    {
+        return this.introIndex;
     }
 }

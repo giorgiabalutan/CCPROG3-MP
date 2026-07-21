@@ -128,7 +128,7 @@ public class Controller implements ActionListener, KeyListener
                 }else{
                     //Start New Game
                     this.model.generateSaveList();
-                    startIntroSequence();
+                    this.model.setIsIntroPlaying(true);
                     this.model.setGameState(GameState.OVERWORLD);
                     
                 }
@@ -162,6 +162,18 @@ public class Controller implements ActionListener, KeyListener
      */
     private void processOverworldInput(String command)
     {
+        if(this.model.isIntroPlaying())
+        {
+            int currentIndex = this.model.getIntroIndex();
+            if("Enter".equals(command) && this.model.getIntroIndex() < 5)
+            {
+                currentIndex++;
+                this.model.setIntroIndex(currentIndex);
+            }
+            else
+                this.model.setIsIntroPlaying(false);
+        }
+        
         switch(command)
         {
             case "1":
@@ -261,14 +273,6 @@ public class Controller implements ActionListener, KeyListener
      * Calls the intro sequence in parts.
      * Waits for a player input before showing the next part.
      */
-    private void startIntroSequence()
-    {
-        for(int i=0;i<3;i++)
-        {
-            this.view.printIntro(i);
-            waitForContinue();
-        }
-    }
 
     //Generic Character Input
     /**
