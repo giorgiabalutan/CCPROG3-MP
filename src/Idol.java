@@ -22,6 +22,8 @@ public class Idol implements Serializable
      * How many times the Idol has been saved.
      */
     private int timesSaved;
+    
+    private String idolImageFilePath;
 
     /**
      * Constructs an Idol based on the provided idolNumber. The following numbers correspond to:
@@ -46,41 +48,49 @@ public class Idol implements Serializable
                 this.name = "Chika Takami";
                 this.dungeonName = "Yasudaya Ryokan";
                 this.dungeonCode = DungeonCode.YASUDAYA_RYOKAN;
+                this.idolImageFilePath = "/assets/chikaTakami.png";
                 break;
             case 2:
                 this.name = "You Watanabe";
                 this.dungeonName = "Izu-Mito Sea Paradise";
                 this.dungeonCode = DungeonCode.IZU_MITO_SEA_PARADISE;
+                this.idolImageFilePath = "/assets/youWatanabe.png";
                 break;
             case 3:
                 this.name = "Riko Sakurauchi";
                 this.dungeonName = "Numazu Deep Sea Aquarium";
                 this.dungeonCode = DungeonCode.NUMAZU_DEEP_SEA_AQUARIUM;
+                this.idolImageFilePath = "/assets/rikoSakurauchi.png";
                 break;
             case 4:
                 this.name = "Hanamaru Kunikida";
                 this.dungeonName = "Shougetsu Confectionary";
                 this.dungeonCode = DungeonCode.SHOUGETSU_CONFECTIONARY;
+                this.idolImageFilePath = "/assets/hanamaruKunikida.png";
                 break;
             case 5:
                 this.name = "Ruby Kurosawa";
                 this.dungeonName = "Nagahama Castle Ruins";
                 this.dungeonCode = DungeonCode.NAGAHAMA_CASTLE_RUINS;
+                this.idolImageFilePath = "/assets/rubyKurosawa.png";
                 break;
             case 6:
                 this.name = "Dia Kurosawa";
                 this.dungeonName = "Numazugoyotei";
                 this.dungeonCode = DungeonCode.NUMAZUGOYOTEI;
+                this.idolImageFilePath = "/assets/diaKurosawa.png";
                 break;
             case 7:
                 this.name = "Kanan Matsuura";
                 this.dungeonName = "Uchiura Bay Pier";
                 this.dungeonCode = DungeonCode.UCHIURA_BAY_PIER;
+                this.idolImageFilePath = "/assets/kananMatsuura.png";
                 break;
             case 8:
                 this.name = "Mari Ohara";
                 this.dungeonName = "Awashima Marine Park";
                 this.dungeonCode = DungeonCode.AWASHIMA_MARINE_PARK;
+                this.idolImageFilePath = "/assets/mariOhara.png";
                 break;
         }
     }
@@ -111,5 +121,10 @@ public class Idol implements Serializable
     public DungeonCode getDungeonCode()
     {
         return this.dungeonCode;
+    }
+    
+    public String getIdolImageFilePath()
+    {
+        return this.idolImageFilePath;
     }
 }

@@ -27,6 +27,9 @@ public class OverworldPanel extends JPanel{
     private Image lailapsAndYohaneImage;
     private Image introBackground;
     private Image yohaneInventoryImage;
+    private Image idol1Image;
+    private Image idol2Image;
+    private Image idol3Image;
     
     Font defaultFont;
     
@@ -144,7 +147,14 @@ public class OverworldPanel extends JPanel{
                 break;
             case 6:
                 this.introBackground = new ImageIcon(getClass().getResource("/assets/intro7.png")).getImage();
+                this.idol1Image = new ImageIcon(getClass().getResource(idolList.get(0).getIdolImageFilePath())).getImage();
+                this.idol2Image = new ImageIcon(getClass().getResource(idolList.get(1).getIdolImageFilePath())).getImage();
+                this.idol3Image = new ImageIcon(getClass().getResource(idolList.get(2).getIdolImageFilePath())).getImage();
+                
                 g2D.drawImage(this.introBackground, 0, 0, null);
+                g2D.drawImage(this.idol1Image, 106, 0, null);
+                g2D.drawImage(this.idol2Image, 380, 0, null);
+                g2D.drawImage(this.idol3Image, 655, 0, null);
                 currentDialogue = new String[]
                 {
                     "Voices to be retrieved: ",
@@ -158,9 +168,9 @@ public class OverworldPanel extends JPanel{
         int lineX;
         int lineY;
         int lineSpacing = 20;
-        if(currentDialogue.length < 4)
+        if(currentDialogue.length <= 4)
         {
-            drawBox(g2D, 23, 400, 1053, 100);
+            drawBox(g2D, 23, 400, 1053, 120);
             lineX = 40;
             lineY = 430;
         }  
@@ -200,6 +210,7 @@ public class OverworldPanel extends JPanel{
         String totalGoldText = String.format("Total gold: " + player.getTotalGold());
         String inventoryText = "[I]nventory";
         String saveAndQuitText = "[S]ave and Quit";
+        String hanamaruShopText = "[H]anamaru's Shop";
         String dungeon1 = "[1] " + idolList.get(0).getDungeonName();
         String dungeon2 = "[2] " + idolList.get(1).getDungeonName();
         String dungeon3 = "[3] " + idolList.get(2).getDungeonName();

@@ -126,7 +126,7 @@ public class Controller implements ActionListener, KeyListener
                 {
                     //Start New Game +
                 }else{
-                    //Start New Game
+                    //Start New Games
                     this.model.generateSaveList();
                     this.model.setIsIntroPlaying(true);
                     this.model.setGameState(GameState.OVERWORLD);
@@ -166,7 +166,7 @@ public class Controller implements ActionListener, KeyListener
         if(this.model.isIntroPlaying())
         {
             int currentIndex = this.model.getIntroIndex();
-            if("Enter".equals(command) && this.model.getIntroIndex() < 5)
+            if("Enter".equals(command) && this.model.getIntroIndex() < 6)
             {
                 currentIndex++;
                 this.model.setIntroIndex(currentIndex);
