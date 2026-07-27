@@ -101,7 +101,7 @@ public class OverworldPanel extends JPanel{
                 this.introBackground = new ImageIcon(getClass().getResource("/assets/intro2.png")).getImage();
                 g2D.drawImage(this.introBackground, 0, 0, null);
                 currentDialogue = new String[]{
-                    "Kanan: Everyoneee!! Look at this! Some of the members from Liella lost their voices before their concert!",
+                    "Kanan: Everyoneee!! Look at this! Some of the members from Liella lost their voices before their\nconcert!",
                     "Ruby: Eeekkkk!!"
                 };
                 break;
@@ -109,7 +109,7 @@ public class OverworldPanel extends JPanel{
                 this.introBackground = new ImageIcon(getClass().getResource("/assets/intro3.png")).getImage();
                 g2D.drawImage(this.introBackground, 0, 0, null);
                 currentDialogue = new String[]{
-                    "Yoshiko: Hmp, this is all nonsense because I, the fallen angel Yohane, will protect everyone with my holy shield!",
+                    "Yoshiko: Hmp, this is all nonsense because I, the fallen angel Yohane, will protect everyone with\nmy holy shield!",
                     "You: That's right everyone! the great angel will have our backs fufu."
                 };
                 break;
@@ -129,14 +129,21 @@ public class OverworldPanel extends JPanel{
                     "Yohane: Ehhh... Lailaps? You can talk??",
                     "Lailaps: You have been summoned to this mirror world for an important mission.",
                     "Yohane: What are you talking about?",
-                    "Lailaps: In the real world, some of your friends also lost their voices too and you're here to fix this phenomenon",
-                    "Lailaps: A siren has been stealing voices and you have to defeat that siren!",
-                    "Yohane: A mission? F-fallen angels are bound to missions...",
-                    "Yohane: Well, what are you waiting for Lailaps? Let's go!",
+                    "Lailaps: In the real world, some of your friends also lost their voices and you're here to fix this\nphenomenon",
+                    "Lailaps: The main cause is a siren that has been stealing voices, so you have to defeat that siren!"
                 };
                 break;
             case 5:
                 this.introBackground = new ImageIcon(getClass().getResource("/assets/intro6.png")).getImage();
+                g2D.drawImage(this.introBackground, 0, 0, null);
+                currentDialogue = new String[]
+                {
+                    "Yohane: A mission? F-fallen angels are bound to missions...",
+                    "Yohane: Well, what are you waiting for Lailaps? Let's go!"
+                };
+                break;
+            case 6:
+                this.introBackground = new ImageIcon(getClass().getResource("/assets/intro7.png")).getImage();
                 g2D.drawImage(this.introBackground, 0, 0, null);
                 currentDialogue = new String[]
                 {
@@ -145,16 +152,33 @@ public class OverworldPanel extends JPanel{
                     "2. " + idolList.get(1).getIdolName(),
                     "3. " + idolList.get(2).getIdolName(),
                 };
+                break;
         }
         
-        int lineX = 40;
-        int lineY = 370;
+        int lineX;
+        int lineY;
         int lineSpacing = 20;
-        drawBox(g2D, 23, 340, 1053, 175);
-        for (i = 0; i < currentDialogue.length; i++)
+        if(currentDialogue.length < 4)
         {
-            g2D.drawString(currentDialogue[i], lineX, lineY);
-            lineY += lineSpacing;
+            drawBox(g2D, 23, 400, 1053, 100);
+            lineX = 40;
+            lineY = 430;
+        }  
+        else
+        {
+            drawBox(g2D, 23, 340, 1053, 175);
+            lineX = 40;
+            lineY = 370;
+        }
+            
+        
+        for (i = 0; i < currentDialogue.length; i++)
+        {   
+            for(String line : currentDialogue[i].split("\n"))
+            {
+                 g2D.drawString(line, lineX, lineY);
+                 lineY += lineSpacing;
+            }
         }
         
     }

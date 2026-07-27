@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Represents one of the Dungeons that must be completed to rescue an {@link Idol}.
  * <p>
  * Contains the list of {@link Floor Floors} in the dungeon and tracks which one the {@link Player} is in.
  */
-public class Dungeon
+public class Dungeon implements Serializable
 {
     /**
      * The {@code Idol} trapped in this dungeon.

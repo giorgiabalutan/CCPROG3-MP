@@ -1,9 +1,12 @@
+
+import java.io.Serializable;
+
 /**
  * Represents Items that the {@link Player} can have.
  * <p>
  * Tracks the availability and price of the item, and tracks how many copies of itself the {@code Player} has.
  */
-public class Item
+public class Item implements Serializable
 {
     /**
      * The name of the item for displaying.

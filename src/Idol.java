@@ -1,7 +1,10 @@
+
+import java.io.Serializable;
+
 /**
  * Represents Idols that the player must rescue.
  */
-public class Idol
+public class Idol implements Serializable
 {
     /**
      * The name of the Idol.

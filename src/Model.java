@@ -1,3 +1,9 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 /**
@@ -5,7 +11,7 @@ import java.util.Random;
  * <p>
  * Source of all information regarding the state of the game, the progress of the {@link Player}, and the details of the {@link Dungeon Dungeons}.
  */
-public class Model
+public class Model implements Serializable
 {
     //State Info
     /**
@@ -52,6 +58,7 @@ public class Model
      * Tracks the data related to the {@code Dungeons} that the player needs to challenge.
      */
     private Dungeon dungeon;
+    private DataStorage dataStorage;
     private boolean isIntroPlaying;
     private int introIndex = 0;
     //Constructors
@@ -70,6 +77,7 @@ public class Model
         this.playthroughExists = false;
         this.player = new Player();
         this.dungeon = new Dungeon(player);
+        this.dataStorage = new DataStorage();
         this.isIntroPlaying = false;
     }
 
@@ -104,7 +112,56 @@ public class Model
 
         }
     }
-
+    
+    public void save()
+    {
+        try {
+            System.out.println(new File("save.dat").getAbsolutePath());
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
+            
+            dataStorage.setNGPlusAvailable(this.ngPlusAvailable);
+            dataStorage.setPlaythroughExists(this.playthroughExists);
+            dataStorage.setGameOvers(this.gameOvers);
+            dataStorage.setIdolList(this.idolList);
+            dataStorage.setPlayer(this.player);
+            dataStorage.setDungeon(this.dungeon);
+            
+            oos.writeObject(dataStorage);
+            System.out.println("Successfully saved!");
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println("WARNING: COULD NOT SAVE GAME!");
+            e.printStackTrace();
+        }
+    }
+    
+    public void load()
+    {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("save.dat")));
+            DataStorage ds = (DataStorage)ois.readObject();
+            
+            this.ngPlusAvailable = ds.getNGPlusAvailable();
+            this.playthroughExists = ds.getPlaythroughExists();
+            this.gameOvers = ds.getGameOvers();
+            this.idolList = ds.getIdolList();
+            this.player = ds.getPlayer();
+            this.dungeon = ds.getDungeon();
+        }
+        catch(Exception e )
+        {
+            System.out.println("WARNING: COULD NOT LOAD SAVED GAME!");
+        }
+    }
+    
+    public boolean hasSavedGame()
+    {
+        File savedFile = new File("save.dat");
+        
+        return savedFile.exists() && !savedFile.isDirectory();
+    }
     //Updates Dungeon Status
     /**
      * Processes one cycle of user input.

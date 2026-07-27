@@ -1,9 +1,12 @@
+
+import java.io.Serializable;
+
 /**
  * Tracks the data related to the Player's character.
  * <p>
  * Tracks and manages their hp, gold, {@link Inventory}, {@link Position}, and cause of death.
  */
-public class Player
+public class Player implements Serializable
 {
     /**
      * The current hp of the player.

@@ -1,9 +1,12 @@
+
+import java.io.Serializable;
+
 /**
  * Represents the current position of an entity on the map.
  * <p>
  * Each entity has its own <code>Position</code> that it modifies and checks against for interactions.
  */
-public class Position{
+public class Position implements Serializable{
     /**
      * The distance of the entity from the top edge of the map.
      */

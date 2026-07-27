@@ -136,7 +136,8 @@ public class Controller implements ActionListener, KeyListener
             case "C":
                 if(this.model.isPlaythroughExists())
                 {
-                    //Continue Game
+                    this.model.load();
+                    this.model.setGameState(GameState.OVERWORLD);
                 }else{
                     this.model.setErrorMessage("No Save Found");
                 }
@@ -214,6 +215,8 @@ public class Controller implements ActionListener, KeyListener
                 break;
             case "S":
                 //Save
+                this.model.setPlaythroughExists(true);
+                this.model.save();
                 this.model.quit();
             default:
                 this.model.setErrorMessage("Command not Found");

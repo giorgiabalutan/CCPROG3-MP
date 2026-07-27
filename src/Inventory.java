@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Tracks what and how many of each {@link Item} the {@link Player} has.
  */
-public class Inventory
+public class Inventory implements Serializable
 {
     /**
      * A list of {@code Items} the {@code Player} has.

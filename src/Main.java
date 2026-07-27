@@ -25,6 +25,8 @@ public class Main
         /**
          * Initializes the {@code View} with a reference to the {@code Model}.
          */
+        if (game.hasSavedGame())
+            game.load();
         View display = new View(game);
         /**
          * Initializes the {@code Controller} with a reference to the {@code View} and {@code Model}.
