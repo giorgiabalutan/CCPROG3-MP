@@ -40,7 +40,7 @@ public class Item implements Serializable
      * </ul>
      */
     private int itemCode;
-
+    private boolean isBought;
     /**
      * Constructs the item of the given code.
      * <p>
@@ -164,5 +164,15 @@ public class Item implements Serializable
     public void addQuantity(int qt)
     {
         this.quantity += qt;
+    }
+    
+    public boolean isBought()
+    {
+        return this.isBought;
+    }
+    
+    public void setBought(boolean isBought)
+    {
+        this.isBought = isBought;
     }
 }

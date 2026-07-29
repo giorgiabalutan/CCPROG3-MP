@@ -75,6 +75,10 @@ public class Controller implements ActionListener, KeyListener
         {
             case OVERWORLD:
                 processOverworldInput(KeyEvent.getKeyText(e.getKeyCode()));
+                break;
+            case SHOP:
+                processShopInput(KeyEvent.getKeyText(e.getKeyCode()));
+                break;
         }
         
         if(this.model.isGameActive())
@@ -100,11 +104,9 @@ public class Controller implements ActionListener, KeyListener
                     this.view.printChoicePrompt();
                     processDungeonInput();
                     break;
-                /** SHOP NOT YET NEEDED FOR PHASE 1
                 case SHOP:
-
+                    this.view.showPanel("SHOP");
                     break;
-                */
             }
         
     }
@@ -198,6 +200,9 @@ public class Controller implements ActionListener, KeyListener
                 if(this.model.getPlayer().isInventoryOpen())
                     this.model.getPlayer().setIsInventoryOpen(false);
                 break;
+            case "H":
+                this.model.setGameState(GameState.SHOP);
+                break;
             case "Space":
                 System.out.println("Command: " + command);
 //                String[] msg = this.model.getPlayer().useItem();
@@ -270,7 +275,16 @@ public class Controller implements ActionListener, KeyListener
             //To be expounded
         }
     }
-
+    
+    private void processShopInput(String command)
+    {
+        switch(command)
+        {
+            case "R":
+                this.model.setGameState(GameState.OVERWORLD);
+                break;
+        }
+    }
     //Cutscenes
     /**
      * Calls the intro sequence in parts.

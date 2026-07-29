@@ -116,7 +116,6 @@ public class Model implements Serializable
     public void save()
     {
         try {
-            System.out.println(new File("save.dat").getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("save.dat")));
             
             dataStorage.setNGPlusAvailable(this.ngPlusAvailable);

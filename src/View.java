@@ -24,6 +24,7 @@ public class View extends JFrame
     
     private MainMenuPanel mainMenuPanel;
     private OverworldPanel overworldPanel;
+    private ShopPanel shopPanel;
     
     //Constructors
     /**
@@ -40,9 +41,11 @@ public class View extends JFrame
         
         mainMenuPanel = new MainMenuPanel(this.model, this.frameWidth, this.frameHeight);
         overworldPanel = new OverworldPanel(this.model, this.frameWidth, this.frameHeight);
+        shopPanel = new ShopPanel(this.model, this.frameWidth, this.frameHeight);
         
         contentPane.add(mainMenuPanel, "MAIN_MENU");
         contentPane.add(overworldPanel, "OVERWORLD");
+        contentPane.add(shopPanel, "SHOP");
         
         this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,6 +64,7 @@ public class View extends JFrame
     public void setKeyListener(KeyListener keyListener)
     {
         this.overworldPanel.setKeyListener(keyListener);
+        this.shopPanel.setKeyListener(keyListener);
     }
     
     public void showPanel(String panelName)
