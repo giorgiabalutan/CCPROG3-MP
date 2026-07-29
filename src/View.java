@@ -1,9 +1,13 @@
-import java.util.ArrayList;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-
+import javax.swing.*;
+import model.Idol;
+import model.Model;
+import model.Player;
+import model.dungeon.Dungeon;
+import model.dungeon.Floor;
+import model.dungeon.Tile;
 /**
  * Contains all of the Console Print methods.
  * <p>
@@ -15,7 +19,7 @@ public class View extends JFrame
      * The access to the data in {@link Model} for printing information from it.
      */
     private Model model;
-   
+    
     private int frameWidth = 1100;
     private int frameHeight = 540;
     
@@ -24,6 +28,7 @@ public class View extends JFrame
     
     private MainMenuPanel mainMenuPanel;
     private OverworldPanel overworldPanel;
+    private DungeonPanel dungeonPanel;
     private ShopPanel shopPanel;
     
     //Constructors
@@ -41,10 +46,12 @@ public class View extends JFrame
         
         mainMenuPanel = new MainMenuPanel(this.model, this.frameWidth, this.frameHeight);
         overworldPanel = new OverworldPanel(this.model, this.frameWidth, this.frameHeight);
+        dungeonPanel = new DungeonPanel(this.model, this.frameWidth, this.frameHeight);
         shopPanel = new ShopPanel(this.model, this.frameWidth, this.frameHeight);
         
         contentPane.add(mainMenuPanel, "MAIN_MENU");
         contentPane.add(overworldPanel, "OVERWORLD");
+        contentPane.add(dungeonPanel, "DUNGEON");
         contentPane.add(shopPanel, "SHOP");
         
         this.setTitle("Yohane the Parhelion: The Siren in the Mirror World!");
@@ -55,7 +62,7 @@ public class View extends JFrame
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
-   
+    
     public void setActionListener(ActionListener listener)
     {
         this.mainMenuPanel.setButtonActionListener(listener);
@@ -84,7 +91,7 @@ public class View extends JFrame
      * Prints the choice to check Status, How to Play, and Quit.
      * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
      */
-   
+    
     /**
      * Prints the lifetime stats of the {@link Player}.
      */

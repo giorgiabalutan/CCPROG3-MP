@@ -1,3 +1,4 @@
+import model.Model;
 /**
  * Starts up the game.
  * <p>
@@ -35,5 +36,8 @@ public class Main
         
         //Starts taking inputs through the controller (which also has an initial print)
         player.run();
+
+        //For Testing
+        // player.skipIntroNew();
     }
 }

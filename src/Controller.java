@@ -4,6 +4,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
+import model.GameState;
+import model.Idol;
+import model.Inventory;
+import model.Item;
+import model.Model;
+import model.creature.Creature;
+import model.dungeon.Dungeon;
+import model.dungeon.Floor;
+import model.loot.Loot;
+import model.structure.Structure;
 /**
  * Manages all of the player's inputs and interactions.
  */
@@ -100,9 +110,7 @@ public class Controller implements ActionListener, KeyListener
                     this.view.repaintOverworld();
                     break;
                 case DUNGEON:
-                    this.view.printDungeon();
-                    this.view.printChoicePrompt();
-                    processDungeonInput();
+                    this.view.showPanel("DUNGEON");
                     break;
                 case SHOP:
                     this.view.showPanel("SHOP");
@@ -323,4 +331,12 @@ public class Controller implements ActionListener, KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    //For Testing Only
+    public void skipIntroNew(){
+        processMenuInput("N");
+        processOverworldInput(" ");
+        processOverworldInput("1");
+        updateView();
+    }
 }
