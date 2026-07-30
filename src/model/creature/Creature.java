@@ -2,6 +2,7 @@ package model.creature;
 
 import model.dungeon.Floor;
 import model.dungeon.Position;
+import model.loot.Loot;
 /**
  * Represents a creature that spawns during gameplay.
  * <p>
@@ -30,6 +31,7 @@ public abstract class Creature{
      * The color of creature display. For use in console view.
      */
     private String color;
+    private String creatureImageFilePath;
     /**
      * The current position of the creature on the map.
      */
@@ -57,6 +59,7 @@ public abstract class Creature{
                 this.displayChar = 'b';
                 this.maxHp = 1;
                 this.flying = true;
+                this.creatureImageFilePath = "assets/dungeonSprites/creatureSprites/Bat.png";
                 break;
         }
         this.hp = maxHp;
@@ -99,6 +102,9 @@ public abstract class Creature{
      */
     public String getColor(){
         return this.color;
+    }
+    public String getImageFilePath(){
+        return this.creatureImageFilePath;
     }
     /**
      * Returns the current {@code Position} of the creature on the floor.

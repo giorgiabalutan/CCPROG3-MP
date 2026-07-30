@@ -83,6 +83,10 @@ public class View extends JFrame
     {
         this.overworldPanel.repaint();
     }
+    public void repaintDungeon()
+    {
+        this.dungeonPanel.repaint();
+    }
     //Methods
     //Main Menu
     /**
@@ -231,5 +235,10 @@ public class View extends JFrame
     private static void clearWithANSICodes() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public void loadFloor()
+    {
+        this.dungeonPanel.loadFloor();
     }
 }

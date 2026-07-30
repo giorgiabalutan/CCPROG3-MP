@@ -86,6 +86,9 @@ public class Controller implements ActionListener, KeyListener
             case OVERWORLD:
                 processOverworldInput(KeyEvent.getKeyText(e.getKeyCode()));
                 break;
+            case DUNGEON:
+                processDungeonInput(KeyEvent.getKeyText(e.getKeyCode()));
+                break;
             case SHOP:
                 processShopInput(KeyEvent.getKeyText(e.getKeyCode()));
                 break;
@@ -111,6 +114,7 @@ public class Controller implements ActionListener, KeyListener
                     break;
                 case DUNGEON:
                     this.view.showPanel("DUNGEON");
+                    this.view.repaintDungeon();
                     break;
                 case SHOP:
                     this.view.showPanel("SHOP");
@@ -196,6 +200,7 @@ public class Controller implements ActionListener, KeyListener
                 if(index >= 0 && index < idolList.size())
                 {
                     this.model.getDungeon().generateDungeon(idolList.get(index));
+                    this.view.loadFloor();
                     this.model.setGameState(GameState.DUNGEON);
                 }else{
                     this.model.setErrorMessage("Idol already saved");
@@ -247,9 +252,22 @@ public class Controller implements ActionListener, KeyListener
      * <p>
      * This also manages the output for either beating or dying in the {@code Dungeon} and sending the player back to the Overworld or Menu after.
      */
-    private void processDungeonInput()
+    private void processDungeonInput(String command)
     {
-        char choice = input();
+        char choice = command.charAt(0);
+        // System.out.println(command);
+        switch(command)
+        {
+            case "Space":
+                choice = ' ';
+                break;
+            case "Open Bracket":
+                choice = '[';
+                break;
+            case "Close Bracket":
+                choice = ']';
+                break;
+        }
         switch(choice){
             case ' ':
                 String[] msg = this.model.getPlayer().useItem();

@@ -41,6 +41,7 @@ public class Item implements Serializable
      */
     private int itemCode;
     private boolean isBought;
+    private String itemImageFilePath;
     /**
      * Constructs the item of the given code.
      * <p>
@@ -93,11 +94,13 @@ public class Item implements Serializable
                 this.itemName = "Tears of a Fallen Angel";
                 this.price = 30;
                 this.isAvailable = true;
+                this.itemImageFilePath = "assets/ItemSprites/TearsOfAFallenAngel.png";
                 break;
             case 11:
                 this.itemName = "Noppo Bread";
                 this.price = 100;
                 this.isAvailable = true;
+                this.itemImageFilePath = "assets/ItemSprites/NoppoBread.png";
                 break;
         }
     }
@@ -110,6 +113,9 @@ public class Item implements Serializable
     public String getItemName()
     {
         return this.itemName;
+    }
+    public String getItemImageFilePath(){
+        return this.itemImageFilePath;
     }
     /**
      * Returns how many copies of the item the {@code Player} has.

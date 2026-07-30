@@ -1,5 +1,6 @@
 package model.structure;
 
+import model.Player;
 import model.creature.Creature;
 import model.dungeon.Floor;
 import model.dungeon.Position;
@@ -22,6 +23,7 @@ public abstract class Structure{
      * The color of structure display. For use in console view.
      */
     private String color;
+    private String structureImageFilePath;
     /**
      * The current position of the structure on the map.
      */
@@ -43,24 +45,31 @@ public abstract class Structure{
         {
             case SPAWN:
                 this.displayChar = '.';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Passable.png";
                 break;
             case EXIT:
                 this.displayChar = 'E';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Exit.png";
                 break;
             case BORDER:
                 this.displayChar = '*';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Border.png";
                 break;
             case WALL:
                 this.displayChar = 'v';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Wall.png";
                 break;
             case SPIKE:
                 this.displayChar = 'x';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Spike.png";
                 break;
             case WATER:
                 this.displayChar = 'w';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Water.png";
                 break;
             case HEAT:
                 this.displayChar = 'h';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Heat.png";
                 break;
         }
         this.pos = new Position();
@@ -150,6 +159,9 @@ public abstract class Structure{
      */
     public String getColor(){
         return this.color;
+    }
+    public String getImageFilePath(){
+        return this.structureImageFilePath;
     }
     /**
      * Returns the current {@code Position} of the structure on the floor.

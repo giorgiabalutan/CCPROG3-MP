@@ -61,7 +61,7 @@ public class OverworldPanel extends JPanel{
     {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
-       
+        
         if(this.model.isIntroPlaying())
             drawIntroSequence(g2D);
         
@@ -189,8 +189,8 @@ public class OverworldPanel extends JPanel{
         {   
             for(String line : currentDialogue[i].split("\n"))
             {
-                 g2D.drawString(line, lineX, lineY);
-                 lineY += lineSpacing;
+                g2D.drawString(line, lineX, lineY);
+                lineY += lineSpacing;
             }
         }
         
@@ -240,8 +240,8 @@ public class OverworldPanel extends JPanel{
         y = 75;
         for(String line : lailapsText.split("\n"))
         {
-             g2D.drawString(line, 376, y);
-             y += 20;
+            g2D.drawString(line, 376, y);
+            y += 20;
         }
         
         g2D.drawString(yohaneText, 376, 125);
@@ -283,8 +283,8 @@ public class OverworldPanel extends JPanel{
         x = 314;
         for(String line : yohaneText.split("\n"))
         {
-             g2D.drawString(line, x, y);
-             y += 20;
+            g2D.drawString(line, x, y);
+            y += 20;
         }
         
         //Inventory box
@@ -320,7 +320,7 @@ public class OverworldPanel extends JPanel{
     {
         g2D.setColor(new Color(0, 0, 0, 220));
         g2D.fillRoundRect(x, y, width, height, 35, 35);
-       
+        
         
         g2D.setColor(Color.white);
         g2D.setStroke(new BasicStroke(5));

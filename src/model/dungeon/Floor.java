@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Random;
 import model.Player;
 import model.creature.*;
-import model.structure.*;
 import model.loot.*;
+import model.structure.*;
 /**
  * Represents one of the floors of a {@link Dungeon}.
  * <p>
@@ -76,6 +76,8 @@ public class Floor
      */
     private DungeonCode dungeonCode;
 
+    private ArrayList<String[]> combatLogs;
+
     //Constructors
     /**
      * Constructs the Floor object.
@@ -93,6 +95,7 @@ public class Floor
         this.creatures = new ArrayList<Creature>();
         this.loots = new ArrayList<Loot>();
         rand = new Random(System.currentTimeMillis());
+        combatLogs = new ArrayList<>();
     }
 
     //Methods

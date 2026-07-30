@@ -4,7 +4,8 @@ import javax.swing.*;
 import model.*;
 
 public class DungeonPanel extends JPanel{
-    Model model;
+    private Model model;
+    private FloorPanel floorPanel;
 
     private Font defaultFont;
 
@@ -13,20 +14,16 @@ public class DungeonPanel extends JPanel{
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setLayout(null);
 
-        JPanel statusPanel = new JPanel();
-        statusPanel.setBounds(0,0,200,panelHeight);
-        statusPanel.setBackground(Color.CYAN);//Placeholders
+        PlayerStatusPanel statusPanel = new PlayerStatusPanel(model,0,panelHeight);
 
-        JPanel mapPanel = new JPanel();
-        mapPanel.setBounds(200,0,700,panelHeight);
-        mapPanel.setBackground(Color.LIGHT_GRAY);
+        this.floorPanel = new FloorPanel(model, 200, panelHeight);
 
         JPanel logPanel = new JPanel();
         logPanel.setBounds(900,0,200,panelHeight);
         logPanel.setBackground(Color.yellow);
 
         this.add(statusPanel);
-        this.add(mapPanel);
+        this.add(this.floorPanel);
         this.add(logPanel);
 
         defaultFont = new Font("Courier New", Font.BOLD, 20);
@@ -38,12 +35,20 @@ public class DungeonPanel extends JPanel{
         this.addKeyListener(keyListener);
     }
 
+    public void loadFloor()
+    {
+        this.floorPanel.loadFloor();
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
         
+        // g2D.drawString();
+
+
         // if(this.model.isIntroPlaying())
         //     drawIntroSequence(g2D);
         

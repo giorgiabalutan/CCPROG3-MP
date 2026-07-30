@@ -1,5 +1,6 @@
 package model.loot;
 
+import model.Player;
 import model.dungeon.Floor;
 import model.dungeon.Position;
 /**
@@ -21,6 +22,7 @@ public abstract class Loot{
      * The color of loot display. For use in console view.
      */
     private String color;
+    private String lootImageFilePath;
     /**
      * The current position of the loot on the map.
      */
@@ -42,9 +44,11 @@ public abstract class Loot{
         {
             case GOLD:
                 this.displayChar = 'g';
+                this.lootImageFilePath = "assets/dungeonSprites/lootSprites/Gold.png";
                 break;
             case TREASURE:
                 this.displayChar = 'T';
+                this.lootImageFilePath = "assets/dungeonSprites/lootSprites/Treasure.png";
                 break;
         }
         pos = new Position();
@@ -76,6 +80,9 @@ public abstract class Loot{
      */
     public String getColor(){
         return this.color;
+    }
+    public String getImageFilePath(){
+        return this.lootImageFilePath;
     }
     /**
      * Returns the current {@code Position} of the loot on the floor.
