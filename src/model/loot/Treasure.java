@@ -1,7 +1,9 @@
 package model.loot;
 
 import java.util.Random;
+import model.CombatLogType;
 import model.Item;
+import model.Player;
 import model.dungeon.Floor;
 /**
  * Represents the random floor loot Treasure.
@@ -32,10 +34,14 @@ public class Treasure extends Loot
         switch(table)
         {
             case 0:
-                floor.getPlayer().gainGold(rand.nextInt(91) + 10);
+                int amt = rand.nextInt(91) + 10;
+                floor.getPlayer().gainGold(amt);
+                floor.addCombatLog("Yohane found the Treasure and got " + amt + " Gold!",CombatLogType.LOOT_GAIN);
                 break;
             case 1:
-                floor.getPlayer().pickUpItem(new Item(11));
+                Item itm = new Item(11);
+                floor.getPlayer().pickUpItem(itm);
+                floor.addCombatLog("Yohane found the Treasure and got " + itm.getItemName() + "!",CombatLogType.LOOT_GAIN);
                 break;
         }
     }

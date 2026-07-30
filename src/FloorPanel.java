@@ -97,11 +97,7 @@ public class FloorPanel extends JPanel
                 // System.out.println((startRow));
                 for (int i = 0; i < sizeRow; i++) {
                     for(int j = startCol; j < startCol+viewCols; j++){
-                        if(grid[i][j].getStructures().isEmpty())
-                        {
-                            g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
-                            // System.out.println(padRow+(i*16*tileScale));
-                        }
+                        g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
                         for(Structure struct: grid[i][j].getStructures())
                         {
                             g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);

@@ -270,16 +270,16 @@ public class Controller implements ActionListener, KeyListener
         }
         switch(choice){
             case ' ':
-                String[] msg = this.model.getPlayer().useItem();
-                this.model.setErrorMessages(msg);
+                // String[] msg = this.model.getPlayer().useItem();
+                // this.model.setErrorMessages(msg);
                 break;
             case '[':
-                String message1 = this.model.getPlayer().previousItem();
-                this.model.setErrorMessage(message1);
+                // String message1 = this.model.getPlayer().previousItem();
+                // this.model.setErrorMessage(message1);
                 break;
             case ']':
-                String message2 = this.model.getPlayer().nextItem();
-                this.model.setErrorMessage(message2);
+                // String message2 = this.model.getPlayer().nextItem();
+                // this.model.setErrorMessage(message2);
                 break;
         }
         if(this.model.tickDungeon(choice))

@@ -37,4 +37,9 @@ public class Gold extends Loot
     {
         floor.getPlayer().gainGold(gold);
     }
+
+    public int getAmount()
+    {
+        return this.gold;
+    }
 }

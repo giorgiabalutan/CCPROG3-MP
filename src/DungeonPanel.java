@@ -5,7 +5,9 @@ import model.*;
 
 public class DungeonPanel extends JPanel{
     private Model model;
+    private PlayerStatusPanel statusPanel;
     private FloorPanel floorPanel;
+    private CombatLogPanel logPanel;
 
     private Font defaultFont;
 
@@ -14,13 +16,11 @@ public class DungeonPanel extends JPanel{
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setLayout(null);
 
-        PlayerStatusPanel statusPanel = new PlayerStatusPanel(model,0,panelHeight);
+        this.statusPanel = new PlayerStatusPanel(model,0,panelHeight);
 
         this.floorPanel = new FloorPanel(model, 200, panelHeight);
 
-        JPanel logPanel = new JPanel();
-        logPanel.setBounds(900,0,200,panelHeight);
-        logPanel.setBackground(Color.yellow);
+        this.logPanel = new CombatLogPanel(model, 900, panelHeight);
 
         this.add(statusPanel);
         this.add(this.floorPanel);
@@ -38,6 +38,7 @@ public class DungeonPanel extends JPanel{
     public void loadFloor()
     {
         this.floorPanel.loadFloor();
+        this.logPanel.loadFloor();
     }
 
     @Override

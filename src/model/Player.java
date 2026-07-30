@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import javax.swing.text.View;
+import model.dungeon.Floor;
 import model.dungeon.Position;
 /**
  * Tracks the data related to the Player's character.
@@ -136,14 +138,14 @@ public class Player implements Serializable
         String[] messages;
         if (this.currHP < this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
-            System.out.println("Healing...");
+            System.out.println("Healed for 0.5 using " + this.itemOnHand.getItemName() + ".");
+            messages = new String[]{"Healed for 0.5 using " + this.itemOnHand.getItemName() + "."};
             this.currHP += 0.5;
             itemOnHand.reduceQuantity();
 
             if (this.itemOnHand.getQuantity() == 0)
                 updateItemOnHand();
             
-            messages = new String[]{};
         }
         else if (this.currHP == this.totalHP && this.itemOnHand.getQuantity() > 0)
         {

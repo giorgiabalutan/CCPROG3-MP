@@ -1,5 +1,7 @@
 package model.structure;
 
+import model.CombatLogType;
+import model.Player;
 import model.creature.Creature;
 import model.dungeon.DungeonCode;
 import model.dungeon.Floor;
@@ -53,6 +55,7 @@ public class Heat extends Structure
     public boolean idle(Floor floor)
     {
         floor.damagePlayer(1, "Heat");
+        floor.addCombatLog("Yohane took 1 damage from the Heat!",CombatLogType.DAMAGE);
         return false;
     }
 
@@ -100,9 +103,11 @@ public class Heat extends Structure
             if(floor.getDungeonCode() == DungeonCode.YASUDAYA_RYOKAN)
             {
                 creature.damageCreature(1);
+                floor.addCombatLog(creature.getName()+" took 1 damage from the Heat!", CombatLogType.DAMAGE);
             }
         }else{
             creature.damageCreature(1);
+            floor.addCombatLog(creature.getName()+" took 1 damage from the Heat!", CombatLogType.DAMAGE);
         }
         return false;
     }

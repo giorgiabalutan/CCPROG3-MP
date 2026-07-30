@@ -1,8 +1,12 @@
 package model.dungeon;
 
+import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import model.CombatLogEntry;
+import model.CombatLogType;
+import model.Item;
 import model.Player;
 import model.creature.*;
 import model.loot.*;
@@ -76,7 +80,8 @@ public class Floor
      */
     private DungeonCode dungeonCode;
 
-    private ArrayList<String[]> combatLogs;
+    private ArrayList<CombatLogEntry> combatLogs;
+    private int turnNumber;
 
     //Constructors
     /**
@@ -94,8 +99,9 @@ public class Floor
         this.structures = new ArrayList<Structure>();
         this.creatures = new ArrayList<Creature>();
         this.loots = new ArrayList<Loot>();
-        rand = new Random(System.currentTimeMillis());
-        combatLogs = new ArrayList<>();
+        this.rand = new Random(System.currentTimeMillis());
+        this.combatLogs = new ArrayList<>();
+        this.turnNumber = 1;
     }
 
     //Methods
@@ -120,6 +126,7 @@ public class Floor
     {
         int y = this.player.getPosition().getPosY();
         int x = this.player.getPosition().getPosX();
+        addCombatLog("Turn " + this.turnNumber, CombatLogType.TURN_INDICATOR);
         switch(choice)
         {
             case 'W':
@@ -135,15 +142,35 @@ public class Floor
                 interact(y,x, 0, 1);
                 break;
             case '[':
-                // this.player.previousItem(); Being called in Controller for ErrorMessage
+                String message1 = this.player.previousItem();
+                if(message1.equals(""))
+                {
+                    addCombatLog("Attempted to switch Items but none were found", CombatLogType.PLAYER_ACTION);
+                }
                 idle(y,x);
                 break;
             case ']':
-                // this.player.nextItem(); Being called in Controller for ErrorMessage
+                String message2 = this.player.nextItem();
+                if(message2.equals(""))
+                {
+                    addCombatLog("Attempted to switch Items but none were found", CombatLogType.PLAYER_ACTION);
+                }
                 idle(y,x);
                 break;
             case ' ':
-                // this.player.useItem(); Being called in Controller for ErrorMessage
+                String[] messages = this.player.useItem();
+                if(messages[0].charAt(0) == 'L')
+                {
+                    // System.out.println(messages[0]);
+                    if(this.player.getItemOnHand().getQuantity() > 0)
+                    {
+                        addCombatLog("Attempted to use " + this.player.getItemOnHand().getItemName() + " but HP is full!", CombatLogType.PLAYER_ACTION);
+                    }else{
+                        addCombatLog("Attempted to use an Item but none were found.", CombatLogType.PLAYER_ACTION);
+                    }
+                }else{
+                    addCombatLog(messages[0], CombatLogType.ITEM_USE);
+                }
                 idle(y,x);
                 break;
             default:
@@ -152,10 +179,20 @@ public class Floor
                 break;
         }
         if(exitReached){
+            addCombatLog("Yohane has reached the Exit!", CombatLogType.PLAYER_ACTION);
             return true;
         }
         tickEnemies();
+        this.turnNumber++;
+        for(CombatLogEntry entry : this.combatLogs)
+        {
+            System.out.println(entry.getMessage() + "---" + entry.getType().toString());
+        }
         return false;
+    }
+
+    public void addCombatLog(String message, CombatLogType type){
+        this.combatLogs.add(new CombatLogEntry(message, type));
     }
 
     /**
@@ -187,6 +224,13 @@ public class Floor
                 structures.remove(struct);
                 iter1.remove();
             }
+            switch(struct.getType())
+            {
+                case WALL:
+                case SPIKE:
+                    addCombatLog("Yohane dug up a " + struct.getName() + "!", CombatLogType.PLAYER_ACTION);
+                    break;
+            }
             blocked = blocked || struct.isBlocking(this);
         }
         Iterator<Creature> iter2 = this.grid[y + offY][x + offX].getCreatures().iterator();
@@ -194,8 +238,10 @@ public class Floor
         {
             Creature creature = iter2.next();
             creature.damageCreature(player.getAttack());
+            addCombatLog("Yohane hit a " +creature.getName()+ " for " + player.getAttack() + " damage.", CombatLogType.DAMAGE);
             if(creature.isDead())
             {
+                addCombatLog("Yohane has killed a " + creature.getName() + "!", CombatLogType.DEATH);
                 creature.dropLoot(this);
                 this.creatures.remove(creature);
                 iter2.remove();
@@ -206,6 +252,20 @@ public class Floor
         {
             this.player.setPosition(y + offY, x + offX);
             step(y + offY,x + offX);
+            String direction;
+            if(offY > 0)
+            {
+                direction = "down";
+            }else if(offY<0)
+            {
+                direction = "up";
+            }else if(offX>0)
+            {
+                direction = "right";
+            }else{
+                direction = "left";
+            }
+            addCombatLog("Yohane moved " + direction + ".", CombatLogType.PLAYER_ACTION);
         }else{
             idle(y,x);
         }
@@ -226,6 +286,13 @@ public class Floor
         while(iter.hasNext())
         {
             Loot loot = iter.next();
+            switch(loot.getType())
+            {
+                case GOLD:
+                    Gold gold = (Gold) loot;
+                    addCombatLog("Yohane picked up " + gold.getAmount() + " Gold.", CombatLogType.LOOT_GAIN);
+                    break;
+            }
             loot.pickUpLoot(this);
             loots.remove(loot);
             iter.remove();
@@ -252,6 +319,7 @@ public class Floor
                 iter.remove();
             }
         }
+        addCombatLog("Yohane waits.", CombatLogType.PLAYER_ACTION);
     }
 
     /**
@@ -290,6 +358,7 @@ public class Floor
             Creature creature = iter.next();
             if(creature.tick(this))
             {
+                addCombatLog(creature.getName()+" has perished due to natural causes.", CombatLogType.DEATH);
                 int y = creature.getPosition().getPosY();
                 int x = creature.getPosition().getPosX();
                 creature.dropLoot(this);
@@ -451,9 +520,11 @@ public class Floor
      */
     public void damagePlayer(double dmg, String source){
         this.player.damage(dmg);
+        // addCombatLog("Yohane was hit by " + source + " for " + dmg + " damage!", CombatLogType.DAMAGE);
         if(this.player.isDead())
         {
             this.player.setCauseOfDeath(source);
+            addCombatLog("Yohane has fallen...", CombatLogType.DEATH);
         }
     }
 
@@ -629,5 +700,13 @@ public class Floor
     public DungeonCode getDungeonCode()
     {
         return this.dungeonCode;
+    }
+
+    public ArrayList<CombatLogEntry> getCombatLogs(){
+        return this.combatLogs;
+    }
+
+    public int getTurnNumber(){
+        return this.turnNumber;
     }
 }

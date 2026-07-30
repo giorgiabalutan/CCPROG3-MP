@@ -214,9 +214,13 @@ public class OverworldPanel extends JPanel{
         String inventoryText = "[I]nventory";
         String saveAndQuitText = "[S]ave and Quit";
         String hanamaruShopText = "[H]anamaru's Shop";
-        String dungeon1 = "[1] " + idolList.get(0).getDungeonName();
-        String dungeon2 = "[2] " + idolList.get(1).getDungeonName();
-        String dungeon3 = "[3] " + idolList.get(2).getDungeonName();
+
+        String[] dungeon = new String[3];
+
+        for(int i = 0; i < idolList.size();)
+        {
+            dungeon[i] = "[" + (i+1) + "] " + idolList.get(0).getDungeonName();
+        }
         
         g2D.drawImage(this.lailapsAndYohaneImage, 0, 10, null);
         
@@ -228,9 +232,10 @@ public class OverworldPanel extends JPanel{
         g2D.drawString(itemOnHandText, 38, 400);
         g2D.drawString(inventoryText, 645, 400);
         g2D.drawString(saveAndQuitText, 799, 400);
-        g2D.drawString(dungeon1, 38, 450);
-        g2D.drawString(dungeon2, 38, 470);
-        g2D.drawString(dungeon3, 38, 490);
+        for(int i = 0; i < idolList.size();)
+        {
+            g2D.drawString(dungeon[i], 38, 450+(i*20));
+        }
         
         //Dialogue box between Yohane and Lailaps
         drawBox(g2D, 360, 46, 405, 100);

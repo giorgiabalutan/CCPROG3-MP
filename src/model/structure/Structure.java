@@ -24,6 +24,7 @@ public abstract class Structure{
      */
     private String color;
     private String structureImageFilePath;
+    private String name;
     /**
      * The current position of the structure on the map.
      */
@@ -46,30 +47,37 @@ public abstract class Structure{
             case SPAWN:
                 this.displayChar = '.';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Passable.png";
+                this.name = "Spawn";
                 break;
             case EXIT:
                 this.displayChar = 'E';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Exit.png";
+                this.name = "Exit";
                 break;
             case BORDER:
                 this.displayChar = '*';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Border.png";
+                this.name = "Border";
                 break;
             case WALL:
                 this.displayChar = 'v';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Wall.png";
+                this.name = "Wall";
                 break;
             case SPIKE:
                 this.displayChar = 'x';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Spike.png";
+                this.name = "Spike";
                 break;
             case WATER:
                 this.displayChar = 'w';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Water.png";
+                this.name = "Water Tile";
                 break;
             case HEAT:
                 this.displayChar = 'h';
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Heat.png";
+                this.name = "Heat Tile";
                 break;
         }
         this.pos = new Position();
@@ -181,5 +189,15 @@ public abstract class Structure{
     public void setPosition(int y, int x)
     {
         this.pos.setPosition(y, x);
+    }
+
+    public StructureType getType()
+    {
+        return this.type;
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 }

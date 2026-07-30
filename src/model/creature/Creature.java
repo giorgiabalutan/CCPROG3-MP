@@ -32,6 +32,7 @@ public abstract class Creature{
      */
     private String color;
     private String creatureImageFilePath;
+    private String name;
     /**
      * The current position of the creature on the map.
      */
@@ -60,6 +61,7 @@ public abstract class Creature{
                 this.maxHp = 1;
                 this.flying = true;
                 this.creatureImageFilePath = "assets/dungeonSprites/creatureSprites/Bat.png";
+                this.name = "Bat";
                 break;
         }
         this.hp = maxHp;
@@ -169,5 +171,9 @@ public abstract class Creature{
     public boolean canFly()
     {
         return this.flying;
+    }
+    public String getName()
+    {
+        return this.name;
     }
 }

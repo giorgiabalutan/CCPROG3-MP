@@ -23,6 +23,7 @@ public abstract class Loot{
      */
     private String color;
     private String lootImageFilePath;
+    private String name;
     /**
      * The current position of the loot on the map.
      */
@@ -45,10 +46,12 @@ public abstract class Loot{
             case GOLD:
                 this.displayChar = 'g';
                 this.lootImageFilePath = "assets/dungeonSprites/lootSprites/Gold.png";
+                this.name = "Gold";
                 break;
             case TREASURE:
                 this.displayChar = 'T';
                 this.lootImageFilePath = "assets/dungeonSprites/lootSprites/Treasure.png";
+                this.name = "Treasure";
                 break;
         }
         pos = new Position();
@@ -102,5 +105,15 @@ public abstract class Loot{
     public void setPosition(int y, int x)
     {
         this.pos.setPosition(y, x);
+    }
+
+    public LootType getType()
+    {
+        return this.type;
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 }

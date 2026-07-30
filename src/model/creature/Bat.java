@@ -1,5 +1,6 @@
 package model.creature;
 
+import model.CombatLogType;
 import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
@@ -86,6 +87,7 @@ public class Bat extends Creature
             {
                 //Attack
                 floor.damagePlayer(damage, "Bat");
+                floor.addCombatLog("Yohane was hit by a bat for " + damage + " damage!", CombatLogType.DAMAGE);
             }else{
                 //Move
                 int directions[][] = new int[8][2];
