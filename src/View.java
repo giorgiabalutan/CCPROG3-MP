@@ -241,4 +241,9 @@ public class View extends JFrame
     {
         this.dungeonPanel.loadFloor();
     }
+
+    public void tickAnimation()
+    {
+        this.dungeonPanel.tickAnimation();
+    }
 }

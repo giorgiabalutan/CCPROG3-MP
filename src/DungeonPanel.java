@@ -41,6 +41,11 @@ public class DungeonPanel extends JPanel{
         this.logPanel.loadFloor();
     }
 
+    public void tickAnimation()
+    {
+        this.floorPanel.tickAnimation();
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {

@@ -1,5 +1,6 @@
 package model.creature;
 
+import model.Direction;
 import model.dungeon.Floor;
 import model.dungeon.Position;
 import model.loot.Loot;
@@ -33,6 +34,8 @@ public abstract class Creature{
     private String color;
     private String creatureImageFilePath;
     private String name;
+    private Direction direction;
+    private Boolean idle;
     /**
      * The current position of the creature on the map.
      */
@@ -60,12 +63,14 @@ public abstract class Creature{
                 this.displayChar = 'b';
                 this.maxHp = 1;
                 this.flying = true;
-                this.creatureImageFilePath = "assets/dungeonSprites/creatureSprites/Bat.png";
+                this.creatureImageFilePath = "assets/dungeonSprites/creatureSprites/Bat/Bat_idle_down.png";
                 this.name = "Bat";
                 break;
         }
         this.hp = maxHp;
         this.pos = new Position();
+        this.direction = Direction.DOWN;
+        this.idle = true;
     }
 
     //Methods
@@ -175,5 +180,21 @@ public abstract class Creature{
     public String getName()
     {
         return this.name;
+    }
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
+    public Direction getDirection()
+    {
+        return this.direction;
+    }
+    public void setIdle(Boolean bool)
+    {
+        this.idle = bool;
+    }
+    public Boolean isIdle()
+    {
+        return this.idle;
     }
 }

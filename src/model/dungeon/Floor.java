@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 import model.CombatLogEntry;
 import model.CombatLogType;
+import model.Direction;
 import model.Item;
 import model.Player;
 import model.creature.*;
@@ -127,19 +128,24 @@ public class Floor
         int y = this.player.getPosition().getPosY();
         int x = this.player.getPosition().getPosX();
         addCombatLog("Turn " + this.turnNumber, CombatLogType.TURN_INDICATOR);
+        this.player.setIdle(false);
         switch(choice)
         {
             case 'W':
                 interact(y, x, -1, 0);
+                this.player.setDirection(Direction.UP);
                 break;
             case 'S':
                 interact(y,x, 1, 0);
+                this.player.setDirection(Direction.DOWN);
                 break;
             case 'A':
                 interact(y,x, 0, -1);
+                this.player.setDirection(Direction.LEFT);
                 break;
             case 'D':
                 interact(y,x, 0, 1);
+                this.player.setDirection(Direction.RIGHT);
                 break;
             case '[':
                 String message1 = this.player.previousItem();
@@ -256,14 +262,18 @@ public class Floor
             if(offY > 0)
             {
                 direction = "down";
+                this.player.setDirection(Direction.DOWN);
             }else if(offY<0)
             {
                 direction = "up";
+                this.player.setDirection(Direction.UP);
             }else if(offX>0)
             {
                 direction = "right";
+                this.player.setDirection(Direction.RIGHT);
             }else{
                 direction = "left";
+                this.player.setDirection(Direction.LEFT);
             }
             addCombatLog("Yohane moved " + direction + ".", CombatLogType.PLAYER_ACTION);
         }else{
@@ -319,6 +329,7 @@ public class Floor
                 iter.remove();
             }
         }
+        this.player.setIdle(true);
         addCombatLog("Yohane waits.", CombatLogType.PLAYER_ACTION);
     }
 

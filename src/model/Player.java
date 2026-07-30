@@ -50,6 +50,9 @@ public class Player implements Serializable
     
     private boolean isInventoryOpen;
 
+    private Direction direction;
+    private Boolean idle;
+
     //Constructor
     /**
      * Constructs the player class.
@@ -68,6 +71,8 @@ public class Player implements Serializable
         itemOnHand = inventory.getItems().get(0);
         pos = new Position();
         isInventoryOpen = false;
+        this.direction = Direction.DOWN;
+        this.idle = true;
     }
 
     //Methods
@@ -370,6 +375,26 @@ public class Player implements Serializable
     public void setIsInventoryOpen(boolean isInventoryOpen)
     {
         this.isInventoryOpen = isInventoryOpen;
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
+
+    public Direction getDirection()
+    {
+        return this.direction;
+    }
+
+    public void setIdle(boolean bool)
+    {
+        this.idle = bool;
+    }
+
+    public Boolean isIdle()
+    {
+        return this.idle;
     }
 
 }

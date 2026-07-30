@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.Timer;
 import model.GameState;
 import model.Idol;
 import model.Inventory;
@@ -60,6 +61,7 @@ public class Controller implements ActionListener, KeyListener
     public void run()
     {
         updateView();
+        startAnimationTimer();
     }
     
     @Override
@@ -300,6 +302,14 @@ public class Controller implements ActionListener, KeyListener
             this.model.setGameState(GameState.MAIN_MENU);
             //To be expounded
         }
+    }
+
+    private void startAnimationTimer()
+    {
+        Timer animationTimer = new Timer(300, e -> {
+            this.view.tickAnimation();
+        });
+        animationTimer.start();
     }
     
     private void processShopInput(String command)

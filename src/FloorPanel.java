@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+import model.Direction;
 import model.Model;
 import model.Player;
 import model.creature.Creature;
@@ -21,6 +22,8 @@ public class FloorPanel extends JPanel
     private int sizeCol;
     private boolean centerCol;
 
+    private int animationFrame;
+
 
     public FloorPanel(Model model, int x, int panelHeight)
     {
@@ -31,6 +34,7 @@ public class FloorPanel extends JPanel
         this.viewCols = 21;
         this.model = model;
         this.player = model.getPlayer();
+        this.animationFrame = 0;
     }
 
     public void loadFloor()
@@ -62,6 +66,95 @@ public class FloorPanel extends JPanel
         return start;
     }
 
+    public void tickAnimation()
+    {
+        this.animationFrame = (animationFrame + 1) % 720720; //Divisible from one to sixteen waow
+        repaint();
+    }
+
+    private void drawYohane(Graphics2D g2D, int colLoc, int rowLoc, int spriteWidth, int spriteHeight, Direction direction, Boolean idle)
+    {
+        String filepath = "assets/dungeonSprites/yohaneSprites/";
+        if(idle)
+        {
+            filepath += "idle_";
+        }else{
+            filepath += "walk_";
+        }
+        switch(direction)
+        {
+            case UP:
+                filepath += "up";
+                break;
+            case DOWN:
+                filepath += "down";
+                break;
+            case LEFT:
+                filepath += "left";
+                break;
+            case RIGHT:
+                filepath += "right";
+                break;
+        }
+        if(!idle)
+        {
+            switch(animationFrame%2)
+            {
+                case 0:
+                    filepath += "_1.png";
+                    break;
+                case 1:
+                    filepath += "_2.png";
+                    break;
+            }
+        }else{
+            filepath += ".png";
+        }
+        g2D.drawImage(SpriteCache.getImage(filepath), colLoc, rowLoc, spriteWidth, spriteHeight, this);
+    }
+
+    private void drawCreature(Graphics g2D, int colLoc, int rowLoc, int spriteWidth, int spriteHeight, Creature creature)
+    {
+        String filepath = "assets/dungeonSprites/creatureSprites/";
+        filepath += creature.getName() + "/" + creature.getName() + "_";
+        if(creature.isIdle())
+        {
+            filepath += "idle_";
+        }else{
+            filepath += "walk_";
+        }
+        switch(creature.getDirection())
+        {
+            case UP:
+                filepath += "up";
+                break;
+            case DOWN:
+                filepath += "down";
+                break;
+            case LEFT:
+                filepath += "left";
+                break;
+            case RIGHT:
+                filepath += "right";
+                break;
+        }
+        if(!creature.isIdle())
+        {
+            switch(animationFrame%2)
+            {
+                case 0:
+                    filepath += "_1.png";
+                    break;
+                case 1:
+                    filepath += "_2.png";
+                    break;
+            }
+        }else{
+            filepath += ".png";
+        }
+        g2D.drawImage(SpriteCache.getImage(filepath), colLoc, rowLoc, spriteWidth, spriteHeight, this);
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -82,6 +175,11 @@ public class FloorPanel extends JPanel
                         for(Structure struct: grid[i][j].getStructures())
                         {
                             g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        }
+
+                        if(i==playerRow && j==playerCol)
+                        {
+                            drawYohane(g2D, 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
                         }
                     }
                 }                
@@ -109,12 +207,13 @@ public class FloorPanel extends JPanel
                         }
                         for(Creature creature: grid[i][j].getCreatures())
                         {
-                            g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            drawCreature(g2D, 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), creature);
                         }
 
                         if(i==playerRow && j==playerCol)
                         {
-                            g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/yohaneSprites/idle_front.png"), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            drawYohane(g2D, 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
                         }
                     }
                 }   

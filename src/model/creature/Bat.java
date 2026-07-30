@@ -1,6 +1,9 @@
 package model.creature;
 
 import model.CombatLogType;
+import model.Direction;
+import model.Player;
+import model.dungeon.Dungeon;
 import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
@@ -63,6 +66,7 @@ public class Bat extends Creature
                 this.gold += 5;
         }
         this.curCooldown = this.moveInterval;
+        this.setIdle(false);
     }
 
     /**
@@ -81,6 +85,7 @@ public class Bat extends Creature
         this.curCooldown -= 1;
         if(this.curCooldown <= 0)
         {
+            this.setIdle(false);
             int y = this.getPosition().getPosY();
             int x = this.getPosition().getPosX();
             if(floor.checkForPlayer(y-1, x) || floor.checkForPlayer(y+1, x) || floor.checkForPlayer(y, x-1) || floor.checkForPlayer(y, x+1))
@@ -125,6 +130,18 @@ public class Bat extends Creature
                     int direction[] = validDirections[floor.getRand().nextInt(j)];
                     int moveY = direction[0];
                     int moveX = direction[1];
+                    if(moveY > 0)
+                    {
+                        this.setDirection(Direction.DOWN);
+                    }else if(moveY<0)
+                    {
+                        this.setDirection(Direction.UP);
+                    }else if(moveX>0)
+                    {
+                        this.setDirection(Direction.RIGHT);
+                    }else{
+                        this.setDirection(Direction.LEFT);
+                    }
                     floor.moveCreature(this, moveY, moveX);
                 }else{
                     floor.creatureIdle(this);
