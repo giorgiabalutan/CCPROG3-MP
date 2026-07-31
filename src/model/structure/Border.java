@@ -10,12 +10,14 @@ import model.dungeon.Floor;
  */
 public class Border extends Structure
 {
+    private boolean switchReactive;
     /**
      * Constructs a Border via the {@link Structure#Structure(StructureType) Structure constructor}.
      */
     public Border()
     {
         super(StructureType.BORDER);
+        this.switchReactive = false;
     }
 
     /**
@@ -93,5 +95,15 @@ public class Border extends Structure
     public boolean creatureIdle(Floor floor, Creature creature)
     {
         return false;
+    }
+
+    public void setSwitchReactivity(Boolean bool)
+    {
+        this.switchReactive = bool;
+    }
+
+    public Boolean isSwitchReactive()
+    {
+        return this.switchReactive;
     }
 }

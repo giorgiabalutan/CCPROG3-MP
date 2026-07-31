@@ -7,7 +7,9 @@ import model.creature.Creature;
 import model.dungeon.Floor;
 import model.dungeon.Tile;
 import model.loot.Loot;
+import model.structure.Exit;
 import model.structure.Structure;
+import model.structure.StructureType;
 public class FloorPanel extends JPanel
 {
     private int tileScale;
@@ -21,6 +23,8 @@ public class FloorPanel extends JPanel
     private boolean centerRow;
     private int sizeCol;
     private boolean centerCol;
+
+    private int floorNum;
 
     private int animationFrame;
 
@@ -40,16 +44,17 @@ public class FloorPanel extends JPanel
     public void loadFloor()
     {
         this.floor = model.getDungeon().getFloor();
+        this.floorNum = model.getDungeon().getFloorNum();
         this.grid = this.floor.getGrid();
         this.sizeRow = floor.getSizeY();
         this.sizeCol = floor.getSizeX();
         this.centerRow = false;
         this.centerCol = false;
-        if(sizeRow <= 33)
+        if(sizeRow <= 15)
         {
             this.centerRow = true;
         }
-        if(sizeCol <= 43)
+        if(sizeCol <= 21)
         {
             this.centerCol = true;
         }
@@ -159,6 +164,8 @@ public class FloorPanel extends JPanel
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
+
+
         int playerRow = player.getPosition().getPosY();
         int startRow = getStartPaint(playerRow,this.sizeRow,viewRows/2,viewRows);
         int playerCol = player.getPosition().getPosX();
@@ -168,13 +175,24 @@ public class FloorPanel extends JPanel
             if(!centerCol){
                 for (int i = startRow; i < startRow+viewRows; i++) {
                     for(int j = startCol; j < startCol+viewCols; j++){
-                        if(grid[i][j].getStructures().isEmpty())
-                        {
-                            g2D.drawImage(SpriteCache.getImage("assets/structureSprites/Passable.png"), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
-                        }
+                        g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
                         for(Structure struct: grid[i][j].getStructures())
                         {
-                            g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            if(struct instanceof Exit exit && exit.isHidden())
+                            {
+                                //Dont Draw
+                            }else{
+                                g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            }
+                        }
+                        for(Loot loot: grid[i][j].getLoots())
+                        {
+                            g2D.drawImage(SpriteCache.getImage(loot.getImageFilePath()), 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        }
+                        for(Creature creature: grid[i][j].getCreatures())
+                        {
+                            // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            drawCreature(g2D, 14+((j-startCol)*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), creature);
                         }
 
                         if(i==playerRow && j==playerCol)
@@ -184,13 +202,41 @@ public class FloorPanel extends JPanel
                     }
                 }                
             }else{
-                //
-                // System.out.println("TEST2");
+                int padCol = (this.getWidth()-(16*tileScale*sizeCol))/2;
+                for (int i = startRow; i < startRow+viewRows; i++) {
+                    for(int j = 0; j < sizeCol; j++){
+                        g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        for(Structure struct: grid[i][j].getStructures())
+                        {
+                            if(struct instanceof Exit exit && exit.isHidden())
+                            {
+                                //Dont Draw
+                            }else{
+                                g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            }
+                        }
+                        for(Loot loot: grid[i][j].getLoots())
+                        {
+                            g2D.drawImage(SpriteCache.getImage(loot.getImageFilePath()), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        }
+                        for(Creature creature: grid[i][j].getCreatures())
+                        {
+                            // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            drawCreature(g2D, padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), creature);
+                        }
+
+                        if(i==playerRow && j==playerCol)
+                        {
+                            drawYohane(g2D, padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
+                        }
+                    }
+                }       
             }
         }else{
             //
             if(!centerCol)
             {
+                // System.out.println("Test");
                 int padRow = (this.getHeight()-(16*tileScale*sizeRow))/2;
                 // System.out.println((startRow));
                 for (int i = 0; i < sizeRow; i++) {
@@ -198,7 +244,13 @@ public class FloorPanel extends JPanel
                         g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
                         for(Structure struct: grid[i][j].getStructures())
                         {
-                            g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            if(struct.getType() == StructureType.EXIT && ((Exit) struct).isHidden())
+                            {
+                                //Dont Draw
+                                // System.out.println("Test2");
+                            }else{
+                                g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            }
                             // System.out.println(padRow+(i*16*tileScale));
                         }
                         for(Loot loot: grid[i][j].getLoots())
@@ -218,8 +270,94 @@ public class FloorPanel extends JPanel
                     }
                 }   
             }else{
-                // System.out.println("TEST4");
+                int padCol = (this.getWidth()-(16*tileScale*sizeCol))/2;
+                int padRow = (this.getHeight()-(16*tileScale*sizeRow))/2;
+                for (int i = 0; i < sizeRow; i++) {
+                    for(int j = 0; j < sizeCol; j++){
+                        g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        for(Structure struct: grid[i][j].getStructures())
+                        {
+                            if(struct instanceof Exit exit && exit.isHidden())
+                            {
+                                //Dont Draw
+                            }else{
+                                g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            }
+                            // System.out.println(padRow+(i*16*tileScale));
+                        }
+                        for(Loot loot: grid[i][j].getLoots())
+                        {
+                            g2D.drawImage(SpriteCache.getImage(loot.getImageFilePath()), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                        }
+                        for(Creature creature: grid[i][j].getCreatures())
+                        {
+                            // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                            drawCreature(g2D, padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), creature);
+                        }
+
+                        if(i==playerRow && j==playerCol)
+                        {
+                            drawYohane(g2D, padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
+                        }
+                    }
+                }    
             }
         }
     }
 }
+
+                // int padCol = (this.getWidth()-(16*tileScale*sizeCol))/2;
+                // for (int i = startRow; i < startRow+viewRows; i++) {
+                //     for(int j = 0; j < sizeCol; j++){
+                //         if(grid[i][j].getStructures().isEmpty())
+                //         {
+                //             g2D.drawImage(SpriteCache.getImage("assets/structureSprites/Passable.png"), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //         }
+                //         for(Structure struct: grid[i][j].getStructures())
+                //         {
+                //             g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //         }
+                //         for(Loot loot: grid[i][j].getLoots())
+                //         {
+                //             g2D.drawImage(SpriteCache.getImage(loot.getImageFilePath()), padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //         }
+                //         for(Creature creature: grid[i][j].getCreatures())
+                //         {
+                //             // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //             drawCreature(g2D, padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), creature);
+                //         }
+
+                //         if(i==playerRow && j==playerCol)
+                //         {
+                //             drawYohane(g2D, padCol+(j*16*tileScale), 30+((i-startRow)*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
+                //         }
+                //     }
+                // } 
+
+
+                // int padCol = (this.getWidth()-(16*tileScale*sizeCol))/2;
+                // int padRow = (this.getHeight()-(16*tileScale*sizeRow))/2;
+                // for (int i = 0; i < sizeRow; i++) {
+                //     for(int j = 0; j < sizeCol; j++){
+                //         g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/structureSprites/Passable.png"), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //         for(Structure struct: grid[i][j].getStructures())
+                //         {
+                //             g2D.drawImage(SpriteCache.getImage(struct.getImageFilePath()), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //             // System.out.println(padRow+(i*16*tileScale));
+                //         }
+                //         for(Loot loot: grid[i][j].getLoots())
+                //         {
+                //             g2D.drawImage(SpriteCache.getImage(loot.getImageFilePath()), padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //         }
+                //         for(Creature creature: grid[i][j].getCreatures())
+                //         {
+                //             // g2D.drawImage(SpriteCache.getImage(creature.getImageFilePath()), 14+((j-startCol)*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this);
+                //             drawCreature(g2D, padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), creature);
+                //         }
+
+                //         if(i==playerRow && j==playerCol)
+                //         {
+                //             drawYohane(g2D, padCol+(j*16*tileScale), padRow+(i*16*tileScale), (16*tileScale), (16*tileScale), this.player.getDirection(), this.player.isIdle());
+                //         }
+                //     }
+                // }        

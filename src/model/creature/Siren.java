@@ -3,7 +3,6 @@ package model.creature;
 import model.CombatLogType;
 import model.Direction;
 import model.Player;
-import model.dungeon.Dungeon;
 import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
@@ -13,12 +12,8 @@ import model.loot.Loot;
  * Extends the {@link Creature} class.
  * Bats have varying statistics depending on which dungeon it is in.
  */
-public class Bat extends Creature
+public class Siren extends Creature
 {
-    /**
-     * The order of the {@link Dungeon} the bat spawned in.
-     */
-    private int order;
     /**
      * The amount of damage the bat deals on attack.
      */
@@ -44,27 +39,12 @@ public class Bat extends Creature
      * 
      * @param order the order of the dungeon currently being challenged.
      */
-    public Bat(int order)
+    public Siren()
     {
-        super(CreatureType.BAT);
-        this.order = order;
-        this.damage = 0;
-        this.gold = 0;
-        this.moveInterval = 2;
-        switch(order)
-        {
-            default:
-            case 3:
-                this.damage += 0.5;
-                this.gold += 5;
-            case 2:
-                this.damage += 0.5;
-                this.moveInterval -= 1;
-                this.gold += 5;
-            case 1:
-                this.damage += 0.5;
-                this.gold += 5;
-        }
+        super(CreatureType.SIREN);
+        this.damage = 999;
+        this.gold = 750;
+        this.moveInterval = 1;
         this.curCooldown = this.moveInterval;
         this.setIdle(false);
     }
@@ -91,62 +71,101 @@ public class Bat extends Creature
             if(floor.checkForPlayer(y-1, x) || floor.checkForPlayer(y+1, x) || floor.checkForPlayer(y, x-1) || floor.checkForPlayer(y, x+1))
             {
                 //Attack
-                floor.damagePlayer(damage, "Bat");
-                floor.addCombatLog("Yohane was hit by a bat for " + damage + " damage!", CombatLogType.DAMAGE);
+                floor.damagePlayer(damage, "Siren");
+                floor.addCombatLog("Yohane was hit by the Siren for " + damage + " damage!", CombatLogType.DAMAGE);
             }else if (floor.attackLailaps(y-1, x, damage) || floor.attackLailaps(y+1, x, damage) || floor.attackLailaps(y, x-1, damage) || floor.attackLailaps(y, x+1, damage)) {
-                floor.addCombatLog("Lailaps was hit by a bat for " + damage + " damage!", CombatLogType.DAMAGE);
+                floor.addCombatLog("Lailaps was hit by the Siren for " + damage + " damage!", CombatLogType.DAMAGE);
             }else{
-                //Move
-                int directions[][] = new int[8][2];
-                int directionsSize;
-                int validDirections[][] = new int[8][2];
-                int j = 0;
-                if(order < 3)
+                Boolean playerIsCloser = true;
+
+                int playerY = floor.getPlayer().getPosition().getPosY();
+                int playerX = floor.getPlayer().getPosition().getPosX();
+                double playerDist = floor.getPlayerDistance(y, x);
+
+                int lailapsY = 0;
+                int lailapsX = 0;
+                double lailapsDist;
+
+                Lailaps closestLailaps = floor.findClosestLailaps(y, x);
+                if(closestLailaps != null)
                 {
-                    directions = new int[][]{
-                                {-1, 0},
-                        {0, -1},        {0, 1},
-                                {1, 0}
-                    };
-                    directionsSize = 4;
-                }else{
-                    directions = new int[][]{
-                        {-1, -1}, {-1, 0}, {-1, 1},
-                        {0, -1},           {0, 1},
-                        {1, -1},  {1, 0},  {1, 1}
-                    };
-                    directionsSize = 8;
-                }
-                for(int i = 0; i < directionsSize; i++)
-                {
-                    int checkY = directions[i][0] + y;
-                    int checkX = directions[i][1] + x;
-                    if(!floor.isCreatureBlocked(this, checkY, checkX))
+                    lailapsY = closestLailaps.getPosition().getPosY();
+                    lailapsX = closestLailaps.getPosition().getPosX();
+                    lailapsDist = Math.pow(Math.pow(y-lailapsY,2)+Math.pow(x-lailapsX,2),0.5);
+                    if (lailapsDist < playerDist)
                     {
-                        validDirections[j] = directions[i];
-                        j++;
+                        playerIsCloser = false;
                     }
                 }
-                if(j > 0)
+
+                int offY = 0;
+                int offX = 0;
+
+                if(playerIsCloser)
                 {
-                    int direction[] = validDirections[floor.getRand().nextInt(j)];
-                    int moveY = direction[0];
-                    int moveX = direction[1];
-                    if(moveY > 0)
+                    if(y < playerY)
                     {
-                        this.setDirection(Direction.DOWN);
-                    }else if(moveY<0)
+                        offY = 1;
+                    }
+                    if(y > playerY)
                     {
-                        this.setDirection(Direction.UP);
-                    }else if(moveX>0)
+                        offY = -1;
+                    }
+                    if(x < playerX)
                     {
-                        this.setDirection(Direction.RIGHT);
+                        offX = 1;
+                    }
+                    if(x > playerX)
+                    {
+                        offX = -1;
+                    }
+                }else{
+                    if(y < lailapsY)
+                    {
+                        offY = 1;
+                    }
+                    if(y > lailapsY)
+                    {
+                        offY = -1;
+                    }
+                    if(x < lailapsX)
+                    {
+                        offX = 1;
+                    }
+                    if(x > lailapsX)
+                    {
+                        offX = -1;
+                    }
+                }
+
+                if(offY > 0)
+                {
+                    this.setDirection(Direction.DOWN);
+                }else if(offY<0)
+                {
+                    this.setDirection(Direction.UP);
+                }else if(offX>0)
+                {
+                    this.setDirection(Direction.RIGHT);
+                }else{
+                    this.setDirection(Direction.LEFT);
+                }
+
+                if(floor.isCreatureBlocked(this,y+offY, x+offX))
+                {
+                    if(floor.isCreatureBlocked(this, y, x+offX))
+                    {
+                        if(floor.isCreatureBlocked(this, y+offY, x))
+                        {
+                            //Cant get closer oh well
+                        }else{
+                            floor.moveCreature(this, offY, 0);
+                        }
                     }else{
-                        this.setDirection(Direction.LEFT);
+                        floor.moveCreature(this, 0, offX);
                     }
-                    floor.moveCreature(this, moveY, moveX);
                 }else{
-                    floor.creatureIdle(this);
+                    floor.moveCreature(this, offY, offX);
                 }
             }
             this.curCooldown = this.moveInterval;

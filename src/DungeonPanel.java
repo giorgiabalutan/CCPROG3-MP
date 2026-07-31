@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import model.*;
 
@@ -8,6 +7,8 @@ public class DungeonPanel extends JPanel{
     private PlayerStatusPanel statusPanel;
     private FloorPanel floorPanel;
     private CombatLogPanel logPanel;
+
+    private int floorNum;
 
     private Font defaultFont;
 
@@ -30,13 +31,14 @@ public class DungeonPanel extends JPanel{
 
     }
 
-    public void setKeyListener(KeyListener keyListener)
-    {
-        this.addKeyListener(keyListener);
-    }
+    // public void setKeyListener(KeyListener keyListener)
+    // {
+    //     this.addKeyListener(keyListener);
+    // }
 
     public void loadFloor()
     {
+        this.floorNum = this.model.getDungeon().getFloorNum();
         this.floorPanel.loadFloor();
         this.logPanel.loadFloor();
     }
@@ -52,6 +54,12 @@ public class DungeonPanel extends JPanel{
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
         
+        if(this.floorNum != this.model.getDungeon().getFloorNum())
+        {
+            loadFloor();
+            this.floorNum = this.model.getDungeon().getFloorNum();
+        }
+
         // g2D.drawString();
 
 

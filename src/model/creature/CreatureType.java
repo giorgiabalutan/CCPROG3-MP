@@ -8,5 +8,7 @@ public enum CreatureType{
     /**
      * Generic flying enemy.
      */
-    BAT
+    BAT,
+    LAILAPS,
+    SIREN
 }

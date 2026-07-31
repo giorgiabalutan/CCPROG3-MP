@@ -79,6 +79,11 @@ public abstract class Structure{
                 this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Heat.png";
                 this.name = "Heat Tile";
                 break;
+            case SWITCH:
+                this.displayChar = '0';
+                this.structureImageFilePath = "assets/dungeonSprites/structureSprites/Switch.png";
+                this.name = "Switch Tile";
+                break;
         }
         this.pos = new Position();
     }

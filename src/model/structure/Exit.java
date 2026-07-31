@@ -1,6 +1,7 @@
 package model.structure;
 
 import model.creature.Creature;
+import model.dungeon.Dungeon;
 import model.dungeon.Floor;
 /**
  * Represents the Exit of the floor.
@@ -10,12 +11,14 @@ import model.dungeon.Floor;
  */
 public class Exit extends Structure
 {
+    private Boolean isHidden;
     /**
      * Constructs an Exit via the {@link Structure#Structure(StructureType) Structure constructor}.
      */
     public Exit()
     {
         super(StructureType.EXIT);
+        this.isHidden = false;
     }
     /**
      * Sets the ExitReached flag to {@code true} to allow the {@link Dungeon} to progress to the next {@link Floor}.
@@ -27,7 +30,10 @@ public class Exit extends Structure
     @Override
     public boolean interact(Floor floor)
     {
-        floor.setExitReached();
+        if(!isHidden)
+        {
+            floor.setExitReached();
+        }
         return false;
     }
     /**
@@ -93,5 +99,15 @@ public class Exit extends Structure
     public boolean creatureIdle(Floor floor, Creature creature)
     {
         return false;
+    }
+
+    public void setHidden(Boolean bool)
+    {
+        this.isHidden = bool;
+    }
+
+    public Boolean isHidden()
+    {
+        return this.isHidden;
     }
 }

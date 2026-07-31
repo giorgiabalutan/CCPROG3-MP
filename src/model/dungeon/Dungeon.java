@@ -1,9 +1,11 @@
 package model.dungeon;
 
 import java.io.Serializable;
+import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import model.Idol;
 import model.Player;
+import model.structure.Spawn;
 /**
  * Represents one of the Dungeons that must be completed to rescue an {@link Idol}.
  * <p>
@@ -88,6 +90,17 @@ public class Dungeon implements Serializable
         }
         generateFloors(idol.getDungeonCode(), maxFloor);
         spawnPlayer();
+        
+    }
+
+    public void generateFinalDungeon()
+    {
+        this.dungeonName = "Siren's Lair";
+        floorNum = 0;
+        maxFloor = 1;
+        generateFinalFloor();
+        spawnPlayer();
+        this.floors.get(floorNum).switchCheck();
     }
 
     /**
@@ -108,6 +121,13 @@ public class Dungeon implements Serializable
         }
     }
 
+    private void generateFinalFloor()
+    {
+        this.floors = new ArrayList<>();
+        this.floors.add(new Floor(player, this.order));
+        this.floors.get(0).generateFloor(dungeonCode.SIRENS_LAIR);
+    }
+
     /**
      * Sets the {@link Position} of the {@code Player} to the {@link Spawn} of the {@code Floor}.
      */
@@ -124,6 +144,12 @@ public class Dungeon implements Serializable
      * In order to reflect the challenge order of the dungeons, the order is incremented by 1 as this is the next dungeon to be challenged.
      */
     private void finishDungeon()
+    {
+        order += 1;
+    }
+
+    //HACKS
+    public void finishDungeonHacks()
     {
         order += 1;
     }
@@ -205,5 +231,10 @@ public class Dungeon implements Serializable
      */
     public int getOrder(){
         return this.order;
+    }
+
+    public DungeonCode getDungeonCode()
+    {
+        return this.dungeonCode;
     }
 }

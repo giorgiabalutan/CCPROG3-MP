@@ -66,6 +66,18 @@ public abstract class Creature{
                 this.creatureImageFilePath = "assets/dungeonSprites/creatureSprites/Bat/Bat_idle_down.png";
                 this.name = "Bat";
                 break;
+            case LAILAPS:
+                this.displayChar = 'L';
+                this.maxHp = 4;
+                this.flying = false;
+                this.name = "Lailaps";
+                break;
+            case SIREN:
+                this.displayChar = 'B';
+                this.maxHp = 1;
+                this.flying = true;
+                this.name = "Siren";
+                break;
         }
         this.hp = maxHp;
         this.pos = new Position();
@@ -196,5 +208,14 @@ public abstract class Creature{
     public Boolean isIdle()
     {
         return this.idle;
+    }
+
+    public double getMaxHp()
+    {
+        return this.maxHp;
+    }
+    public double getHp()
+    {
+        return this.hp;
     }
 }

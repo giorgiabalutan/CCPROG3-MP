@@ -33,4 +33,6 @@ public enum StructureType{
      * Tiles that damage the {@code Player} and {@link Creature Creatures} when idle.
      */
     HEAT,
+
+    SWITCH,
 }

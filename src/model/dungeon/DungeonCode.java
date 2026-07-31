@@ -34,5 +34,6 @@ public enum DungeonCode{
     /**
      * Awashima Marine Park, a ??? dungeon.
      */
-    AWASHIMA_MARINE_PARK
+    AWASHIMA_MARINE_PARK,
+    SIRENS_LAIR
 }

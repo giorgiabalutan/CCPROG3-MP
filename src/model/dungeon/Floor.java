@@ -80,6 +80,11 @@ public class Floor
      * The type of dungeon the floor is a part of.
      */
     private DungeonCode dungeonCode;
+    private Boolean isFinal;
+    private Boolean isFinalPhase1Done;
+    private ArrayList<Lailaps> lailapses;
+    private ArrayList<Switch> switches;
+    private int switchSetsPressed;
 
     private ArrayList<CombatLogEntry> combatLogs;
     private int turnNumber;
@@ -103,6 +108,11 @@ public class Floor
         this.rand = new Random(System.currentTimeMillis());
         this.combatLogs = new ArrayList<>();
         this.turnNumber = 1;
+        this.isFinal = false;
+        this.isFinalPhase1Done = false;
+        this.switchSetsPressed = 0;
+        this.switches = new ArrayList<Switch>();
+        this.lailapses = new ArrayList<Lailaps>();
     }
 
     //Methods
@@ -133,18 +143,22 @@ public class Floor
         {
             case 'W':
                 interact(y, x, -1, 0);
+                moveLailaps(-1, 0);
                 this.player.setDirection(Direction.UP);
                 break;
             case 'S':
                 interact(y,x, 1, 0);
+                moveLailaps(1, 0);
                 this.player.setDirection(Direction.DOWN);
                 break;
             case 'A':
                 interact(y,x, 0, -1);
+                moveLailaps(0, -1);
                 this.player.setDirection(Direction.LEFT);
                 break;
             case 'D':
                 interact(y,x, 0, 1);
+                moveLailaps(0, 1);
                 this.player.setDirection(Direction.RIGHT);
                 break;
             case '[':
@@ -190,11 +204,181 @@ public class Floor
         }
         tickEnemies();
         this.turnNumber++;
-        for(CombatLogEntry entry : this.combatLogs)
+        // for(CombatLogEntry entry : this.combatLogs)
+        // {
+        //     // System.out.println(entry.getMessage() + "---" + entry.getType().toString());
+        // }
+        Iterator<Lailaps> iter = this.lailapses.iterator();
+        while(iter.hasNext())
         {
-            System.out.println(entry.getMessage() + "---" + entry.getType().toString());
+            Lailaps lailaps = iter.next();
+            if(lailaps.isDead())
+            {
+                addCombatLog("Lailaps has perished", CombatLogType.DEATH);
+                grid[y][x].getCreatures().remove(lailaps);
+                iter.remove();
+            }
+        }
+        switchCheck();
+        sirenCheck();
+        if((isFinal && turnNumber%8 == 0))
+        {
+            Boolean spawned = false;
+            while(!spawned)
+            {
+                int posY = rand.nextInt(sizeY);
+                int posX = rand.nextInt(sizeX);
+                Tile tile = grid[posY][posX];
+                if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(posY < 5 && posX > 11 && posX < 28) && !(posY == player.getPosition().getPosY() && posX == player.getPosition().getPosX()))
+                {
+                    Bat bat = new Bat(this.switchSetsPressed + 1);
+                    bat.setPosition(posY, posX);
+                    grid[posY][posX].addCreature(bat);
+                    this.creatures.add(bat);
+                    spawned = true;
+                }
+            }
+        }
+        if(isFinal && lailapses.isEmpty())
+        {
+            damagePlayer(99999, "Life Link");
         }
         return false;
+    }
+
+    public void switchCheck()
+    {
+        Boolean setPressed = false;
+        if(!switches.isEmpty())
+        {
+            setPressed = true;
+        }
+        for(Switch switchN: switches)
+        {
+            int y = switchN.getPosition().getPosY();
+            int x = switchN.getPosition().getPosX();
+            boolean pressed = false;
+            for(Lailaps lailaps: lailapses)
+            {
+                if(y == lailaps.getPosition().getPosY() && x == lailaps.getPosition().getPosX())
+                {
+                    pressed = true;
+                }
+            }
+            if((y == this.player.getPosition().getPosY() && x == this.player.getPosition().getPosX()))
+            {
+                pressed = true;
+            }
+            if(!pressed)
+            {
+                setPressed = false;
+            }
+        }
+
+        if(setPressed)
+        {
+            this.switchSetsPressed++;
+            for(Switch switchN: switches)
+            {
+                int y = switchN.getPosition().getPosY();
+                int x = switchN.getPosition().getPosX();
+                this.structures.remove(switchN);
+                this.grid[y][x].getStructures().remove(switchN);
+            }
+            for(Creature creature : creatures)
+            {
+                if(creature.getCreatureType() == CreatureType.BAT)
+                {
+                    Bat bat = (Bat) creature;
+                    bat.setPower(switchSetsPressed + 1);
+                }
+            }
+            switches = new ArrayList<Switch>();
+        }
+
+        //Siren Area bounds are row 1 column 11 to row 3 column 28
+        while(switches.isEmpty() && switchSetsPressed < 3)
+        {
+            int y = rand.nextInt(sizeY);
+            int x = rand.nextInt(sizeX);
+            Boolean invalid = false;
+            Tile tile = grid[y][x];
+            if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(y < 5 && x > 11 && x < 28) && !(y == player.getPosition().getPosY() && x == player.getPosition().getPosX()))
+            {
+                ArrayList<int[]> possible = new ArrayList<>();
+                for(int offY=-2; offY<3; offY++)
+                {
+                    for(int offX = -5; offX<6; offX++)
+                    {
+                        if(!(offY == 0 && offX == 0) && isInBounds(y+offY, x+offX))
+                        {
+                            Tile tile2 = grid[y+offY][x+offX];
+                            if(tile2.getStructures().isEmpty() && tile2.getCreatures().isEmpty() && !(y+offY < 5 && x+offX > 11 && x+offX < 28) && !(y+offY == player.getPosition().getPosY() && x+offX == player.getPosition().getPosX()))
+                            {
+                                possible.add(new int[]{y+offY,x+offX});
+                            }
+                        }
+                    }
+                }
+                if(!possible.isEmpty())
+                {
+                    int i = rand.nextInt(possible.size());
+                    Switch switch1 = new Switch();
+                    switch1.setPosition(y, x);
+                    this.grid[y][x].addStructure(switch1);
+                    this.structures.add(switch1);
+                    Switch switch2 = new Switch();
+                    switch2.setPosition(possible.get(i)[0], possible.get(i)[1]);
+                    this.grid[possible.get(i)[0]][possible.get(i)[1]].addStructure(switch2);
+                    this.structures.add(switch2);
+                    switches.add(switch1);
+                    switches.add(switch2);
+                }
+            }
+        }
+
+        if(!isFinalPhase1Done && switchSetsPressed > 2)
+        {
+            this.isFinalPhase1Done = true;
+            Iterator<Structure> iter = this.structures.iterator();
+            while(iter.hasNext())
+            {
+                Structure structure = iter.next();
+                if(structure.getType() == StructureType.BORDER)
+                {
+                    Border border = (Border) structure;
+                    if(border.isSwitchReactive())
+                    {
+                        int y = structure.getPosition().getPosY();
+                        int x = structure.getPosition().getPosX();
+                        this.grid[y][x].getStructures().remove(structure);
+                        iter.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    private void sirenCheck()
+    {
+        Boolean sirenAlive = false;
+        for(Creature creature: creatures)
+        {
+            if(creature.getCreatureType() == CreatureType.SIREN)
+            {
+                sirenAlive = true;
+            }
+        }
+        if(!sirenAlive)
+        {
+            for(Structure structure: structures)
+            {
+                if(structure.getType() == StructureType.EXIT && ((Exit) structure).isHidden())
+                {
+                    ((Exit) structure).setHidden(false);
+                }
+            }
+        }
     }
 
     public void addCombatLog(String message, CombatLogType type){
@@ -243,14 +427,17 @@ public class Floor
         while(iter2.hasNext())
         {
             Creature creature = iter2.next();
-            creature.damageCreature(player.getAttack());
-            addCombatLog("Yohane hit a " +creature.getName()+ " for " + player.getAttack() + " damage.", CombatLogType.DAMAGE);
-            if(creature.isDead())
+            if (creature.getCreatureType() != CreatureType.LAILAPS)
             {
-                addCombatLog("Yohane has killed a " + creature.getName() + "!", CombatLogType.DEATH);
-                creature.dropLoot(this);
-                this.creatures.remove(creature);
-                iter2.remove();
+                creature.damageCreature(player.getAttack());
+                addCombatLog("Yohane hit a " +creature.getName()+ " for " + player.getAttack() + " damage.", CombatLogType.DAMAGE);
+                if(creature.isDead())
+                {
+                    addCombatLog("Yohane has killed a " + creature.getName() + "!", CombatLogType.DEATH);
+                    creature.dropLoot(this);
+                    this.creatures.remove(creature);
+                    iter2.remove();
+                }
             }
             blocked = true;
         }
@@ -278,6 +465,58 @@ public class Floor
             addCombatLog("Yohane moved " + direction + ".", CombatLogType.PLAYER_ACTION);
         }else{
             idle(y,x);
+        }
+    }
+
+    private void moveLailaps(int offY, int offX)
+    {
+        for(Lailaps lailaps: lailapses)
+        {
+            boolean blocked = false;
+            int y = lailaps.getPosition().getPosY();
+            int x = lailaps.getPosition().getPosX();
+            Iterator<Structure> iter1 = this.grid[y + offY][x + offX].getStructures().iterator();
+            while(iter1.hasNext())
+            {
+                Structure struct = iter1.next();
+                blocked = blocked || struct.isBlocking(this);
+            }
+            Iterator<Creature> iter2 = this.grid[y + offY][x + offX].getCreatures().iterator();
+            while(iter2.hasNext())
+            {
+                Creature creature = iter2.next();
+                blocked = true;
+            }
+            int playerY = this.player.getPosition().getPosY();
+            int playerX = this.player.getPosition().getPosX();
+            if(y+offY == playerY && x + offX == playerX)
+            {
+                blocked = true;
+            }
+            if(!blocked)
+            {
+                moveCreature(lailaps, offY, offX);
+                String direction;
+                if(offY > 0)
+                {
+                    direction = "down";
+                    lailaps.setDirection(Direction.DOWN);
+                }else if(offY<0)
+                {
+                    direction = "up";
+                    lailaps.setDirection(Direction.UP);
+                }else if(offX>0)
+                {
+                    direction = "right";
+                    lailaps.setDirection(Direction.RIGHT);
+                }else{
+                    direction = "left";
+                    lailaps.setDirection(Direction.LEFT);
+                }
+                addCombatLog("Lailaps moved " + direction + ".", CombatLogType.PLAYER_ACTION);
+            }else{
+                creatureIdle(lailaps);
+            }
         }
     }
 
@@ -331,6 +570,10 @@ public class Floor
         }
         this.player.setIdle(true);
         addCombatLog("Yohane waits.", CombatLogType.PLAYER_ACTION);
+        for(Lailaps lailaps : lailapses)
+        {
+            lailaps.setIdle(true);
+        }
     }
 
     /**
@@ -353,6 +596,10 @@ public class Floor
                 structures.remove(struct);
                 iter.remove();
             }
+        }
+        if(creature.getCreatureType() != CreatureType.BAT)
+        {
+            creature.setIdle(true);
         }
     }
 
@@ -395,9 +642,14 @@ public class Floor
         grid[initialY][initialX].getCreatures().remove(creature);
         grid[initialY + moveY][initialX + moveX].getCreatures().add(creature);
         creature.move(moveY, moveX);
+        creature.setIdle(false);
     }
 
     //Generation
+    // /**
+    //  * Generates a floor for the Yasudaya Ryokan dungeon.
+    //  * Randomly selects one of the {@link Layouts} under the dungeon and converts it into useable data.
+    //  */
     /**
      * Generates the floor map depending on which {@link DungeonCode} the floor is a part of.
      * It calls the corresponding generate function.
@@ -407,28 +659,109 @@ public class Floor
     public void generateFloor(DungeonCode dungeonCode)
     {
         this.dungeonCode = dungeonCode;
+        int i;
         switch(dungeonCode)
         {
             case YASUDAYA_RYOKAN:
-                generateYasudayaRyokan();
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
                 break;
-        }
-    }
-    /**
-     * Generates a floor for the Yasudaya Ryokan dungeon.
-     * Randomly selects one of the {@link Layouts} under the dungeon and converts it into useable data.
-     */
-    private void generateYasudayaRyokan()
-    {
-        int i = this.rand.nextInt(2);
-        switch(i)
-        {
-            case 0:
-                convertLayout(Layouts.REFERENCE);
+            case IZU_MITO_SEA_PARADISE:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
                 break;
-            case 1:
-                convertLayout(Layouts.BAT_WATER_TEST);
-                break; 
+            case NUMAZU_DEEP_SEA_AQUARIUM:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case SHOUGETSU_CONFECTIONARY:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case NAGAHAMA_CASTLE_RUINS:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case NUMAZUGOYOTEI:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case UCHIURA_BAY_PIER:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case AWASHIMA_MARINE_PARK:
+                i = this.rand.nextInt(2);
+                switch(i)
+                {
+                    case 0:
+                        convertLayout(Layouts.REFERENCE);
+                        break;
+                    case 1:
+                        convertLayout(Layouts.BAT_WATER_TEST);
+                        break; 
+                }
+                break;
+            case SIRENS_LAIR:
+                this.isFinal = true;
+                convertLayout(Layouts.SIREN_LAIR);
+                break;
         }
     }
 
@@ -463,6 +796,13 @@ public class Floor
                         border.setPosition(i, j);
                         this.grid[i][j].addStructure(border);
                         this.structures.add(border);
+                        break;
+                    case '#':
+                        Border border2 = new Border();
+                        border2.setPosition(i, j);
+                        this.grid[i][j].addStructure(border2);
+                        this.structures.add(border2);
+                        border2.setSwitchReactivity(true);
                         break;
                     case 'v':
                         Wall wall = new Wall();
@@ -516,6 +856,24 @@ public class Floor
                         exit.setPosition(i, j);
                         this.grid[i][j].addStructure(exit);
                         this.structures.add(exit);
+                        // System.out.print(isFinal);
+                        if(this.isFinal)
+                        {
+                            exit.setHidden(true);
+                        }
+                        break;
+                    case 'L':
+                        Lailaps lailaps = new Lailaps();
+                        lailaps.setPosition(i, j);
+                        grid[i][j].addCreature(lailaps);
+                        this.creatures.add(lailaps);
+                        this.lailapses.add(lailaps);
+                        break;
+                    case 'B':
+                        Siren siren = new Siren();
+                        siren.setPosition(i, j);
+                        grid[i][j].addCreature(siren);
+                        this.creatures.add(siren);
                         break;
                 }
             }
@@ -554,6 +912,57 @@ public class Floor
         if(player.getPosition().getPosY() == y && player.getPosition().getPosX() == x)
         {
             return true;
+        }
+        return false;
+    }
+
+    public boolean checkForLailaps(int y, int x)
+    {
+        for(Lailaps lailaps: lailapses)
+        {
+            if(lailaps.getPosition().getPosY() == y && lailaps.getPosition().getPosX() == x)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public double getPlayerDistance(int y, int x)
+    {
+        int playerY = this.player.getPosition().getPosY();
+        int playerX = this.player.getPosition().getPosX();
+        return Math.pow(Math.pow(y-playerY,2)+Math.pow(x-playerX,2),0.5);
+    }
+
+    public Lailaps findClosestLailaps(int y, int x)
+    {
+        Lailaps closestLailaps = null;
+        double closestDist = Double.MAX_VALUE;
+        for(Lailaps lailaps: lailapses)
+        {
+            int lailapsY = lailaps.getPosition().getPosY();
+            int lailapsX = lailaps.getPosition().getPosX();
+            double dist = Math.pow(Math.pow(y-lailapsY,2)+Math.pow(x-lailapsX,2),0.5);
+            if(dist < closestDist)
+            {
+                closestLailaps = lailaps;
+                closestDist = dist;
+            }
+        }
+        return closestLailaps;
+    }
+
+    
+    public boolean attackLailaps(int y, int x, double dmg)
+    {
+        for(Lailaps lailaps: lailapses)
+        {
+            if(lailaps.getPosition().getPosY() == y && lailaps.getPosition().getPosX() == x)
+            {
+                lailaps.damageCreature(dmg);
+                return true;
+            }
         }
         return false;
     }
@@ -713,11 +1122,23 @@ public class Floor
         return this.dungeonCode;
     }
 
-    public ArrayList<CombatLogEntry> getCombatLogs(){
+    public ArrayList<CombatLogEntry> getCombatLogs()
+    {
         return this.combatLogs;
     }
 
-    public int getTurnNumber(){
+    public int getTurnNumber()
+    {
         return this.turnNumber;
+    }
+
+    public boolean isFinal()
+    {
+        return this.isFinal;
+    }
+
+    public ArrayList<Lailaps> getLailapses()
+    {
+        return this.lailapses;
     }
 }

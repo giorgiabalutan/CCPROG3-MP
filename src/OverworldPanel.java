@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -51,10 +50,10 @@ public class OverworldPanel extends JPanel{
         defaultFont = new Font("Courier New", Font.BOLD, 20);
     }
     
-    public void setKeyListener(KeyListener keyListener)
-    {
-        this.addKeyListener(keyListener);
-    }
+    // public void setKeyListener(KeyListener keyListener)
+    // {
+    //     this.addKeyListener(keyListener);
+    // }
     
     @Override
     public void paintComponent(Graphics g)
@@ -72,7 +71,7 @@ public class OverworldPanel extends JPanel{
             else
                 drawOverworld(g2D);
         }
-        
+        // System.out.println("TEST@");
         
     }
     
@@ -217,9 +216,9 @@ public class OverworldPanel extends JPanel{
 
         String[] dungeon = new String[3];
 
-        for(int i = 0; i < idolList.size();)
+        for(int i = 0; i < idolList.size(); i++)
         {
-            dungeon[i] = "[" + (i+1) + "] " + idolList.get(0).getDungeonName();
+            dungeon[i] = "[" + (i+1) + "] " + idolList.get(i).getDungeonName();
         }
         
         g2D.drawImage(this.lailapsAndYohaneImage, 0, 10, null);
@@ -232,9 +231,13 @@ public class OverworldPanel extends JPanel{
         g2D.drawString(itemOnHandText, 38, 400);
         g2D.drawString(inventoryText, 645, 400);
         g2D.drawString(saveAndQuitText, 799, 400);
-        for(int i = 0; i < idolList.size();)
+        for(int i = 0; i < idolList.size(); i++)
         {
             g2D.drawString(dungeon[i], 38, 450+(i*20));
+        }
+        if(idolList.size() == 0)
+        {
+            g2D.drawString("Final Dungeon [1] - Siren Fight", 38, 450);
         }
         
         //Dialogue box between Yohane and Lailaps

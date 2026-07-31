@@ -2,11 +2,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import model.Item;
 import model.Model;
 import model.Player;
+import model.creature.Lailaps;
 import model.dungeon.*;
 
 public class PlayerStatusPanel extends JPanel{
@@ -66,7 +68,12 @@ public class PlayerStatusPanel extends JPanel{
         g2D.drawString("" + dungeon.getName() + "", 10, nextLineHeight);
         nextLineHeight += 20;
 
-        g2D.drawString("Dungeon " + dungeon.getOrder() + " of 3", 10, nextLineHeight);
+        if(dungeon.getDungeonCode() == DungeonCode.SIRENS_LAIR)
+        {
+            g2D.drawString("Final Dungeon", 10, nextLineHeight);
+        }else{
+            g2D.drawString("Dungeon " + dungeon.getOrder() + " of 3", 10, nextLineHeight);
+        }
         nextLineHeight += 20;
 
         g2D.drawString("Floor   " + (dungeon.getFloorNum()+1) + " of " + dungeon.getMaxFloor(), 10, nextLineHeight);
@@ -138,5 +145,29 @@ public class PlayerStatusPanel extends JPanel{
 
         g2D.drawImage(nextItem, 126, nextLineHeight, 48, 48,  this);
 
+        nextLineHeight += 60;
+
+        ArrayList<Lailaps> lailapses = this.dungeon.getFloor().getLailapses();
+        for(Lailaps lailaps : lailapses)
+        {
+            int LailapsMaxHp = (int)Math.ceil(lailaps.getMaxHp());
+            int LailapsFullHearts = (int)Math.floor(lailaps.getHp());
+            boolean LailapsPartial = (lailaps.getHp()%1)>0;
+            for (int i = 0; i<LailapsMaxHp; i++)
+            {
+                g2D.drawImage(emptyHeart, 13 + (30*(i%6)), nextLineHeight, 24, 24,  this);
+                if(i < LailapsFullHearts)
+                {
+                    g2D.drawImage(fullHeart, 13 + (30*(i%6)), nextLineHeight, 24, 24,  this);
+                }else if (i==LailapsFullHearts && LailapsPartial) {
+                    int percent = (int) (lailaps.getHp()%1 * 16);
+                    g2D.drawImage(fullHeart, 13 + (30*(i%6)), nextLineHeight, (10 + (30*(i%6))) + 2*percent, nextLineHeight + 24, 0, 0, percent, 16, this);
+                }
+                if(i%6 == 5 && LailapsMaxHp%6 > 0)
+                {
+                    nextLineHeight += 30;
+                }
+            }
+        }
     }
 }

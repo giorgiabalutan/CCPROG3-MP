@@ -20,6 +20,7 @@ public class CombatLogPanel extends JPanel {
     public void loadFloor()
     {
         this.combatLogs = this.model.getDungeon().getFloor().getCombatLogs();
+
     }
 
     //I did this wrong but like what if i need it so its like this for now

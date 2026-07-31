@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import model.Model;
@@ -40,10 +39,10 @@ public class ShopPanel extends JPanel{
         defaultFont = new Font("Courier New", Font.BOLD, 20);
     }
     
-    public void setKeyListener(KeyListener keyListener)
-    {
-        this.addKeyListener(keyListener);
-    }
+    // public void setKeyListener(KeyListener keyListener)
+    // {
+    //     this.addKeyListener(keyListener);
+    // }
     
     @Override
     public void paintComponent(Graphics g)

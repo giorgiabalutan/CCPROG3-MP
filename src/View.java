@@ -61,22 +61,37 @@ public class View extends JFrame
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        // System.out.println("Constructor contentPane: " + System.identityHashCode(contentPane));
+
     }
     
     public void setActionListener(ActionListener listener)
     {
         this.mainMenuPanel.setButtonActionListener(listener);
     }
-    
+
     public void setKeyListener(KeyListener keyListener)
     {
-        this.overworldPanel.setKeyListener(keyListener);
-        this.shopPanel.setKeyListener(keyListener);
+        this.addKeyListener(keyListener);
     }
+    
+    // public void setKeyListener(KeyListener keyListener)
+    // {
+    //     this.overworldPanel.setKeyListener(keyListener);
+    //     this.shopPanel.setKeyListener(keyListener);
+    // }
     
     public void showPanel(String panelName)
     {
         cardLayout.show(contentPane, panelName);
+        // contentPane.revalidate();
+        // SwingUtilities.invokeLater(() -> this.requestFocusInWindow());
+        // this.requestFocusInWindow();
+        // System.out.println(panelName);
+        // System.out.println("showPanel contentPane: " + System.identityHashCode(contentPane));
+        // for (Component c : contentPane.getComponents()) {
+        //     System.out.println(c.getClass().getSimpleName() + " visible: " + c.isVisible());
+        // }
     }
     
     public void repaintOverworld()

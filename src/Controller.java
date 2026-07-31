@@ -83,6 +83,7 @@ public class Controller implements ActionListener, KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
+        // System.out.println(e);
         switch(model.getGameState())
         {
             case OVERWORLD:
@@ -95,6 +96,8 @@ public class Controller implements ActionListener, KeyListener
                 processShopInput(KeyEvent.getKeyText(e.getKeyCode()));
                 break;
         }
+
+        // System.out.println(model.getGameState());
         
         if(this.model.isGameActive())
             updateView();
@@ -113,6 +116,7 @@ public class Controller implements ActionListener, KeyListener
                 case OVERWORLD:
                     this.view.showPanel("OVERWORLD");
                     this.view.repaintOverworld();
+                    // System.out.println("TEST");
                     break;
                 case DUNGEON:
                     this.view.showPanel("DUNGEON");
@@ -190,6 +194,7 @@ public class Controller implements ActionListener, KeyListener
             else
                 this.model.setIsIntroPlaying(false);
         }
+        System.out.println(command);
         
         switch(command)
         {
@@ -197,7 +202,7 @@ public class Controller implements ActionListener, KeyListener
             case "2":
             case "3":
                 //Start dungeon
-                int index = 0;
+                int index = Integer.parseInt(command) - 1;
                 ArrayList<Idol> idolList = this.model.getIdolList();
                 if(index >= 0 && index < idolList.size())
                 {
@@ -206,6 +211,12 @@ public class Controller implements ActionListener, KeyListener
                     this.model.setGameState(GameState.DUNGEON);
                 }else{
                     this.model.setErrorMessage("Idol already saved");
+                }
+                if(idolList.size() == 0)
+                {
+                    this.model.getDungeon().generateFinalDungeon();
+                    this.view.loadFloor();
+                    this.model.setGameState(GameState.DUNGEON);
                 }
                 break;
             case "I":
@@ -290,18 +301,43 @@ public class Controller implements ActionListener, KeyListener
             Idol savedIdol = this.model.getDungeon().getIdol();
             this.model.getIdolList().remove(savedIdol);
             
-            this.view.finishedFloor(savedIdol);
-            waitForContinue();
+            // this.view.finishedFloor(savedIdol);
+            // waitForContinue();
             this.model.setGameState(GameState.OVERWORLD);
+            updateView();
+            // System.out.println(this.model.getGameState());
         }
         if(this.model.getPlayer().isDead())
         {
             this.model.incGameOvers();
             this.view.deathMessage(this.model.getPlayer().getCauseOfDeath());
-            waitForContinue();
+            // waitForContinue();
             this.model.setGameState(GameState.MAIN_MENU);
+            updateView();
             //To be expounded
         }
+    }
+
+    public void SkipToSiren()
+    {
+        processMenuInput("N");
+        processOverworldInput("1");
+        this.model.getDungeon().finishDungeonHacks();
+        Idol savedIdol = this.model.getDungeon().getIdol();
+        this.model.getIdolList().remove(savedIdol);
+        this.model.setGameState(GameState.OVERWORLD);
+        processOverworldInput("1");
+        this.model.getDungeon().finishDungeonHacks();
+        savedIdol = this.model.getDungeon().getIdol();
+        this.model.getIdolList().remove(savedIdol);
+        this.model.setGameState(GameState.OVERWORLD);
+        processOverworldInput("1");
+        this.model.getDungeon().finishDungeonHacks();
+        savedIdol = this.model.getDungeon().getIdol();
+        this.model.getIdolList().remove(savedIdol);
+        this.model.setGameState(GameState.OVERWORLD);
+        processOverworldInput("1");
+        updateView();
     }
 
     private void startAnimationTimer()
@@ -363,7 +399,7 @@ public class Controller implements ActionListener, KeyListener
     //For Testing Only
     public void skipIntroNew(){
         processMenuInput("N");
-        processOverworldInput(" ");
+        // processOverworldInput(" ");
         processOverworldInput("1");
         updateView();
     }
