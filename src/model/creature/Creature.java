@@ -1,5 +1,6 @@
 package model.creature;
 
+import java.io.Serializable;
 import model.Direction;
 import model.dungeon.Floor;
 import model.dungeon.Position;
@@ -11,7 +12,7 @@ import model.loot.Loot;
  * Creatures have these characteristics determined by their {@link CreatureType},
  * hp and maxhp, display character and {@link Color}, {@link Position}, and various flags.
  */
-public abstract class Creature{
+public abstract class Creature implements Serializable{
     /**
      * The maximum amount of hp this creature can have.
      */

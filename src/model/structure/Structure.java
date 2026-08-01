@@ -1,5 +1,6 @@
 package model.structure;
 
+import java.io.Serializable;
 import model.Player;
 import model.creature.Creature;
 import model.dungeon.Floor;
@@ -10,7 +11,7 @@ import model.dungeon.Position;
  * Contains the shared characteristics and behaviors between different structures.
  * Different types of structures share display and {@link Position} information, differing on effects on interaction.
  */
-public abstract class Structure{
+public abstract class Structure implements Serializable{
     /**
      * The type of structure this is.
      */

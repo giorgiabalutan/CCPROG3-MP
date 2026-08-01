@@ -83,7 +83,7 @@ public class Model implements Serializable
         this.dataStorage = new DataStorage();
         this.isIntroPlaying = false;
     }
-
+    
     //Methods
     //Generate the list of 3 idols to save
     /**

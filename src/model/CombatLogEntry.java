@@ -1,6 +1,8 @@
 package model;
 
-public class CombatLogEntry {
+import java.io.Serializable;
+
+public class CombatLogEntry implements Serializable{
     private String message;
     private CombatLogType type;
 

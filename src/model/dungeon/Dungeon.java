@@ -86,10 +86,13 @@ public class Dungeon implements Serializable
             default:
             case 3:
                 maxFloor += 1;
+                break;
             case 2:
                 maxFloor += 2;
+                break;
             case 1:
                 maxFloor += 1;
+                break;
         }
         switch(idol.getDungeonCode())
         {
@@ -217,11 +220,11 @@ public class Dungeon implements Serializable
     {
         if(this.floors.get(floorNum).tick(choice))
         {
-            floorNum++;
-            if(floorNum>=maxFloor){
+            if(floorNum+1>=maxFloor){
                 finishDungeon();
                 return true;
             }else{
+                floorNum++;
                 spawnPlayer();
             }
         }

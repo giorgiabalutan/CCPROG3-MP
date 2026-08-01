@@ -1,5 +1,6 @@
 package model.dungeon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import model.creature.Creature;
 import model.loot.Loot;
@@ -10,7 +11,7 @@ import model.structure.Structure;
  * Contains a list of the entities currently occupying the same {@link Position}.
  * The tile itself does not have a {@code Position} as it's tracked by the {@link Floor#grid grid} variable of {@code Floor}.
  */
-public class Tile
+public class Tile implements Serializable
 {
     /**
      * A list of {@link Structure Structures} in the same {@code Position}.

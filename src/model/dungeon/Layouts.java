@@ -1,5 +1,6 @@
 package model.dungeon;
 
+import java.io.Serializable;
 import model.creature.Bat;
 import model.loot.Treasure;
 import model.structure.Exit;
@@ -27,7 +28,7 @@ import model.structure.Water;
  * <li>. - Empty {@code Tile}
  * </ul>
  */
-public class Layouts
+public class Layouts implements Serializable
 {
     /**
      * Private Constructor to prevent Instantiation. This class is meant to provide static data.

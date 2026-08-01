@@ -1,5 +1,6 @@
 package model.loot;
 
+import java.io.Serializable;
 import model.Player;
 import model.dungeon.Floor;
 import model.dungeon.Position;
@@ -9,7 +10,7 @@ import model.dungeon.Position;
  * Contains the shared characteristics and behaviors between different types of loot.
  * Different types of loot share display and {@link Position} information, differing on effects on pick-up.
  */
-public abstract class Loot{
+public abstract class Loot implements Serializable{
     /**
      * The type of loot this is.
      */

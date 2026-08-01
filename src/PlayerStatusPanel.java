@@ -16,12 +16,12 @@ public class PlayerStatusPanel extends JPanel{
     private Dungeon dungeon;
     private Player player;
     private Item itemOnHand;
-    private BufferedImage emptyHeart;
-    private BufferedImage fullHeart;
-    private BufferedImage gold;
-    private BufferedImage nextItem;
-    private BufferedImage prevItem;
-    private BufferedImage heldItem;
+    private transient BufferedImage emptyHeart;
+    private transient BufferedImage fullHeart;
+    private transient BufferedImage gold;
+    private transient BufferedImage nextItem;
+    private transient BufferedImage prevItem;
+    private transient BufferedImage heldItem;
 
     private Font defaultFont;
     private Font goldFont;

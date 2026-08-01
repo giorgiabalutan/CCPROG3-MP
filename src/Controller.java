@@ -191,68 +191,70 @@ public class Controller implements ActionListener, KeyListener
                 currentIndex++;
                 this.model.setIntroIndex(currentIndex);
             }
-            else
+            else if (this.model.getIntroIndex() == 6)
                 this.model.setIsIntroPlaying(false);
         }
-        System.out.println(command);
-        
-        switch(command)
+        else
         {
-            case "1":
-            case "2":
-            case "3":
-                //Start dungeon
-                int index = Integer.parseInt(command) - 1;
-                ArrayList<Idol> idolList = this.model.getIdolList();
-                if(index >= 0 && index < idolList.size())
-                {
-                    this.model.getDungeon().generateDungeon(idolList.get(index));
-                    this.view.loadFloor();
-                    this.model.setGameState(GameState.DUNGEON);
-                }else{
-                    this.model.setErrorMessage("Idol already saved");
-                }
-                if(idolList.size() == 0)
-                {
-                    this.model.getDungeon().generateFinalDungeon();
-                    this.view.loadFloor();
-                    this.model.setGameState(GameState.DUNGEON);
-                }
-                break;
-            case "I":
-                this.model.getPlayer().setIsInventoryOpen(true);
-                break;
-            case "R":
-                if(this.model.getPlayer().isInventoryOpen())
-                    this.model.getPlayer().setIsInventoryOpen(false);
-                break;
-            case "H":
-                this.model.setGameState(GameState.SHOP);
-                break;
-            case "Space":
-                System.out.println("Command: " + command);
-//                String[] msg = this.model.getPlayer().useItem();
-//                this.model.setErrorMessages(msg);
-                break;
-            case "Open Bracket":
-                System.out.println("Command: " + command);
-//                String message1 = this.model.getPlayer().previousItem();
-//                this.model.setErrorMessage(message1);
-                break;
-            case "Close Bracket":
-                System.out.println("Command: " + command);
-//                String message2 = this.model.getPlayer().nextItem();
-//                this.model.setErrorMessage(message2);
-                break;
-            case "S":
-                //Save
-                this.model.setPlaythroughExists(true);
-                this.model.save();
-                this.model.quit();
-            default:
-                this.model.setErrorMessage("Command not Found");
-                break;
+            switch(command)
+            {
+                case "1":
+                case "2":
+                case "3":
+                    //Start dungeon
+                    int index = Integer.parseInt(command) - 1;
+                    ArrayList<Idol> idolList = this.model.getIdolList();
+                    if(index >= 0 && index < idolList.size())
+                    {
+                        this.model.getDungeon().generateDungeon(idolList.get(index));
+                        this.view.loadFloor();
+                        this.model.setGameState(GameState.DUNGEON);
+                    }else{
+                        this.model.setErrorMessage("Idol already saved");
+                    }
+                    if(idolList.size() == 0)
+                    {
+                        this.model.getDungeon().generateFinalDungeon();
+                        this.view.loadFloor();
+                        this.model.setGameState(GameState.DUNGEON);
+                    }
+                    break;
+                case "I":
+                    this.model.getPlayer().setIsInventoryOpen(true);
+                    break;
+                case "R":
+                    if(this.model.getPlayer().isInventoryOpen())
+                        this.model.getPlayer().setIsInventoryOpen(false);
+                    break;
+                case "H":
+                    this.model.setGameState(GameState.SHOP);
+                    break;
+                case "Space":
+                    System.out.println("Command: " + command);
+    //                String[] msg = this.model.getPlayer().useItem();
+    //                this.model.setErrorMessages(msg);
+                    break;
+                case "Open Bracket":
+                    System.out.println("Command: " + command);
+    //                String message1 = this.model.getPlayer().previousItem();
+    //                this.model.setErrorMessage(message1);
+                    break;
+                case "Close Bracket":
+                    System.out.println("Command: " + command);
+    //                String message2 = this.model.getPlayer().nextItem();
+    //                this.model.setErrorMessage(message2);
+                    break;
+                case "S":
+                    //Save
+                    this.model.setPlaythroughExists(true);
+                    this.model.save();
+                    this.model.quit();
+                default:
+                    this.model.setErrorMessage("Command not Found");
+                    break;
+            }
         }
+        
     }
 
     //Process Dungeon Input

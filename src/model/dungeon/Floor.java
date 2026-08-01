@@ -1,5 +1,6 @@
 package model.dungeon;
 
+import java.io.Serializable;
 import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ import model.structure.*;
  * It processes {@code Player} actions and manages creature actions.
  */
 
-public class Floor
+public class Floor implements Serializable
 {
     /**
      * Tracks how many spaces high the {@code grid} is, or how many rows it has.
