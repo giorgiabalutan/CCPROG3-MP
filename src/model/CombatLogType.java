@@ -7,4 +7,6 @@ public enum CombatLogType {
     ITEM_USE,
     DAMAGE,
     DEATH,
+    HEAL,
+    CREATURE,
 }

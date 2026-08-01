@@ -1,6 +1,9 @@
 package model.structure;
 
+import java.util.HashSet;
+import model.CombatLogType;
 import model.creature.Creature;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
  * Represents a Wall on the floor.
@@ -10,12 +13,19 @@ import model.dungeon.Floor;
  */
 public class Wall extends Structure
 {
+    boolean strength;
     /**
      * Constructs a Wall via the {@link Structure#Structure(StructureType) Structure constructor}.
      */
-    public Wall()
+    public Wall(HashSet<DungeonModifier> dungeonModifiers)
     {
         super(StructureType.WALL);
+        if(dungeonModifiers.contains(DungeonModifier.STRONGER_WALLS))
+        {
+            strength = true;
+        }else{
+            strength = false;
+        }
     }
     /**
      * The wall gets dug up by the {@code Player}.
@@ -27,6 +37,12 @@ public class Wall extends Structure
     @Override
     public boolean interact(Floor floor)
     {
+        if(strength)
+        {
+            strength = false;
+            floor.addCombatLog("The lingering magic protected the Wall!", CombatLogType.PLAYER_ACTION);
+            return false;
+        }
         return true;
     }
     /**

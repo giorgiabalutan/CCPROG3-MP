@@ -49,7 +49,7 @@ public class ShopPanel extends JPanel{
     {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
-       
+        
         drawShop(g2D);
         
         
@@ -68,8 +68,8 @@ public class ShopPanel extends JPanel{
         int x = 220;
         for(String line : this.hanamaruText.split("\n"))
         {
-             g2D.drawString(line, x, y);
-             y += 25;
+            g2D.drawString(line, x, y);
+            y += 25;
         }
         
         x = 642;
@@ -90,7 +90,7 @@ public class ShopPanel extends JPanel{
     {
         g2D.setColor(new Color(0, 0, 0, 220));
         g2D.fillRoundRect(x, y, width, height, 35, 35);
-       
+        
         
         g2D.setColor(Color.white);
         g2D.setStroke(new BasicStroke(5));

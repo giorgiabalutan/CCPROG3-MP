@@ -38,7 +38,7 @@ public class Main
         player.run();
 
         //For Testing
-        // player.skipIntroNew();
-        player.SkipToSiren();
+        player.skipIntroNew();
+        // player.SkipToSiren();
     }
 }

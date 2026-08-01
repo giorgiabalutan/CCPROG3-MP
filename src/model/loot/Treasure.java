@@ -4,6 +4,7 @@ import java.util.Random;
 import model.CombatLogType;
 import model.Item;
 import model.Player;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
  * Represents the random floor loot Treasure.
@@ -35,6 +36,10 @@ public class Treasure extends Loot
         {
             case 0:
                 int amt = rand.nextInt(91) + 10;
+                if(floor.getDungeonModifiers().contains(DungeonModifier.GOLD_TAX))
+                {
+                    amt /= 2;
+                }
                 floor.getPlayer().gainGold(amt);
                 floor.addCombatLog("Yohane found the Treasure and got " + amt + " Gold!",CombatLogType.LOOT_GAIN);
                 break;

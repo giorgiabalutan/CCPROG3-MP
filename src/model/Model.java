@@ -107,7 +107,7 @@ public class Model implements Serializable
         {
             if (i == 0) //Temporary force first idol
             {
-                idolList.add(new Idol(numList.remove(0)));
+                idolList.add(new Idol(numList.remove(2)));
             }else{
                 randIndex = r.nextInt(numList.size());
                 idolList.add(new Idol(numList.remove(randIndex)));

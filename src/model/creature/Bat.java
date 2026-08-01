@@ -1,9 +1,11 @@
 package model.creature;
 
+import java.util.HashSet;
 import model.CombatLogType;
 import model.Direction;
 import model.Player;
 import model.dungeon.Dungeon;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
@@ -44,7 +46,7 @@ public class Bat extends Creature
      * 
      * @param order the order of the dungeon currently being challenged.
      */
-    public Bat(int order)
+    public Bat(int order, HashSet<DungeonModifier> dungeonModifiers)
     {
         super(CreatureType.BAT);
         this.order = order;
@@ -66,6 +68,35 @@ public class Bat extends Creature
                 this.gold += 5;
         }
         this.curCooldown = this.moveInterval;
+
+        if(dungeonModifiers.contains(DungeonModifier.STRONGER_BATS))
+        {
+            this.damage += 0.5;
+            this.moveInterval += 1;
+            this.gold += 5;
+        }
+        if(dungeonModifiers.contains(DungeonModifier.FASTER_BATS))
+        {
+            this.damage -= 1;
+            this.gold += 5;
+        }
+        if(dungeonModifiers.contains(DungeonModifier.CRIPPLED_BATS))
+        {
+            this.damage = 0.5;
+            this.moveInterval += 2;
+            this.gold -= 5;
+        }
+
+        if(this.damage < 0.5)
+        {
+            this.damage = 0.5;
+        }
+        if(this.moveInterval < 1)
+        {
+            this.moveInterval = 1;
+        }
+
+
         this.setIdle(false);
     }
 
@@ -93,60 +124,71 @@ public class Bat extends Creature
                 //Attack
                 floor.damagePlayer(damage, "Bat");
                 floor.addCombatLog("Yohane was hit by a bat for " + damage + " damage!", CombatLogType.DAMAGE);
+                floor.creatureIdle(this);
             }else if (floor.attackLailaps(y-1, x, damage) || floor.attackLailaps(y+1, x, damage) || floor.attackLailaps(y, x-1, damage) || floor.attackLailaps(y, x+1, damage)) {
                 floor.addCombatLog("Lailaps was hit by a bat for " + damage + " damage!", CombatLogType.DAMAGE);
+                floor.creatureIdle(this);
             }else{
                 //Move
-                int directions[][] = new int[8][2];
-                int directionsSize;
-                int validDirections[][] = new int[8][2];
-                int j = 0;
-                if(order < 3)
+                int movements = 1;
+                if(floor.getDungeonModifiers().contains(DungeonModifier.FASTER_BATS))
                 {
-                    directions = new int[][]{
-                                {-1, 0},
-                        {0, -1},        {0, 1},
-                                {1, 0}
-                    };
-                    directionsSize = 4;
-                }else{
-                    directions = new int[][]{
-                        {-1, -1}, {-1, 0}, {-1, 1},
-                        {0, -1},           {0, 1},
-                        {1, -1},  {1, 0},  {1, 1}
-                    };
-                    directionsSize = 8;
+                    movements++;
                 }
-                for(int i = 0; i < directionsSize; i++)
-                {
-                    int checkY = directions[i][0] + y;
-                    int checkX = directions[i][1] + x;
-                    if(!floor.isCreatureBlocked(this, checkY, checkX))
+                for (int a = 0; a < movements; a++){
+                    y = this.getPosition().getPosY();
+                    x = this.getPosition().getPosX();
+                    int directions[][] = new int[8][2];
+                    int directionsSize;
+                    int validDirections[][] = new int[8][2];
+                    int j = 0;
+                    if(order < 3)
                     {
-                        validDirections[j] = directions[i];
-                        j++;
-                    }
-                }
-                if(j > 0)
-                {
-                    int direction[] = validDirections[floor.getRand().nextInt(j)];
-                    int moveY = direction[0];
-                    int moveX = direction[1];
-                    if(moveY > 0)
-                    {
-                        this.setDirection(Direction.DOWN);
-                    }else if(moveY<0)
-                    {
-                        this.setDirection(Direction.UP);
-                    }else if(moveX>0)
-                    {
-                        this.setDirection(Direction.RIGHT);
+                        directions = new int[][]{
+                                    {-1, 0},
+                            {0, -1},        {0, 1},
+                                    {1, 0}
+                        };
+                        directionsSize = 4;
                     }else{
-                        this.setDirection(Direction.LEFT);
+                        directions = new int[][]{
+                            {-1, -1}, {-1, 0}, {-1, 1},
+                            {0, -1},           {0, 1},
+                            {1, -1},  {1, 0},  {1, 1}
+                        };
+                        directionsSize = 8;
                     }
-                    floor.moveCreature(this, moveY, moveX);
-                }else{
-                    floor.creatureIdle(this);
+                    for(int i = 0; i < directionsSize; i++)
+                    {
+                        int checkY = directions[i][0] + y;
+                        int checkX = directions[i][1] + x;
+                        if(!floor.isCreatureBlocked(this, checkY, checkX))
+                        {
+                            validDirections[j] = directions[i];
+                            j++;
+                        }
+                    }
+                    if(j > 0)
+                    {
+                        int direction[] = validDirections[floor.getRand().nextInt(j)];
+                        int moveY = direction[0];
+                        int moveX = direction[1];
+                        if(moveY > 0)
+                        {
+                            this.setDirection(Direction.DOWN);
+                        }else if(moveY<0)
+                        {
+                            this.setDirection(Direction.UP);
+                        }else if(moveX>0)
+                        {
+                            this.setDirection(Direction.RIGHT);
+                        }else{
+                            this.setDirection(Direction.LEFT);
+                        }
+                        floor.moveCreature(this, moveY, moveX);
+                    }else{
+                        floor.creatureIdle(this);
+                    }
                 }
             }
             this.curCooldown = this.moveInterval;

@@ -1,6 +1,7 @@
 package model.structure;
 
 import model.creature.Creature;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
  * Represents a Water Tile on the floor.
@@ -40,6 +41,10 @@ public class Water extends Structure
     public boolean isBlocking(Floor floor)
     {
         //False if Player has Air Shoes (to be implemented later...)
+        if(floor.getDungeonModifiers().contains(DungeonModifier.REBREATHER))
+        {
+            return false;
+        }
         return true;
     }
     /**
@@ -80,6 +85,10 @@ public class Water extends Structure
     public boolean creatureIsBlocking(Floor floor, Creature creature)
     {
         if(creature.canFly())
+        {
+            return false;
+        }
+        if(floor.getDungeonModifiers().contains(DungeonModifier.REBREATHER))
         {
             return false;
         }

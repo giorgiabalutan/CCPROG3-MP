@@ -4,6 +4,7 @@ import model.CombatLogType;
 import model.Player;
 import model.creature.Creature;
 import model.dungeon.DungeonCode;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
  * Represents a Heat Tile on the floor.
@@ -97,10 +98,10 @@ public class Heat extends Structure
     @Override
     public boolean creatureIdle(Floor floor, Creature creature)
     {
+        System.out.println("TEST");
         if(creature.canFly())
         {
-            //Its a hotspring so the heat can reach into flight
-            if(floor.getDungeonCode() == DungeonCode.YASUDAYA_RYOKAN)
+            if(floor.getDungeonModifiers().contains(DungeonModifier.STRONGER_HEAT))
             {
                 creature.damageCreature(1);
                 floor.addCombatLog(creature.getName()+" took 1 damage from the Heat!", CombatLogType.DAMAGE);

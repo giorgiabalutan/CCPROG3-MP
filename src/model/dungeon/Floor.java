@@ -2,6 +2,7 @@ package model.dungeon;
 
 import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import model.CombatLogEntry;
@@ -80,11 +81,13 @@ public class Floor
      * The type of dungeon the floor is a part of.
      */
     private DungeonCode dungeonCode;
+    private HashSet<DungeonModifier> dungeonModifiers;
     private Boolean isFinal;
     private Boolean isFinalPhase1Done;
     private ArrayList<Lailaps> lailapses;
     private ArrayList<Switch> switches;
     private int switchSetsPressed;
+    private ArrayList<Arrow> arrows;
 
     private ArrayList<CombatLogEntry> combatLogs;
     private int turnNumber;
@@ -113,6 +116,7 @@ public class Floor
         this.switchSetsPressed = 0;
         this.switches = new ArrayList<Switch>();
         this.lailapses = new ArrayList<Lailaps>();
+        this.arrows = new ArrayList<Arrow>();
     }
 
     //Methods
@@ -190,6 +194,10 @@ public class Floor
                     }
                 }else{
                     addCombatLog(messages[0], CombatLogType.ITEM_USE);
+                    if(this.dungeonModifiers.contains(DungeonModifier.STRONGER_HEALS))
+                    {
+                        addCombatLog("The lingering magic in the dungeon healed an additional 0.5 hp!", CombatLogType.HEAL);
+                    }
                 }
                 idle(y,x);
                 break;
@@ -219,8 +227,11 @@ public class Floor
                 iter.remove();
             }
         }
-        switchCheck();
-        sirenCheck();
+        if (isFinal())
+        {
+            switchCheck();
+            sirenCheck();
+        }
         if((isFinal && turnNumber%8 == 0))
         {
             Boolean spawned = false;
@@ -231,7 +242,7 @@ public class Floor
                 Tile tile = grid[posY][posX];
                 if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(posY < 5 && posX > 11 && posX < 28) && !(posY == player.getPosition().getPosY() && posX == player.getPosition().getPosX()))
                 {
-                    Bat bat = new Bat(this.switchSetsPressed + 1);
+                    Bat bat = new Bat(this.switchSetsPressed + 1, this.dungeonModifiers);
                     bat.setPosition(posY, posX);
                     grid[posY][posX].addCreature(bat);
                     this.creatures.add(bat);
@@ -248,111 +259,114 @@ public class Floor
 
     public void switchCheck()
     {
-        Boolean setPressed = false;
-        if(!switches.isEmpty())
+        if(isFinal)
         {
-            setPressed = true;
-        }
-        for(Switch switchN: switches)
-        {
-            int y = switchN.getPosition().getPosY();
-            int x = switchN.getPosition().getPosX();
-            boolean pressed = false;
-            for(Lailaps lailaps: lailapses)
+            Boolean setPressed = false;
+            if(!switches.isEmpty())
             {
-                if(y == lailaps.getPosition().getPosY() && x == lailaps.getPosition().getPosX())
-                {
-                    pressed = true;
-                }
+                setPressed = true;
             }
-            if((y == this.player.getPosition().getPosY() && x == this.player.getPosition().getPosX()))
-            {
-                pressed = true;
-            }
-            if(!pressed)
-            {
-                setPressed = false;
-            }
-        }
-
-        if(setPressed)
-        {
-            this.switchSetsPressed++;
             for(Switch switchN: switches)
             {
                 int y = switchN.getPosition().getPosY();
                 int x = switchN.getPosition().getPosX();
-                this.structures.remove(switchN);
-                this.grid[y][x].getStructures().remove(switchN);
-            }
-            for(Creature creature : creatures)
-            {
-                if(creature.getCreatureType() == CreatureType.BAT)
+                boolean pressed = false;
+                for(Lailaps lailaps: lailapses)
                 {
-                    Bat bat = (Bat) creature;
-                    bat.setPower(switchSetsPressed + 1);
+                    if(y == lailaps.getPosition().getPosY() && x == lailaps.getPosition().getPosX())
+                    {
+                        pressed = true;
+                    }
+                }
+                if((y == this.player.getPosition().getPosY() && x == this.player.getPosition().getPosX()))
+                {
+                    pressed = true;
+                }
+                if(!pressed)
+                {
+                    setPressed = false;
                 }
             }
-            switches = new ArrayList<Switch>();
-        }
 
-        //Siren Area bounds are row 1 column 11 to row 3 column 28
-        while(switches.isEmpty() && switchSetsPressed < 3)
-        {
-            int y = rand.nextInt(sizeY);
-            int x = rand.nextInt(sizeX);
-            Boolean invalid = false;
-            Tile tile = grid[y][x];
-            if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(y < 5 && x > 11 && x < 28) && !(y == player.getPosition().getPosY() && x == player.getPosition().getPosX()))
+            if(setPressed)
             {
-                ArrayList<int[]> possible = new ArrayList<>();
-                for(int offY=-2; offY<3; offY++)
+                this.switchSetsPressed++;
+                for(Switch switchN: switches)
                 {
-                    for(int offX = -5; offX<6; offX++)
+                    int y = switchN.getPosition().getPosY();
+                    int x = switchN.getPosition().getPosX();
+                    this.structures.remove(switchN);
+                    this.grid[y][x].getStructures().remove(switchN);
+                }
+                for(Creature creature : creatures)
+                {
+                    if(creature.getCreatureType() == CreatureType.BAT)
                     {
-                        if(!(offY == 0 && offX == 0) && isInBounds(y+offY, x+offX))
+                        Bat bat = (Bat) creature;
+                        bat.setPower(switchSetsPressed + 1);
+                    }
+                }
+                switches = new ArrayList<Switch>();
+            }
+
+            //Siren Area bounds are row 1 column 11 to row 3 column 28
+            while(switches.isEmpty() && switchSetsPressed < 3)
+            {
+                int y = rand.nextInt(sizeY);
+                int x = rand.nextInt(sizeX);
+                Boolean invalid = false;
+                Tile tile = grid[y][x];
+                if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(y < 5 && x > 11 && x < 28) && !(y == player.getPosition().getPosY() && x == player.getPosition().getPosX()))
+                {
+                    ArrayList<int[]> possible = new ArrayList<>();
+                    for(int offY=-2; offY<3; offY++)
+                    {
+                        for(int offX = -5; offX<6; offX++)
                         {
-                            Tile tile2 = grid[y+offY][x+offX];
-                            if(tile2.getStructures().isEmpty() && tile2.getCreatures().isEmpty() && !(y+offY < 5 && x+offX > 11 && x+offX < 28) && !(y+offY == player.getPosition().getPosY() && x+offX == player.getPosition().getPosX()))
+                            if(!(offY == 0 && offX == 0) && isInBounds(y+offY, x+offX))
                             {
-                                possible.add(new int[]{y+offY,x+offX});
+                                Tile tile2 = grid[y+offY][x+offX];
+                                if(tile2.getStructures().isEmpty() && tile2.getCreatures().isEmpty() && !(y+offY < 5 && x+offX > 11 && x+offX < 28) && !(y+offY == player.getPosition().getPosY() && x+offX == player.getPosition().getPosX()))
+                                {
+                                    possible.add(new int[]{y+offY,x+offX});
+                                }
                             }
                         }
                     }
-                }
-                if(!possible.isEmpty())
-                {
-                    int i = rand.nextInt(possible.size());
-                    Switch switch1 = new Switch();
-                    switch1.setPosition(y, x);
-                    this.grid[y][x].addStructure(switch1);
-                    this.structures.add(switch1);
-                    Switch switch2 = new Switch();
-                    switch2.setPosition(possible.get(i)[0], possible.get(i)[1]);
-                    this.grid[possible.get(i)[0]][possible.get(i)[1]].addStructure(switch2);
-                    this.structures.add(switch2);
-                    switches.add(switch1);
-                    switches.add(switch2);
+                    if(!possible.isEmpty())
+                    {
+                        int i = rand.nextInt(possible.size());
+                        Switch switch1 = new Switch();
+                        switch1.setPosition(y, x);
+                        this.grid[y][x].addStructure(switch1);
+                        this.structures.add(switch1);
+                        Switch switch2 = new Switch();
+                        switch2.setPosition(possible.get(i)[0], possible.get(i)[1]);
+                        this.grid[possible.get(i)[0]][possible.get(i)[1]].addStructure(switch2);
+                        this.structures.add(switch2);
+                        switches.add(switch1);
+                        switches.add(switch2);
+                    }
                 }
             }
-        }
 
-        if(!isFinalPhase1Done && switchSetsPressed > 2)
-        {
-            this.isFinalPhase1Done = true;
-            Iterator<Structure> iter = this.structures.iterator();
-            while(iter.hasNext())
+            if(!isFinalPhase1Done && switchSetsPressed > 2)
             {
-                Structure structure = iter.next();
-                if(structure.getType() == StructureType.BORDER)
+                this.isFinalPhase1Done = true;
+                Iterator<Structure> iter = this.structures.iterator();
+                while(iter.hasNext())
                 {
-                    Border border = (Border) structure;
-                    if(border.isSwitchReactive())
+                    Structure structure = iter.next();
+                    if(structure.getType() == StructureType.BORDER)
                     {
-                        int y = structure.getPosition().getPosY();
-                        int x = structure.getPosition().getPosX();
-                        this.grid[y][x].getStructures().remove(structure);
-                        iter.remove();
+                        Border border = (Border) structure;
+                        if(border.isSwitchReactive())
+                        {
+                            int y = structure.getPosition().getPosY();
+                            int x = structure.getPosition().getPosX();
+                            this.grid[y][x].getStructures().remove(structure);
+                            iter.remove();
+                        }
                     }
                 }
             }
@@ -535,13 +549,6 @@ public class Floor
         while(iter.hasNext())
         {
             Loot loot = iter.next();
-            switch(loot.getType())
-            {
-                case GOLD:
-                    Gold gold = (Gold) loot;
-                    addCombatLog("Yohane picked up " + gold.getAmount() + " Gold.", CombatLogType.LOOT_GAIN);
-                    break;
-            }
             loot.pickUpLoot(this);
             loots.remove(loot);
             iter.remove();
@@ -616,12 +623,40 @@ public class Floor
             Creature creature = iter.next();
             if(creature.tick(this))
             {
-                addCombatLog(creature.getName()+" has perished due to natural causes.", CombatLogType.DEATH);
+                if(creature.getCreatureType() != CreatureType.ARROW)
+                {
+                    addCombatLog(creature.getName()+" has perished due to natural causes.", CombatLogType.DEATH);
+                }
                 int y = creature.getPosition().getPosY();
                 int x = creature.getPosition().getPosX();
                 creature.dropLoot(this);
                 grid[y][x].getCreatures().remove(creature);
                 iter.remove();
+            }
+        }
+        Iterator<Arrow> iter2 = this.arrows.iterator();
+        while(iter2.hasNext())
+        {
+            Arrow arrow = iter2.next();
+            int y = arrow.getPosition().getPosY();
+            int x = arrow.getPosition().getPosX();
+            this.grid[y][x].getCreatures().add(arrow);
+            this.creatures.add(arrow);
+            iter2.remove();
+        }
+        //To kill off any creatures that took damage from arrows
+        Iterator<Creature> iter3 = this.creatures.iterator();
+        while(iter3.hasNext())
+        {
+            Creature creature = iter3.next();
+            if(creature.isDead())
+            {
+                addCombatLog(creature.getName()+" has perished due to natural causes.", CombatLogType.DEATH);
+                int y = creature.getPosition().getPosY();
+                int x = creature.getPosition().getPosX();
+                creature.dropLoot(this);
+                grid[y][x].getCreatures().remove(creature);
+                iter3.remove();
             }
         }
     }
@@ -656,9 +691,10 @@ public class Floor
      * 
      * @param dungeonCode the code identifying which {@code DungeonCode} this floor is in.
      */
-    public void generateFloor(DungeonCode dungeonCode)
+    public void generateFloor(DungeonCode dungeonCode, HashSet<DungeonModifier> dungeonModifiers)
     {
         this.dungeonCode = dungeonCode;
+        this.dungeonModifiers = dungeonModifiers;
         int i;
         switch(dungeonCode)
         {
@@ -667,7 +703,7 @@ public class Floor
                 switch(i)
                 {
                     case 0:
-                        convertLayout(Layouts.REFERENCE);
+                        convertLayout(Layouts.BAT_WATER_TEST);
                         break;
                     case 1:
                         convertLayout(Layouts.BAT_WATER_TEST);
@@ -691,10 +727,10 @@ public class Floor
                 switch(i)
                 {
                     case 0:
-                        convertLayout(Layouts.REFERENCE);
+                        convertLayout(Layouts.SKELETON_TEST);
                         break;
                     case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
+                        convertLayout(Layouts.SKELETON_TEST);
                         break; 
                 }
                 break;
@@ -782,6 +818,23 @@ public class Floor
         this.sizeY = layout.length;
         this.sizeX = layout[0].length();
         this.grid = new Tile[sizeY][sizeX];
+        addLayout(layout);
+    }
+
+    /**
+     * Converts the {@code Layout} by scanning each character and initializing their corresponding {@code Tiles} in the {@code grid}.
+     * The grid is initialized with sizes {@code sizeY} and {@code sizeX},
+     * which are obtained from getting the number of strings and the length of the strings from the {@code Layout}.
+     * <p>
+     * This also adds the reference to each generated {@code Structure}, {@code Creature}, and {@code Loot} to the
+     * {@code structures}, {@code creatures}, and {@code loots} lists as well.
+     * <p>
+     * Once the {@code Spawn} is found, it stores the location as {@code spawnY} and {@code spawnX}.
+     * 
+     * @param layout the layout data to convert into data.
+     */
+    private void addLayout(String[] layout)
+    {
         for(int i = 0; i < sizeY; i++)
         {
             for (int j = 0; j < sizeX; j++)
@@ -805,7 +858,7 @@ public class Floor
                         border2.setSwitchReactivity(true);
                         break;
                     case 'v':
-                        Wall wall = new Wall();
+                        Wall wall = new Wall(this.dungeonModifiers);
                         wall.setPosition(i, j);
                         this.grid[i][j].addStructure(wall);
                         this.structures.add(wall);
@@ -817,6 +870,13 @@ public class Floor
                         this.structures.add(spike);
                         break;
                     case 'w':
+                        if(dungeonModifiers.contains(DungeonModifier.HOT_WATERS))
+                        {
+                            Heat heat2 = new Heat();
+                            heat2.setPosition(i, j);
+                            this.grid[i][j].addStructure(heat2);
+                            this.structures.add(heat2);
+                        }
                         Water water = new Water();
                         water.setPosition(i, j);
                         this.grid[i][j].addStructure(water);
@@ -837,7 +897,7 @@ public class Floor
                         break;
                     //Creatures
                     case 'b':
-                        Bat bat = new Bat(this.order);
+                        Bat bat = new Bat(this.order, this.dungeonModifiers);
                         bat.setPosition(i, j);
                         grid[i][j].addCreature(bat);
                         this.creatures.add(bat);
@@ -874,6 +934,12 @@ public class Floor
                         siren.setPosition(i, j);
                         grid[i][j].addCreature(siren);
                         this.creatures.add(siren);
+                        break;
+                    case 's':
+                        Skeleton skeleton = new Skeleton(this.order, this.dungeonModifiers);
+                        skeleton.setPosition(i, j);
+                        grid[i][j].addCreature(skeleton);
+                        this.creatures.add(skeleton);
                         break;
                 }
             }
@@ -916,6 +982,19 @@ public class Floor
         return false;
     }
 
+    public ArrayList<Creature> checkForCreatures(int y, int x)
+    {
+        ArrayList<Creature> creaturesFound = new ArrayList<>();
+        for(Creature creature: creatures)
+        {
+            if(creature.getPosition().getPosY() == y && creature.getPosition().getPosX() == x)
+            {
+                creaturesFound.add(creature);
+            }
+        }
+        return creaturesFound;
+    }
+
     public boolean checkForLailaps(int y, int x)
     {
         for(Lailaps lailaps: lailapses)
@@ -926,6 +1005,28 @@ public class Floor
             }
         }
         return false;
+    }
+
+    public boolean checkForWater(int y, int x)
+    {
+        for(Structure structure: structures)
+        {
+            if(structure.getPosition().getPosY() == y && structure.getPosition().getPosX() == x && structure.getType() == StructureType.WATER)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createArrow(int y, int x, double damage, Direction direction)
+    {
+        Arrow arrow = new Arrow(damage, direction);
+        arrow.setPosition(y, x);
+        if(!this.isCreatureBlocked(arrow, y, x))
+        {
+            this.arrows.add(arrow);
+        }
     }
 
     public double getPlayerDistance(int y, int x)
@@ -1140,5 +1241,10 @@ public class Floor
     public ArrayList<Lailaps> getLailapses()
     {
         return this.lailapses;
+    }
+
+    public HashSet<DungeonModifier> getDungeonModifiers()
+    {
+        return this.dungeonModifiers;
     }
 }

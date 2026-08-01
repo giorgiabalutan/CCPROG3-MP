@@ -78,6 +78,18 @@ public abstract class Creature{
                 this.flying = true;
                 this.name = "Siren";
                 break;
+            case SKELETON:
+                this.displayChar = 's';
+                this.maxHp = 1;
+                this.flying = false;
+                this.name = "Skeleton";
+                break;
+            case ARROW:
+                this.displayChar = '>';
+                this.maxHp = 1;
+                this.flying = true;
+                this.name = "Arrow";
+                break;
         }
         this.hp = maxHp;
         this.pos = new Position();
@@ -217,5 +229,11 @@ public abstract class Creature{
     public double getHp()
     {
         return this.hp;
+    }
+
+    public void incMaxHp(double hp)
+    {
+        this.maxHp += hp;
+        this.hp += hp;
     }
 }

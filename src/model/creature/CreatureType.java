@@ -10,5 +10,7 @@ public enum CreatureType{
      */
     BAT,
     LAILAPS,
-    SIREN
+    SIREN,
+    SKELETON,
+    ARROW
 }

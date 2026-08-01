@@ -3,6 +3,7 @@ package model.dungeon;
 import java.io.Serializable;
 import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
+import java.util.HashSet;
 import model.Idol;
 import model.Player;
 import model.structure.Spawn;
@@ -25,6 +26,7 @@ public class Dungeon implements Serializable
      * The {@link DungeonCode} of this dungeon.
      */
     private DungeonCode dungeonCode;
+    private HashSet<DungeonModifier> dungeonModifiers;
     /**
      * The list of {@code Floors} that this dungeon has.
      */
@@ -74,6 +76,7 @@ public class Dungeon implements Serializable
      */
     public void generateDungeon(Idol idol)
     {
+        this.dungeonModifiers = new HashSet<>();
         this.idol = idol;
         this.dungeonName = idol.getDungeonName();
         floorNum = 0;
@@ -88,6 +91,47 @@ public class Dungeon implements Serializable
             case 1:
                 maxFloor += 1;
         }
+        switch(idol.getDungeonCode())
+        {
+            case YASUDAYA_RYOKAN:
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_HEAT);
+                this.dungeonModifiers.add(DungeonModifier.HOT_WATERS);
+                break;
+            case IZU_MITO_SEA_PARADISE:
+                this.dungeonModifiers.add(DungeonModifier.FASTER_BATS);
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_HEALS);
+                break;
+            case NUMAZU_DEEP_SEA_AQUARIUM:
+                this.dungeonModifiers.add(DungeonModifier.CRIPPLED_BATS);
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_SKELETONS);
+                this.dungeonModifiers.add(DungeonModifier.FASTER_SKELETONS);
+                this.dungeonModifiers.add(DungeonModifier.REBREATHER);
+                break;
+            case SHOUGETSU_CONFECTIONARY:
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_HEALS);
+                this.dungeonModifiers.add(DungeonModifier.GOLD_TAX);
+                break;
+            case NAGAHAMA_CASTLE_RUINS:
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_BATS);
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_SKELETONS);
+                this.dungeonModifiers.add(DungeonModifier.FASTER_BATS);
+                this.dungeonModifiers.add(DungeonModifier.FASTER_SKELETONS);
+                break;
+            case NUMAZUGOYOTEI:
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_HEALS);
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_WALLS);
+                this.dungeonModifiers.add(DungeonModifier.FASTER_BATS);
+                break;
+            case UCHIURA_BAY_PIER:
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_WALLS);
+                this.dungeonModifiers.add(DungeonModifier.FASTER_SKELETONS);
+                this.dungeonModifiers.add(DungeonModifier.REBREATHER);
+                break;
+            case AWASHIMA_MARINE_PARK:
+                this.dungeonModifiers.add(DungeonModifier.FASTER_SKELETONS);
+                this.dungeonModifiers.add(DungeonModifier.STRONGER_HEALS);
+                break;
+        }
         generateFloors(idol.getDungeonCode(), maxFloor);
         spawnPlayer();
         
@@ -96,6 +140,7 @@ public class Dungeon implements Serializable
     public void generateFinalDungeon()
     {
         this.dungeonName = "Siren's Lair";
+        this.dungeonModifiers = new HashSet<>();
         floorNum = 0;
         maxFloor = 1;
         generateFinalFloor();
@@ -117,7 +162,7 @@ public class Dungeon implements Serializable
         for(int i = 0; i < maxFloor; i++)
         {
             this.floors.add(new Floor(player, this.order));
-            this.floors.get(i).generateFloor(dungeonCode);
+            this.floors.get(i).generateFloor(dungeonCode, dungeonModifiers);
         }
     }
 
@@ -125,7 +170,7 @@ public class Dungeon implements Serializable
     {
         this.floors = new ArrayList<>();
         this.floors.add(new Floor(player, this.order));
-        this.floors.get(0).generateFloor(dungeonCode.SIRENS_LAIR);
+        this.floors.get(0).generateFloor(dungeonCode.SIRENS_LAIR, dungeonModifiers);
     }
 
     /**
@@ -236,5 +281,10 @@ public class Dungeon implements Serializable
     public DungeonCode getDungeonCode()
     {
         return this.dungeonCode;
+    }
+
+    public HashSet<DungeonModifier> getDungeonModifiers()
+    {
+        return this.dungeonModifiers;
     }
 }

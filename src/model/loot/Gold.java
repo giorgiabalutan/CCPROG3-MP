@@ -1,5 +1,9 @@
 package model.loot;
 
+import model.CombatLogType;
+import model.Player;
+import model.creature.Creature;
+import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
  * Represents the gold drops of {@link Creature Creatures}.
@@ -35,7 +39,13 @@ public class Gold extends Loot
     @Override
     public void pickUpLoot(Floor floor)
     {
-        floor.getPlayer().gainGold(gold);
+        int goldGain = gold;
+        if(floor.getDungeonModifiers().contains(DungeonModifier.GOLD_TAX))
+        {
+            goldGain /= 2;
+        }
+        floor.getPlayer().gainGold(goldGain);
+        floor.addCombatLog("Yohane picked up " + goldGain + " Gold.", CombatLogType.LOOT_GAIN);
     }
 
     public int getAmount()
