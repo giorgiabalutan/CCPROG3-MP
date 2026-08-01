@@ -699,15 +699,15 @@ public class Floor
         switch(dungeonCode)
         {
             case YASUDAYA_RYOKAN:
-                i = this.rand.nextInt(2);
-                switch(i)
+                i = this.rand.nextInt(1000);
+                if(i < 100)
                 {
-                    case 0:
-                        convertLayout(Layouts.YASUDAYA_RYOKAN_1);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.YASUDAYA_RYOKAN_2);
-                        break; 
+                    convertLayout(Layouts.FOUR_POOLS);
+                }else if(i < 200)
+                {
+                    convertLayout(Layouts.PISKEL_ART_POOL);
+                }else{
+                    convertLayout(Layouts.YASUDAYA_RYOKAN_TREASURE_ROOM);
                 }
                 break;
             case IZU_MITO_SEA_PARADISE:

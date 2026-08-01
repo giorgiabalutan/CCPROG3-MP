@@ -73,6 +73,8 @@ public class Skeleton extends Creature{
             int playerY = floor.getPlayer().getPosition().getPosY();
             int playerX = floor.getPlayer().getPosition().getPosX();
 
+            boolean preserveTurn = false;
+
             int distY = Math.abs(y - playerY);
             int distX = Math.abs(x - playerX);
             if(floor.checkForPlayer(y-1, x) || floor.checkForPlayer(y+1, x) || floor.checkForPlayer(y, x-1) || floor.checkForPlayer(y, x+1))
@@ -135,6 +137,7 @@ public class Skeleton extends Creature{
                         floor.moveCreature(this, offY, 0);
                     }else{
                         floor.creatureIdle(this);
+                        preserveTurn = true;
                     }
                 }else if(offY<0)
                 {
@@ -144,6 +147,7 @@ public class Skeleton extends Creature{
                         floor.moveCreature(this, offY, 0);
                     }else{
                         floor.creatureIdle(this);
+                        preserveTurn = true;
                     }
                 }else if(offX>0)
                 {
@@ -153,6 +157,7 @@ public class Skeleton extends Creature{
                         floor.moveCreature(this, 0, offX);
                     }else{
                         floor.creatureIdle(this);
+                        preserveTurn = true;
                     }
                 }else{
                     this.setDirection(Direction.LEFT);
@@ -161,6 +166,7 @@ public class Skeleton extends Creature{
                         floor.moveCreature(this, 0, offX);
                     }else{
                         floor.creatureIdle(this);
+                        preserveTurn = true;
                     }
                 }
                 if(floor.getDungeonModifiers().contains(DungeonModifier.FASTER_SKELETONS))
@@ -188,6 +194,10 @@ public class Skeleton extends Creature{
                 }
             }
             this.curCooldown = this.moveInterval;
+            if(preserveTurn)
+            {
+                this.curCooldown = 0;
+            }
         }
         if(this.isDead()){
             return true;

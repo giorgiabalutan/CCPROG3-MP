@@ -116,6 +116,7 @@ public class Bat extends Creature
         this.curCooldown -= 1;
         if(this.curCooldown <= 0)
         {
+            boolean preserveTurn = false;
             this.setIdle(false);
             int y = this.getPosition().getPosY();
             int x = this.getPosition().getPosX();
@@ -188,10 +189,15 @@ public class Bat extends Creature
                         floor.moveCreature(this, moveY, moveX);
                     }else{
                         floor.creatureIdle(this);
+                        preserveTurn = true;
                     }
                 }
             }
             this.curCooldown = this.moveInterval;
+            if(preserveTurn)
+            {
+                this.curCooldown = 0;
+            }
         }
         if(this.isDead()){
             return true;

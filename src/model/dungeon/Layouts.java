@@ -33,7 +33,7 @@ public class Layouts
      * Private Constructor to prevent Instantiation. This class is meant to provide static data.
      */
     private Layouts(){}
-    public static final String[] YASUDAYA_RYOKAN_1 = {
+    public static final String[] FOUR_POOLS = {
         "********************",
         "*S................b*",
         "*..www........www..*",
@@ -46,7 +46,7 @@ public class Layouts
         "********************",
     };
 
-    public static final String[] YASUDAYA_RYOKAN_2 = {
+    public static final String[] PISKEL_ART_POOL = {
         "*****************************************",
         "*S......................................*",
         "*..........h.......b......h............s*",
@@ -57,6 +57,19 @@ public class Layouts
         "*....wwwwwwwwwwwwwwvvvwwwwwwwwwwwwww...b*",
         "*wwwwwwwwwwwwwwwwwvvEvvwwwwwwwwwwwwwwwwT*",
         "*****************************************",
+    };
+
+    public static final String[] YASUDAYA_RYOKAN_TREASURE_ROOM = {
+        "********************",
+        "*wS..............Ew*",
+        "*wwvvvvvvvvvvvvvvww*",
+        "*sw..............ws*",
+        "*www..b......b..www*",
+        "*wsw.b...b....b.wsw*",
+        "*wwwwxxxxxxxxxxwwww*",
+        "*TTTw.....T....wTTT*",
+        "*TTTw.T......T.wTTT*",
+        "********************",
     };
     /**
      * The reference level found in the specs.
