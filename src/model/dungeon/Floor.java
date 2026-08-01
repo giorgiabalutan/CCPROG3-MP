@@ -167,7 +167,7 @@ public class Floor
                 break;
             case '[':
                 String message1 = this.player.previousItem();
-                if(message1.equals(""))
+                if(!message1.equals(""))
                 {
                     addCombatLog("Attempted to switch Items but none were found", CombatLogType.PLAYER_ACTION);
                 }
@@ -175,7 +175,7 @@ public class Floor
                 break;
             case ']':
                 String message2 = this.player.nextItem();
-                if(message2.equals(""))
+                if(!message2.equals(""))
                 {
                     addCombatLog("Attempted to switch Items but none were found", CombatLogType.PLAYER_ACTION);
                 }

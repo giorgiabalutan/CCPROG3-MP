@@ -33,6 +33,11 @@ public class Layouts
      * Private Constructor to prevent Instantiation. This class is meant to provide static data.
      */
     private Layouts(){}
+
+    //YASUDAYA_RYOKAN Maps
+    /**
+     * 
+     */
     public static final String[] FOUR_POOLS = {
         "********************",
         "*S................b*",
@@ -56,6 +61,17 @@ public class Layouts
         "*..h.....wwwwwwwwwwwvwwwwwwwwwww....h...*",
         "*....wwwwwwwwwwwwwwvvvwwwwwwwwwwwwww...b*",
         "*wwwwwwwwwwwwwwwwwvvEvvwwwwwwwwwwwwwwwwT*",
+        "*****************************************",
+    };
+
+    public static final String[] A = {
+        "*****************************************",
+        "*.......................................*",
+        "*.......................................*",
+        "*.......................................*",
+        "*.......................................*",
+        "*.......................................*",
+        "*.......................................*",
         "*****************************************",
     };
 
