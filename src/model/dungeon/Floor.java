@@ -703,10 +703,10 @@ public class Floor
                 switch(i)
                 {
                     case 0:
-                        convertLayout(Layouts.BAT_WATER_TEST);
+                        convertLayout(Layouts.YASUDAYA_RYOKAN_1);
                         break;
                     case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
+                        convertLayout(Layouts.YASUDAYA_RYOKAN_2);
                         break; 
                 }
                 break;
@@ -1088,6 +1088,13 @@ public class Floor
             {
                 Structure struct = iter1.next();
                 blocked = blocked || struct.creatureIsBlocking(this, creature);
+            }
+            for(Creature creatureN: this.grid[y][x].getCreatures())
+            {
+                if(creatureN.getCreatureType() == creature.getCreatureType() && creatureN.getCreatureType() != CreatureType.ARROW)
+                {
+                    blocked = true;
+                }
             }
         }else{
             blocked = true;
