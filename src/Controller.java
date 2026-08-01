@@ -163,15 +163,16 @@ public class Controller implements ActionListener, KeyListener
                 }
                 break;
             case "S":
-                this.view.printStatus();
-                waitForContinue();
+                this.view.repaintMainMenu(command);
                 break;
             case "H":
-                this.view.printManual();
-                waitForContinue();
+                this.view.repaintMainMenu(command);
                 break;
             case "Q":
                 this.model.quit();
+                break;
+            case "R":
+                this.view.repaintMainMenu(command);
                 break;
         }
     }

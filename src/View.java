@@ -94,6 +94,23 @@ public class View extends JFrame
         // }
     }
     
+    public void repaintMainMenu(String command)
+    {
+        switch(command)
+        {
+            case "H":
+                this.mainMenuPanel.setIsManualShowing(true);
+                break;
+            case "S":
+                this.mainMenuPanel.setIsStatsShowing(true);
+                break;
+            case "R":
+                this.mainMenuPanel.setIsManualShowing(false);
+                this.mainMenuPanel.setIsStatsShowing(false);
+                break;
+        }
+        this.mainMenuPanel.repaint();
+    }
     public void repaintOverworld()
     {
         this.overworldPanel.repaint();

@@ -1,3 +1,5 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -30,6 +32,9 @@ public class MainMenuPanel extends JPanel{
         private JButton statusButton;
         private JButton howToPlayButton;
         private JButton quitButton;
+        private JButton returnButton;
+        private boolean isStatsShowing;
+        private boolean isManualShowing;
         
         private JPanel buttonPanel;
 
@@ -40,12 +45,10 @@ public class MainMenuPanel extends JPanel{
             this.setLayout(null);
             this.bgImage = new ImageIcon(getClass().getResource("/assets/mainMenuImage.png")).getImage();
             
-            
             this.buttonPanel = new JPanel();
             stylePanel();
             addButtons();
             this.add(buttonPanel);
-            
         }
         
         public void stylePanel()
@@ -80,6 +83,7 @@ public class MainMenuPanel extends JPanel{
             quitButton = new JButton("Quit");
             styleButton(quitButton);
             quitButton.setActionCommand("Q");
+            
             
             
             if (this.model.isNgPlusAvailable())
@@ -139,6 +143,95 @@ public class MainMenuPanel extends JPanel{
             super.paintComponent(g);
             Graphics2D g2D = (Graphics2D) g;
             g2D.drawImage(this.bgImage, 0, 0, null);
+            
+            if (this.isManualShowing)
+                drawManual(g2D);
+            else
+                showButtons();
+            
         }
+        
+        public void showButtons()
+        {
+            this.quitButton.setText("Quit");
+            this.quitButton.setActionCommand("Q");
+            newGameButton.setVisible(true);
+            newGamePlusButton.setVisible(true);
+            continueButton.setVisible(true);
+            statusButton.setVisible(true);
+            howToPlayButton.setVisible(true);
+            this.buttonPanel.setBounds(800, 310, 250, 180);
+        }
+       
+        public void drawManual(Graphics2D g2D)
+        {
+            this.quitButton.setText("Return");
+            this.quitButton.setActionCommand("R");
+            newGameButton.setVisible(false);
+            newGamePlusButton.setVisible(false);
+            continueButton.setVisible(false);
+            statusButton.setVisible(false);
+            howToPlayButton.setVisible(false);
+            this.buttonPanel.setBounds(800, 310, 250, 180);
+            
+            g2D.setFont(new Font("Courier New", Font.PLAIN, 17));
+            String lines[] = {
+                "------------------------------------------Goal---------------------------------------------",
+                " Traverse through dungeons to save 3 random idols.",
+                "--------------------------------------Dungeon Preparation----------------------------------",
+                " You can choose to view your inventory or use your items. Items are used when pressing the\nspace bar or you can switch through them using [ or ]. ",
+                "-----------------------------------------Dungeon-------------------------------------------",
+                " You can move in any straight direction using W, S, A, D. You can also use or switch through\nitems here but you will consume one move while enemies will also move.",
+                "-----------------------------------------Enemies-------------------------------------------",
+                " Bats are flying creatures therefore they can also move diagonally. They will attack you if\nyou are in an adjacent tile while they move. Hint: They only move after you perform two moves.\n",
+                " Skeletons are long-range enemies that shoot arrows. These arrows hurt you if you are directly\nin front of them. Hint: Arrows move after you perform one move.",
+                "---------------------------------------Saving Idols----------------------------------------",
+                " Saving different idols will unlock items and even the shop where you can buy these items.",
+                "----------------------------------------Boss Battle----------------------------------------",
+                " During the final fight, enemies will spawn more often. Good luck, fallen Angel!"
+            };
+            int i = 0;
+            int x = 46;
+            int y = 33;
+            int width = 1009;
+            int length = 453;
+            int lineSpacing = 20;
+            
+            drawBox(g2D, x, y, width, length);
+            
+            x = 62;
+            y = 56;
+            for (i = 0; i < lines.length; i++)
+            {   
+                for(String line : lines[i].split("\n"))
+                {
+                    g2D.drawString(line, x, y);
+                    y += lineSpacing;
+                }
+            }
+            
+            
+        }
+        
+        public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
+        {
+            g2D.setColor(new Color(0, 0, 0, 220));
+            g2D.fillRoundRect(x, y, width, height, 35, 35);
 
+
+            g2D.setColor(Color.white);
+            g2D.setStroke(new BasicStroke(5));
+            g2D.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+        }
+        
+        public void setIsManualShowing(boolean isManualShowing)
+        {
+            this.isManualShowing = isManualShowing;
+        }
+        
+        public void setIsStatsShowing(boolean isStatsShowing)
+        {
+            this.isStatsShowing = isStatsShowing;
+        }
+        
 }
