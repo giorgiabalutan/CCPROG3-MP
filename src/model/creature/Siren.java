@@ -7,19 +7,18 @@ import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
 /**
- * Represents the generic flying creature Bat.
+ * Represents the boss creature Siren.
  * <p>
  * Extends the {@link Creature} class.
- * Bats have varying statistics depending on which dungeon it is in.
  */
 public class Siren extends Creature
 {
     /**
-     * The amount of damage the bat deals on attack.
+     * The amount of damage the Siren deals on attack.
      */
     private double damage;
     /**
-     * How many ticks it takes for the Bat to take its turn.
+     * How many ticks it takes for the Siren to take its turn.
      */
     private int moveInterval;
     /**
@@ -27,17 +26,14 @@ public class Siren extends Creature
      */
     private int curCooldown;
     /**
-     * The amount of gold the Bat drops as {@link Loot}.
+     * The amount of gold the Siren drops as {@link Loot}.
      */
     private int gold;
     
     /**
-     * Constructs a bat depending on the current {@code Dungeon}.
+     * Constructs a Siren depending on the current {@code Dungeon}.
      * <p>
-     * Constructs a Bat Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
-     * Its characteristics depend on the {@code order} of the {@code Dungeon}.
-     * 
-     * @param order the order of the dungeon currently being challenged.
+     * Constructs a Siren Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
      */
     public Siren()
     {
@@ -50,14 +46,12 @@ public class Siren extends Creature
     }
 
     /**
-     * Reduces the Bat's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
-     * If the {@link Player} is adjacent to the Bat on its turn, the Bat attacks the {@code Player},
-     * else the bat moves to a random valid adjacent space.
-     * The bat is also able to move diagonally on the 3rd {@code Dungeon}.
-     * The bat also triggers any Structure Idle effects if it does not move during its turn.
+     * Reduces the Siren's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
+     * If the {@link Player} is adjacent to the Siren on its turn, the Siren attacks the {@code Player},
+     * else, the siren moves to a valid adjacent or diagonal space closer to the {@code Player} or {@link Lailaps}, whichever is closer, with a bias for the {@code Player}.
      * 
-     * @param floor the {@link Floor} the Bat is on, allows the Bat to search and move on it.
-     * @return {@code true} if the Bat died as a result of its turn.
+     * @param floor the {@link Floor} the Siren is on, allows the Siren to search and move on it.
+     * @return {@code true} if the Siren died as a result of its turn.
      */
     @Override
     public boolean tick(Floor floor)
@@ -177,9 +171,9 @@ public class Siren extends Creature
     }
 
     /**
-     * Drops a small amount of gold on death.
+     * Drops a large amount of gold on death.
      * 
-     * @param floor the {@code Floor} the Bat is on, allows the Bat to create {@link Gold} there.
+     * @param floor the {@code Floor} the Siren is on, allows the Siren to create {@link Gold} there.
      */
     @Override
     public void dropLoot(Floor floor){

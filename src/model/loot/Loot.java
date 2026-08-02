@@ -107,12 +107,20 @@ public abstract class Loot implements Serializable{
     {
         this.pos.setPosition(y, x);
     }
-
+    /**
+     * Returns the {@code LootType} of this loot.
+     * 
+     * @return the {@code LootType} of this loot.
+     */
     public LootType getType()
     {
         return this.type;
     }
-
+    /**
+     * Returns the name of this loot.
+     * 
+     * @return the name of this loot.
+     */
     public String getName()
     {
         return this.name;

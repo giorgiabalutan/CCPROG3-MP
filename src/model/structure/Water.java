@@ -32,6 +32,7 @@ public class Water extends Structure
     }
     /**
      * Water Tiles block movement.
+     * Unless the player has {@code Air Shoes} or the floor has the {@link DungeonModifier#REBREATHER Rebreather Modifier}.
      * 
      * @param floor the {@code Floor} the Water Tile is on.
      * 
@@ -40,7 +41,6 @@ public class Water extends Structure
     @Override
     public boolean isBlocking(Floor floor)
     {
-        //False if Player has Air Shoes (to be implemented later...)
         if(floor.getDungeonModifiers().contains(DungeonModifier.REBREATHER) || floor.getPlayer().hasAirShoes())
         {
             return false;
@@ -74,7 +74,7 @@ public class Water extends Structure
         return false;
     }
     /**
-     * Water Tiles block movement unless the {@code Creature} is flying.
+     * Water Tiles block movement unless the {@code Creature} is flying, or the dungeon has the {@code Rebreather Modifier}.
      * 
      * @param floor the {@code Floor} the Water Tile is on.
      * @param creature the {@code Creature} attempting to pass the Water Tile.

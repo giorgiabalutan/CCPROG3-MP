@@ -2,16 +2,43 @@ package model.creature;
 
 import java.util.ArrayList;
 import model.Direction;
+import model.Player;
 import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
+import model.structure.Water;
 
-
+/**
+ * Represents the projectiles shot by {@link Skeleton}
+ * <p>
+ * Extends the {@link Creature} class.
+ */
 public class Arrow extends Creature{
+    /**
+     * The amount of damage this creature deals.
+     */
     private double damage;
+    /**
+     * The direction this creature moves in.
+     */
     private Direction direction;
+    /**
+     * How many ticks it takes for the Arrow to take its turn.
+     */
     private int moveInterval;
+    /**
+     * The current number of remaining ticks until it takes its next turn.
+     */
     private int curCooldown;
 
+    /**
+     * Constructs an Arrow.
+     * <p>
+     * Constructs an Arrow Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
+     * Its characteristics depend on the damage of the {@code Skeleton} that shot it.
+     * 
+     * @param order the order of the dungeon currently being challenged.
+     * @param direction the direction the arrow moves in.
+     */
     public Arrow(double damage, Direction direction)
     {
         super(CreatureType.ARROW);
@@ -23,6 +50,15 @@ public class Arrow extends Creature{
         this.setIdle(false);
     }
 
+    /**
+     * Reduces the Arrow's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
+     * If the arrow lands on a {@link Player} or {@code Creature} on its turn, the Arrow attacks the {@code Player} or {@code Creature},
+     * and kills itself.
+     * It moves twice in its direction every turn, unless it is in {@link Water}.
+     * 
+     * @param floor the {@link Floor} the Arrow is on, allows the Bat to search and move on it.
+     * @return {@code true} if the Arrow died as a result of its turn.
+     */
     @Override
     public boolean tick(Floor floor)
     {
@@ -98,6 +134,11 @@ public class Arrow extends Creature{
         return false;
     }
 
+    /**
+     * Drops nothing on death.
+     * 
+     * @param floor the {@code Floor} the Arrow is on.
+     */
     @Override
     public void dropLoot(Floor floor){}
 }

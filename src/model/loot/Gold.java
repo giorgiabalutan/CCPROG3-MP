@@ -47,7 +47,11 @@ public class Gold extends Loot
         floor.getPlayer().gainGold(goldGain);
         floor.addCombatLog("Yohane picked up " + goldGain + " Gold.", CombatLogType.LOOT_GAIN);
     }
-
+    /**
+     * Returns the amount of gold this gives.
+     * 
+     * @return the amount of gold this gives.
+     */
     public int getAmount()
     {
         return this.gold;

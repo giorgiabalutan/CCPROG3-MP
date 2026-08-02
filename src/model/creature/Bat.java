@@ -39,12 +39,13 @@ public class Bat extends Creature
     private int gold;
 
     /**
-     * Constructs a bat depending on the current {@code Dungeon}.
+     * Constructs a Bat depending on the current {@code Dungeon} and {@link DungeonModifier}s.
      * <p>
      * Constructs a Bat Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
      * Its characteristics depend on the {@code order} of the {@code Dungeon}.
      * 
      * @param order the order of the dungeon currently being challenged.
+     * @param dungeonModifiers the list of {@code DungeonModifier}s of the current {@code Floor}.
      */
     public Bat(int order, HashSet<DungeonModifier> dungeonModifiers)
     {

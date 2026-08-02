@@ -1,19 +1,21 @@
 package model.creature;
 import model.Player;
 import model.dungeon.Floor;
+/**
+ * Represents the companion creature Lailaps.
+ * <p>
+ * Extends the {@link Creature} class.
+ */
 public class Lailaps extends Creature{
     /**
-     * The amount of damage the bat deals on attack.
+     * The amount of damage Lailaps deals on attack.
      */
     private double damage;
 
     /**
-     * Constructs a bat depending on the current {@code Dungeon}.
+     * Constructs a Lailaps depending on the current {@code Dungeon}.
      * <p>
-     * Constructs a Bat Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
-     * Its characteristics depend on the {@code order} of the {@code Dungeon}.
-     * 
-     * @param order the order of the dungeon currently being challenged.
+     * Constructs a Lailaps Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
      */
     public Lailaps()
     {
@@ -23,14 +25,10 @@ public class Lailaps extends Creature{
     }
 
     /**
-     * Reduces the Bat's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
-     * If the {@link Player} is adjacent to the Bat on its turn, the Bat attacks the {@code Player},
-     * else the bat moves to a random valid adjacent space.
-     * The bat is also able to move diagonally on the 3rd {@code Dungeon}.
-     * The bat also triggers any Structure Idle effects if it does not move during its turn.
+     * Does nothing on tick, it moves with the {@link Player}.
      * 
-     * @param floor the {@link Floor} the Bat is on, allows the Bat to search and move on it.
-     * @return {@code true} if the Bat died as a result of its turn.
+     * @param floor the {@link Floor} the Lailaps is on, allows the Lailaps to search and move on it.
+     * @return {@code true} if the Lailaps died as a result of its turn.
      */
     @Override
     public boolean tick(Floor floor)
@@ -39,9 +37,9 @@ public class Lailaps extends Creature{
     }
 
     /**
-     * Drops a small amount of gold on death.
+     * Drops nothing on death.
      * 
-     * @param floor the {@code Floor} the Bat is on, allows the Bat to create {@link Gold} there.
+     * @param floor the {@code Floor} the Lailaps is on, allows the Lailaps to create {@link Gold} there.
      */
     @Override
     public void dropLoot(Floor floor){}

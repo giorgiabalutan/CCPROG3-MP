@@ -33,9 +33,21 @@ public abstract class Creature implements Serializable{
      * The color of creature display. For use in console view.
      */
     private String color;
+    /**
+     * The filepath for the creature's sprite.
+     */
     private String creatureImageFilePath;
+    /**
+     * The creature's name.
+     */
     private String name;
+    /**
+     * The direction the creature is currently facing.
+     */
     private Direction direction;
+    /**
+     * Indicates if the creature is currently idle.
+     */
     private Boolean idle;
     /**
      * The current position of the creature on the map.
@@ -51,6 +63,7 @@ public abstract class Creature implements Serializable{
      * Constructs a creature of the given type.
      * <p>
      * Sets the display character, {@code Color}.
+     * Sets the sprite.
      * Intended for use by a subclass via {@code super(...)}.
      * 
      * @param type decides the initial characteristics of the creature
@@ -135,6 +148,11 @@ public abstract class Creature implements Serializable{
     public String getColor(){
         return this.color;
     }
+    /**
+     * Returns the file path to the creature's sprite.
+     * 
+     * @return a String holding the filepath.
+     */
     public String getImageFilePath(){
         return this.creatureImageFilePath;
     }
@@ -202,36 +220,74 @@ public abstract class Creature implements Serializable{
     {
         return this.flying;
     }
+    /**
+     * Returns the creature's name.
+     * 
+     * @return String representation of its name.
+     */
     public String getName()
     {
         return this.name;
     }
+    /**
+     * Sets the direction the creature is facing.
+     * 
+     * @param direction the direction the creature should now be facing.
+     */
     public void setDirection(Direction direction)
     {
         this.direction = direction;
     }
+    /**
+     * Returns the direction the creature is facing.
+     * 
+     * @param direction the direction the creature is facing.
+     */
     public Direction getDirection()
     {
         return this.direction;
     }
+    /**
+     * Sets the idleness status of the creature.
+     * 
+     * @param bool if the creature should now be idle or not.
+     */
     public void setIdle(Boolean bool)
     {
         this.idle = bool;
     }
+    /**
+     * Returns if the creature is idle.
+     * 
+     * @return a boolean representing its idleness.
+     */
     public Boolean isIdle()
     {
         return this.idle;
     }
-
+    /**
+     * Returns the creature's max hp.
+     * 
+     * @return a double representing its max hp.
+     */
     public double getMaxHp()
     {
         return this.maxHp;
     }
+    /**
+     * Returns the creature's current hp.
+     * 
+     * @return a double representing its current hp.
+     */
     public double getHp()
     {
         return this.hp;
     }
-
+    /**
+     * Increments its Max hp by the amount given. This also increments its current hp by an equal amount.
+     * 
+     * @param hp how much to increase it by.
+     */
     public void incMaxHp(double hp)
     {
         this.maxHp += hp;

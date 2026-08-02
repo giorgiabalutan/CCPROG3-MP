@@ -13,9 +13,14 @@ import model.dungeon.Floor;
  */
 public class Wall extends Structure
 {
+    /**
+     * Indicates if the Wall is strong enough to survive another hit.
+     */
     boolean strength;
     /**
      * Constructs a Wall via the {@link Structure#Structure(StructureType) Structure constructor}.
+     * 
+     * Sets {@code strength} to true if the floor has the {@link DungeonModifier#STRONGER_WALLS Stronger Walls Modifier}.
      */
     public Wall(HashSet<DungeonModifier> dungeonModifiers)
     {
@@ -29,10 +34,12 @@ public class Wall extends Structure
     }
     /**
      * The wall gets dug up by the {@code Player}.
+     * It does not get dug up if it has {@code strength},
+     * It loses the {@code strength} status once an attempt has been made.
      * 
      * @param floor the {@link Floor} the Wall is on.
      * 
-     * @return {@code true} as the Wall gets dug up.
+     * @return {@code true} as the Wall gets dug up, {@code false} if it resisted with {@code strength}.
      */
     @Override
     public boolean interact(Floor floor)

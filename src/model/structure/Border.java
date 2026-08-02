@@ -10,9 +10,14 @@ import model.dungeon.Floor;
  */
 public class Border extends Structure
 {
+    /**
+     * Indicates if this Border will be destroyed once three {@link Switch} sets are pressed in the Final Boss Floor.
+     */
     private boolean switchReactive;
     /**
      * Constructs a Border via the {@link Structure#Structure(StructureType) Structure constructor}.
+     * <p>
+     * Sets {@code switchReactive} to false by default.
      */
     public Border()
     {
@@ -96,12 +101,20 @@ public class Border extends Structure
     {
         return false;
     }
-
+    /**
+     * Sets whether this Border should be destroyed once the {@code Switches} are pressed.
+     * 
+     * @param bool indicating whether this Border should be destroyed once the {@code Switches} are pressed.
+     */
     public void setSwitchReactivity(Boolean bool)
     {
         this.switchReactive = bool;
     }
-
+    /**
+     * Returns if this Border will be destroyed once the {@code Switches} are pressed.
+     * 
+     * @return {@code true} if this Border will be destroyed once the {@code Switches} are pressed.
+     */
     public Boolean isSwitchReactive()
     {
         return this.switchReactive;

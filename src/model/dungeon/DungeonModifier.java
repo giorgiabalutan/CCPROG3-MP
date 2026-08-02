@@ -1,5 +1,7 @@
 package model.dungeon;
-
+/**
+ * Represents what modifiers a dungeon has.
+ */
 public enum DungeonModifier {
     /**
      * Heat Tiles can damage Fliers

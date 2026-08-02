@@ -3,15 +3,14 @@ package model.structure;
 import model.creature.Creature;
 import model.dungeon.Floor;
 /**
- * Represents the Spawn Location of the floor.
+ * Represents the Switches of the final boss floor.
  * <p>
  * Extends the {@link Structure} class.
- * Spawn is where the {@link Player} is placed when entering a {@link Floor}.
  */
 public class Switch extends Structure
 {
     /**
-     * Constructs a Spawn via the {@link Structure#Structure(StructureType) Structure constructor}.
+     * Constructs a Switch via the {@link Structure#Structure(StructureType) Structure constructor}.
      */
     public Switch()
     {
@@ -19,10 +18,11 @@ public class Switch extends Structure
     }
     /**
      * Nothing happens on interaction.
+     * Pressed status is checked each turn by the {@code Floor}.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
+     * @param floor the {@code Floor} the Switch is on.
      * 
-     * @return {@code false} as the Spawn can not be destroyed.
+     * @return {@code false} as the Switch should not be destroyed normally.
      */
     @Override
     public boolean interact(Floor floor)
@@ -30,9 +30,9 @@ public class Switch extends Structure
         return false;
     }
     /**
-     * Spawns don't block movement.
+     * Switches don't block movement.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
+     * @param floor the {@code Floor} the Switch is on.
      * 
      * @return {@code false} to allow movement.
      */
@@ -44,9 +44,9 @@ public class Switch extends Structure
     /**
      * Nothing happens on idle.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
+     * @param floor the {@code Floor} the Switch is on.
      * 
-     * @return {@code false} as the Spawn can not be destroyed.
+     * @return {@code false} as the Switch should not be destroyed normally.
      */
     @Override
     public boolean idle(Floor floor)
@@ -57,10 +57,10 @@ public class Switch extends Structure
     /**
      * Nothing happens on interaction.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
-     * @param creature the {@link Creature} interacting with the Spawn.
+     * @param floor the {@code Floor} the Switch is on.
+     * @param creature the {@link Creature} interacting with the Switch.
      * 
-     * @return {@code false} as the Spawn can not be destroyed.
+     * @return {@code false} as the Switch should not be destroyed normally.
      */
     @Override
     public boolean creatureInteract(Floor floor, Creature creature)
@@ -68,10 +68,10 @@ public class Switch extends Structure
         return false;
     }
     /**
-     * Spawns don't block movement.
+     * Switches don't block movement.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
-     * @param creature the {@code Creature} attempting to pass the Spawn.
+     * @param floor the {@code Floor} the Switch is on.
+     * @param creature the {@code Creature} attempting to pass the Switch.
      * 
      * @return {@code false} to allow movement.
      */
@@ -83,10 +83,10 @@ public class Switch extends Structure
     /**
      * Nothing happens on idle.
      * 
-     * @param floor the {@code Floor} the Spawn is on.
-     * @param creature the {@code Creature} idling on the Spawn.
+     * @param floor the {@code Floor} the Switch is on.
+     * @param creature the {@code Creature} idling on the Switch.
      * 
-     * @return {@code false} as the Spawn can not be destroyed.
+     * @return {@code false} as the Switch should not be destroyed normally.
      */
     @Override
     public boolean creatureIdle(Floor floor, Creature creature)

@@ -11,9 +11,14 @@ import model.dungeon.Floor;
  */
 public class Exit extends Structure
 {
+    /**
+     * Indicates if the Exit should be hidden of not.
+     */
     private Boolean isHidden;
     /**
      * Constructs an Exit via the {@link Structure#Structure(StructureType) Structure constructor}.
+     * <p>
+     * Sets {@code isHidden} to false by default.
      */
     public Exit()
     {
@@ -22,6 +27,8 @@ public class Exit extends Structure
     }
     /**
      * Sets the ExitReached flag to {@code true} to allow the {@link Dungeon} to progress to the next {@link Floor}.
+     * <p>
+     * Does not set the flag if this Exit {@code isHidden}.
      * 
      * @param floor the {@code Floor} the Exit is on.
      * 

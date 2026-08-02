@@ -2,18 +2,50 @@ package model.creature;
 
 import java.util.HashSet;
 import model.Direction;
+import model.Player;
+import model.dungeon.Dungeon;
 import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 import model.loot.Gold;
 import model.loot.Loot;
 
+/**
+ * Represents the generic shooting creature Skeleton.
+ * <p>
+ * Extends the {@link Creature} class.
+ * Skeletons have varying statistics depending on which dungeon it is in.
+ */
 public class Skeleton extends Creature{
+    /**
+     * The order of the {@link Dungeon} the Skeleton spawned in.
+     */
     private int order;
+    /**
+     * The amount of damage the Skeleton deals on attack.
+     */
     private double damage;
+    /**
+     * How many ticks it takes for the Skeleton to take its turn.
+     */
     private int moveInterval;
+    /**
+     * The current number of remaining ticks until it takes its next turn.
+     */
     private int curCooldown;
+    /**
+     * The amount of gold the Skeleton drops as {@link Loot}.
+     */
     private int gold;
 
+    /**
+     * Constructs a Skeleton depending on the current {@code Dungeon} and {@link DungeonModifier}s.
+     * <p>
+     * Constructs a Skeleton Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
+     * Its characteristics depend on the {@code order} of the {@code Dungeon}.
+     * 
+     * @param order the order of the dungeon currently being challenged.
+     * @param dungeonModifiers the list of {@code DungeonModifier}s of the current {@code Floor}.
+     */
     public Skeleton(int order, HashSet<DungeonModifier> dungeonModifiers)
     {
         super(CreatureType.SKELETON);
@@ -60,6 +92,17 @@ public class Skeleton extends Creature{
         this.curCooldown = this.moveInterval;
     }
 
+    /**
+     * Reduces the Skeleton's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
+     * If the {@link Player} is adjacent to the Skeleton on its turn, the Skeleton skips and holds its turn,
+     * else, if the {@code Player} is aligned orthogonally, the Skeleton fires an {@link Arrow} through the {@link Floor.createArrow} method.
+     * else, the Skeleton moves to a valid adjacent space closer to the {@code Player}.
+     * The Skeleton also triggers any Structure Idle effects if it does not move during its turn.
+     * With the {@code DungeonModifier}, {@code FASTER_SKELETONS}, on, it can fire an arrow after moving as well.
+     * 
+     * @param floor the {@link Floor} the Skeleton is on, allows the Skeleton to search and move on it.
+     * @return {@code true} if the Skeleton died as a result of its turn.
+     */
     @Override
     public boolean tick(Floor floor)
     {
@@ -211,7 +254,11 @@ public class Skeleton extends Creature{
         return false;
     }
 
-
+    /**
+     * Drops a small amount of gold on death.
+     * 
+     * @param floor the {@code Floor} the Skeleton is on, allows the Skeleton to create {@link Gold} there.
+     */
     @Override
     public void dropLoot(Floor floor){
         Loot goldDrop = new Gold(this.gold);

@@ -6,11 +6,23 @@ package model.creature;
  */
 public enum CreatureType{
     /**
-     * Generic flying enemy.
+     * Generic Flying Enemy.
      */
     BAT,
+    /**
+     * Player's Companion
+     */
     LAILAPS,
+    /**
+     * Final Boss.
+     */
     SIREN,
+    /**
+     * Generic Shooting Enemy.
+     */
     SKELETON,
+    /**
+     * Shooting Enemies' Projectile.
+     */
     ARROW
 }

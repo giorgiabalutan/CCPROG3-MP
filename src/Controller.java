@@ -339,11 +339,13 @@ public class Controller implements ActionListener, KeyListener
             if("E".equals(command))
             {
                 this.model.setGameState(GameState.OVERWORLD);
+                this.model.getDungeon().finishDungeon();
                 this.model.setDungeonWon(false);
             }
 
         }else if((this.model.getDungeonWon() || this.model.getFinalFightWon()) && "E".equals(command)){
             this.model.setGameState(GameState.OVERWORLD);
+                this.model.getDungeon().finishDungeon();
             this.model.setDungeonWon(false);
             this.model.setFinalFightWon(false);
         }

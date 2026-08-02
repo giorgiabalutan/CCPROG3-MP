@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.Random;
+
+import model.creature.Siren;
 import model.dungeon.Dungeon;
 /**
  * Tracks the current {@link GameState} and Save Information.
@@ -62,13 +64,37 @@ public class Model implements Serializable
      * Tracks the data related to the {@code Dungeons} that the player needs to challenge.
      */
     private Dungeon dungeon;
+    /**
+     * The data storing mechanism for saving and loading.
+     */
     private DataStorage dataStorage;
+    /**
+     * Indicates if the Intro Cutscene is Playing.
+     */
     private boolean isIntroPlaying;
+    /**
+     * Indicates which screen of the Intro Cutscene this is on.
+     */
     private int introIndex = 0;
+    /**
+     * How many times each {@code Idol} has been saved.
+     */
     private ArrayList<Idol> savedIdols;
+    /**
+     * How many times the {@link Siren} has been defeated.
+     */
     private int timesSirenDefeated;
+    /**
+     * Indicates which items are available in the shop.
+     */
     private ArrayList<Item> availableShopItems;
+    /**
+     * Indicates if the current dungeon has been won.
+     */
     private boolean dungeonWon;
+    /**
+     * Indicates if the Final Fight has been won.
+     */
     private boolean finalFightWon;
     //Constructors
     /**
@@ -93,7 +119,9 @@ public class Model implements Serializable
         this.availableShopItems = new ArrayList<Item>();
         setAvailableShopItems();
     }
-
+    /**
+     * Resets the Dungeon, when a New Game (plus) is Started.
+     */
     public void resetDungeon()
     {
         this.dungeon = new Dungeon(player);
@@ -124,7 +152,9 @@ public class Model implements Serializable
             idolList.add(new Idol(numList.remove(randIndex)));
         }
     }
-    
+    /**
+     * Save all data using the {@link DataStorage}.
+     */
     public void save()
     {
         try {
@@ -149,7 +179,9 @@ public class Model implements Serializable
             e.printStackTrace();
         }
     }
-    
+    /**
+     * Loads all data using the {@link DataStorage} from save.dat.
+     */
     public void load()
     {
         try {
@@ -170,7 +202,11 @@ public class Model implements Serializable
             System.out.println("WARNING: COULD NOT LOAD SAVED GAME!");
         }
     }
-    
+    /**
+     * Indicates whether there is a savefile.
+     * 
+     * @return {@code true} if there is a savefile.
+     */
     public boolean hasSavedGame()
     {
         File savedFile = new File("save.dat");
@@ -338,7 +374,9 @@ public class Model implements Serializable
     {
         this.gameOvers++;
     }
-    
+    /**
+     * Increment the times the Siren has been defeated by one.
+     */
     public void incTimesSirenDefeated()
     {
         this.timesSirenDefeated++;
@@ -370,12 +408,20 @@ public class Model implements Serializable
     {
         return this.dungeon;
     }
-    
+    /**
+     * Sets if the Intro should be playing or not.
+     * 
+     * @param isIntroPlaying boolean on if it should be playing.
+     */
     public void setIsIntroPlaying(boolean isIntroPlaying)
     {
         this.isIntroPlaying = isIntroPlaying;
     }
-    
+    /**
+     * Returns if the Intro should be playing or not.
+     * 
+     * @return if the Intro should be playing or not.
+     */
     public boolean isIntroPlaying()
     {
         return this.isIntroPlaying;

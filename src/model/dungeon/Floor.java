@@ -21,7 +21,6 @@ import model.structure.*;
  * It generates a map by reading from the {@link Layouts} and populating the grid.
  * It processes {@code Player} actions and manages creature actions.
  */
-
 public class Floor implements Serializable
 {
     /**
@@ -82,16 +81,45 @@ public class Floor implements Serializable
      * The type of dungeon the floor is a part of.
      */
     private DungeonCode dungeonCode;
+    /**
+     * A HashSet containing the list of {@link DungeonModifiers} for the dungeon this floor is a part of.
+     */
     private HashSet<DungeonModifier> dungeonModifiers;
+    /**
+     * Indicates if the floor should act as the Final Boss Floor.
+     */
     private Boolean isFinal;
+    /**
+     * Indicates if Phase 1 of the Final Boss Floor is over.
+     */
     private Boolean isFinalPhase1Done;
+    /**
+     * An ArrayList containing {@link Lailaps} for the Final Boss Floor.
+     */
     private ArrayList<Lailaps> lailapses;
+    /**
+     * An ArrayLsit containing {@link Switch Switches} for the Final Boss Floor.
+     */
     private ArrayList<Switch> switches;
+    /**
+     * A counter counting how many sets of switches have been pressed.
+     */
     private int switchSetsPressed;
+    /**
+     * An ArrayList containing the {@link Arrow Arrows} in the dungeon.
+     */
     private ArrayList<Arrow> arrows;
+    /**
+     * An internal floor specific modifier for when skeleton should not be able to move.
+     */
     private boolean frozenSkeletons;
-
+    /**
+     * An ArrayList containing combat logs for the floor.
+     */
     private ArrayList<CombatLogEntry> combatLogs;
+    /**
+     * A counter counting how many turns have passed.
+     */
     private int turnNumber;
 
     //Constructors
@@ -135,6 +163,8 @@ public class Floor implements Serializable
      * If the player fails to move during this cycle, they will idle and trigger any idle effects on their current {@code Tile}.
      * <p>
      * After these, the turn of every {@code Creature} on the floor is processed.
+     * <p>
+     * If it is the Final Floor, generates sets of {@code Switches} until 3 sets are pressed, then releases the borders around the {@link Siren} boss.
      * 
      * @param choice the input character representing the player's choice.
      * 
@@ -297,6 +327,14 @@ public class Floor implements Serializable
         return false;
     }
 
+    /**
+     * Checks if the switches are currently being pressed.
+     * <p>
+     * If the switches are pressed by the {@code Player} or {@code Lailaps}, deletes the switches,
+     * increments the {@code switchSetsPressed}, and upgrades Bats.
+     * <p>
+     * If all 3 sets have been pressed, releases the {@link Border Borders} surrounding the {@code Siren} boss.
+     */
     public void switchCheck()
     {
         if(isFinal)
@@ -413,6 +451,11 @@ public class Floor implements Serializable
         }
     }
 
+    /**
+     * Checks if the {@code} Siren is still alive on the final floor.
+     * <p>
+     * If they are dead, reveals the {@code Exit}.
+     */
     private void sirenCheck()
     {
         Boolean sirenAlive = false;
@@ -435,6 +478,12 @@ public class Floor implements Serializable
         }
     }
 
+    /**
+     * Adds a Combat Log for the floor indicating what happened this turn.
+     * 
+     * @param message the info that should be displayed to the Player.
+     * @param type the type of info being logged.
+     */
     public void addCombatLog(String message, CombatLogType type){
         this.combatLogs.add(new CombatLogEntry(message, type));
     }
@@ -522,6 +571,14 @@ public class Floor implements Serializable
         }
     }
 
+    /**
+     * Moves {@code Lailaps} along with the {@code Player}'s movement.
+     * <p>
+     * Only works if the {@code Lailaps}'s movement is not blocked.
+     * 
+     * @param offY how many spaces up or down to move it.
+     * @param offX how many spaces left or right to move it.
+     */
     private void moveLailaps(int offY, int offX)
     {
         for(Lailaps lailaps: lailapses)
@@ -727,7 +784,7 @@ public class Floor implements Serializable
     //  */
     /**
      * Generates the floor map depending on which {@link DungeonCode} the floor is a part of.
-     * It calls the corresponding generate function.
+     * Chooses from a set of {@code Layouts} depending on the random number generator.
      * 
      * @param dungeonCode the code identifying which {@code DungeonCode} this floor is in.
      */
@@ -926,14 +983,9 @@ public class Floor implements Serializable
     }
 
     /**
-     * Converts the {@code Layout} by scanning each character and initializing their corresponding {@code Tiles} in the {@code grid}.
-     * The grid is initialized with sizes {@code sizeY} and {@code sizeX},
-     * which are obtained from getting the number of strings and the length of the strings from the {@code Layout}.
+     * The grid is initialized with sizes {@code sizeY} and {@code sizeX}.
      * <p>
-     * This also adds the reference to each generated {@code Structure}, {@code Creature}, and {@code Loot} to the
-     * {@code structures}, {@code creatures}, and {@code loots} lists as well.
-     * <p>
-     * Once the {@code Spawn} is found, it stores the location as {@code spawnY} and {@code spawnX}.
+     * This then calls {@code addLayout} to process the map.
      * 
      * @param layout the layout data to convert into data.
      */
@@ -954,13 +1006,14 @@ public class Floor implements Serializable
 
     /**
      * Converts the {@code Layout} by scanning each character and initializing their corresponding {@code Tiles} in the {@code grid}.
-     * The grid is initialized with sizes {@code sizeY} and {@code sizeX},
      * which are obtained from getting the number of strings and the length of the strings from the {@code Layout}.
      * <p>
      * This also adds the reference to each generated {@code Structure}, {@code Creature}, and {@code Loot} to the
      * {@code structures}, {@code creatures}, and {@code loots} lists as well.
      * <p>
      * Once the {@code Spawn} is found, it stores the location as {@code spawnY} and {@code spawnX}.
+     * <p>
+     * This was separated from {@code convertLayout} in order to accept multiple layouts for a single floor to stack entities.
      * 
      * @param layout the layout data to convert into data.
      */
@@ -1112,6 +1165,13 @@ public class Floor implements Serializable
         return false;
     }
 
+    /**
+     * Checks if any {@code Creatures} are in the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @return an ArrayList of found {@code Creatures}.
+     */
     public ArrayList<Creature> checkForCreatures(int y, int x)
     {
         ArrayList<Creature> creaturesFound = new ArrayList<>();
@@ -1125,6 +1185,13 @@ public class Floor implements Serializable
         return creaturesFound;
     }
 
+    /**
+     * Checks if any {@code Lailaps} are in the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @return {@code true} if a {@code Lailaps} is found.
+     */
     public boolean checkForLailaps(int y, int x)
     {
         for(Lailaps lailaps: lailapses)
@@ -1137,6 +1204,13 @@ public class Floor implements Serializable
         return false;
     }
 
+    /**
+     * Checks if any {@code Water} are in the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @return {@code true} if a {@code Water} is found.
+     */
     public boolean checkForWater(int y, int x)
     {
         for(Structure structure: structures)
@@ -1149,6 +1223,14 @@ public class Floor implements Serializable
         return false;
     }
 
+
+    /**Creates an {@code Arrow} creature in the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @param damage the amount of damage this {@code Arrow} deals, passed down from the originating {@code Skeleton}.
+     * @param direction the direction the created {@code Arrow} should move in.
+     */
     public void createArrow(int y, int x, double damage, Direction direction)
     {
         Arrow arrow = new Arrow(damage, direction);
@@ -1159,6 +1241,13 @@ public class Floor implements Serializable
         }
     }
 
+    /**
+     * Get the distance of the {@code Player} from the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @return the result of using the distance formula on the two coordinates.
+     */
     public double getPlayerDistance(int y, int x)
     {
         int playerY = this.player.getPosition().getPosY();
@@ -1166,6 +1255,13 @@ public class Floor implements Serializable
         return Math.pow(Math.pow(y-playerY,2)+Math.pow(x-playerX,2),0.5);
     }
 
+    /**
+     * Finds the closest {@code Lailaps} to the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @return the {@code Lailaps} closest to the target location.
+     */
     public Lailaps findClosestLailaps(int y, int x)
     {
         Lailaps closestLailaps = null;
@@ -1184,7 +1280,14 @@ public class Floor implements Serializable
         return closestLailaps;
     }
 
-    
+    /**
+     * Deal damage to {@code Lailaps} at the target location.
+     * 
+     * @param y distance of the target position from the top edge.
+     * @param x distance of the target position from the left edge.
+     * @param dmg the amount of damage to deal. If damage is not from the Siren, reduce it to 0.5.
+     * @return {@code true} if a {@code Lailaps} was attacked.
+     */
     public boolean attackLailaps(int y, int x, double dmg)
     {
         for(Lailaps lailaps: lailapses)
@@ -1368,37 +1471,65 @@ public class Floor implements Serializable
     {
         return this.dungeonCode;
     }
-
+    /**
+     * Returns the ArrayList of {@code CombatLogs}.
+     * 
+     * @return the ArrayList of {@code CombatLogs}.
+     */
     public ArrayList<CombatLogEntry> getCombatLogs()
     {
         return this.combatLogs;
     }
-
+    /**
+     * Returns the current turn number.
+     * 
+     * @return the current turn number.
+     */
     public int getTurnNumber()
     {
         return this.turnNumber;
     }
-
+    /**
+     * Returns {@code true} if this is the Final Boss Floor.
+     * 
+     * @return {@code true} if this is the Final Boss Floor.
+     */
     public boolean isFinal()
     {
         return this.isFinal;
     }
-
+    /**
+     * Returns the ArrayList of {@code Lailaps} on this floor.
+     * 
+     * @return the ArrayList of {@code Lailaps} on this floor.
+     */
     public ArrayList<Lailaps> getLailapses()
     {
         return this.lailapses;
     }
-
+    /**
+     * Returns the HashSet of {@code DungeonModifiers} on this floor.
+     * 
+     * @return the HashSet of {@code DungeonModifiers} on this floor.
+     */
     public HashSet<DungeonModifier> getDungeonModifiers()
     {
         return this.dungeonModifiers;
     }
-
+    /**
+     * Sets whether {@code Skeletons} should be frozen on this floor or not.
+     * 
+     * @param bool if {@code Skeletons} should be frozen on this floor.
+     */
     public void setFrozenSkeletons(boolean bool)
     {
         this.frozenSkeletons = bool;
     }
-
+    /**
+     * Returns whether {@code Skeletons} are frozen on this floor or not.
+     * 
+     * @return {@code true} if {@code Skeletons} should be frozen on this floor.
+     */
     public boolean isFrozenSkeletons()
     {
         return this.frozenSkeletons;

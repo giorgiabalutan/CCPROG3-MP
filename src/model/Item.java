@@ -40,7 +40,13 @@ public class Item implements Serializable
      * </ul>
      */
     private int itemCode;
+    /**
+     * Indicates if this item has been bought.
+     */
     private boolean isBought;
+    /**
+     * The filepath to this item's sprite.
+     */
     private String itemImageFilePath;
     /**
      * Constructs the item of the given code.
@@ -172,12 +178,20 @@ public class Item implements Serializable
     {
         this.quantity += qt;
     }
-    
+    /**
+     * Returns if this item has been bought.
+     * 
+     * @return {@code true} if this item has been bought.
+     */
     public boolean isBought()
     {
         return this.isBought;
     }
-    
+    /**
+     * Sets if this item has been bought or not.
+     * 
+     * @param isBought if this item has been bought or not.
+     */
     public void setBought(boolean isBought)
     {
         this.isBought = isBought;

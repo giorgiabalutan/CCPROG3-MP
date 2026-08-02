@@ -26,6 +26,9 @@ public class Dungeon implements Serializable
      * The {@link DungeonCode} of this dungeon.
      */
     private DungeonCode dungeonCode;
+    /**
+     * A HashSet containing the list of {@link DungeonModifiers} for this dungeon.
+     */
     private HashSet<DungeonModifier> dungeonModifiers;
     /**
      * The list of {@code Floors} that this dungeon has.
@@ -139,6 +142,12 @@ public class Dungeon implements Serializable
         
     }
 
+    /**
+     * Generates the Final Dungeon of the game.
+     * 
+     * Generates the lair of the Siren, the final boss.
+     * Contains only one floor.
+     */
     public void generateFinalDungeon()
     {
         this.dungeonName = "Siren's Lair";
@@ -169,6 +178,9 @@ public class Dungeon implements Serializable
         }
     }
 
+    /**
+     * Generates the Final Floor.
+     */
     private void generateFinalFloor()
     {
         this.floors = new ArrayList<>();
@@ -191,12 +203,18 @@ public class Dungeon implements Serializable
      * When the dungeon is finished, the next dungeon overwrites the floors here.
      * In order to reflect the challenge order of the dungeons, the order is incremented by 1 as this is the next dungeon to be challenged.
      */
-    private void finishDungeon()
+    public void finishDungeon()
     {
         order += 1;
+        System.out.println("TEST");
+        System.out.println(order);
     }
 
     //HACKS
+    /**
+     * A Method used in debugging.
+     * Used to instantly finish a dungeon by increasing the order by one.
+     */
     public void finishDungeonHacks()
     {
         order += 1;
@@ -221,7 +239,7 @@ public class Dungeon implements Serializable
         if(this.floors.get(floorNum).tick(choice))
         {
             if(floorNum+1>=maxFloor){
-                finishDungeon();
+                // finishDungeon();
                 return true;
             }else{
                 floorNum++;
@@ -280,12 +298,20 @@ public class Dungeon implements Serializable
     public int getOrder(){
         return this.order;
     }
-
+    /**
+     * Returns the {@code DungeonCode} representing the dungeon.
+     * 
+     * @return the {@code DungeonCode} representing the dungeon.
+     */
     public DungeonCode getDungeonCode()
     {
         return this.dungeonCode;
     }
-
+    /**
+     * Returns a HashSet containing this dungeon's {@code DungeonModifier}s.
+     * 
+     * @return a HashSet containing this dungeon's {@code DungeonModifier}s.
+     */
     public HashSet<DungeonModifier> getDungeonModifiers()
     {
         return this.dungeonModifiers;

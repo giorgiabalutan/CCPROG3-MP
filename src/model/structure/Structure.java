@@ -24,7 +24,13 @@ public abstract class Structure implements Serializable{
      * The color of structure display. For use in console view.
      */
     private String color;
+    /**
+     * The filepath with the structure's sprite.
+     */
     private String structureImageFilePath;
+    /**
+     * The name of the structure.
+     */
     private String name;
     /**
      * The current position of the structure on the map.
@@ -196,12 +202,20 @@ public abstract class Structure implements Serializable{
     {
         this.pos.setPosition(y, x);
     }
-
+    /**
+     * Returns the {@code StructureType} of this Structure.
+     * 
+     * @return the {@code StructureType} of this Structure.
+     */
     public StructureType getType()
     {
         return this.type;
     }
-
+    /**
+     * Returns the name of this Structure.
+     * 
+     * @return the name of this Structure.
+     */
     public String getName()
     {
         return this.name;

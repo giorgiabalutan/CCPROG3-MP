@@ -22,6 +22,7 @@ public class Spike extends Structure
     }
     /**
      * The spike damages the {@code Player} while being dug up.
+     * It does not damage {@code Players} with the {@code Shovel Upgrade}.
      * 
      * @param floor the {@link Floor} the Spike is on.
      * 

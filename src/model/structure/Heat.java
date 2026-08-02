@@ -3,7 +3,6 @@ package model.structure;
 import model.CombatLogType;
 import model.Player;
 import model.creature.Creature;
-import model.dungeon.DungeonCode;
 import model.dungeon.DungeonModifier;
 import model.dungeon.Floor;
 /**
@@ -47,6 +46,7 @@ public class Heat extends Structure
     }
     /**
      * Damages the {@code Player} on idle.
+     * Does not damage a {@code Player} with {@code Air Shoes} unless the dungeon has the {@link DungeonModifier#STRONGER_HEAT Stonger Heat Modifier}.
      * 
      * @param floor the {@code Floor} the Heat Tile is on.
      * 
@@ -92,7 +92,7 @@ public class Heat extends Structure
     }
     /**
      * Damages a {@code Creature} idling on the heat tile.
-     * Does not damage a flying {@code Creature} unless the dungeon is {@link DungeonCode#YASUDAYA_RYOKAN Yasudaya Ryokan}.
+     * Does not damage a flying {@code Creature} unless the dungeon has the {@link DungeonModifier#STRONGER_HEAT Stonger Heat Modifier}.
      * 
      * @param floor the {@code Floor} the Heat Tile is on.
      * @param creature the {@code Creature} idling on the Heat Tile.

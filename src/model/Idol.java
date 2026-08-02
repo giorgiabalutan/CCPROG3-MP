@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import model.dungeon.Dungeon;
 import model.dungeon.DungeonCode;
 /**
  * Represents Idols that the player must rescue.
@@ -23,9 +24,13 @@ public class Idol implements Serializable
      * How many times the Idol has been saved.
      */
     private int timesSaved;
-    
+    /**
+     * The filepath to the Idol's Sprite.
+     */
     private String idolImageFilePath;
-    
+    /**
+     * Indicates which Idol this is.
+     */
     private int idolNumber;
 
     /**
@@ -127,22 +132,36 @@ public class Idol implements Serializable
     {
         return this.dungeonCode;
     }
-    
+    /**
+     * Returns the filepath to this Idol's sprite.
+     * 
+     * @return the filepath to this Idol's sprite.
+     */
     public String getIdolImageFilePath()
     {
         return this.idolImageFilePath;
     }
-    
+    /**
+     * Returns how many times this Idol has been saved.
+     * 
+     * @return how many times this Idol has been saved.
+     */
     public int getTimesSaved()
     {
         return this.timesSaved;
     }
-    
+    /**
+     * Increments how many times this Idol has been saved by one.
+     */
     public void idolIsSaved()
     {
         this.timesSaved += 1;
     }
-    
+    /**
+     * Returns the number indicating which Idol this is.
+     * 
+     * @return the number indicating which Idol this is.
+     */
     public int getIdolNumber()
     {
         return this.idolNumber;
