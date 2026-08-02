@@ -113,6 +113,10 @@ public class Bat extends Creature
     @Override
     public boolean tick(Floor floor)
     {
+        if(floor.getPlayer().hasBatTamer())
+        {
+            this.damage = 0.5;
+        }
         this.curCooldown -= 1;
         if(this.curCooldown <= 0)
         {

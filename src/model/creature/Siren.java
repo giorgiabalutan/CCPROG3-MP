@@ -92,7 +92,7 @@ public class Siren extends Creature
                     lailapsY = closestLailaps.getPosition().getPosY();
                     lailapsX = closestLailaps.getPosition().getPosX();
                     lailapsDist = Math.pow(Math.pow(y-lailapsY,2)+Math.pow(x-lailapsX,2),0.5);
-                    if (lailapsDist < playerDist)
+                    if (lailapsDist < playerDist - 4)
                     {
                         playerIsCloser = false;
                     }

@@ -114,6 +114,13 @@ public class Player implements Serializable
      */
     public void damage(double dmg){
         currHP -= dmg;
+        if(currHP <= 0 && itemOnHand.getItemCode() == 5)
+        {
+            this.currHP = this.totalHP;
+            itemOnHand.reduceQuantity();
+            if (this.itemOnHand.getQuantity() == 0)
+                updateItemOnHand();
+        }
     }
 
     /**
@@ -140,16 +147,19 @@ public class Player implements Serializable
                 
             //     break;
             case 5:
-                this.currHP = this.totalHP;
+                // this.currHP = this.totalHP;
+                // itemOnHand.reduceQuantity();
+                // if (this.itemOnHand.getQuantity() == 0)
+                //     updateItemOnHand();
                 break;
             case 6:
-                this.totalHP++;
+                // this.totalHP++;
                 break;
             // case 7:
                 
             //     break;
             case 8:
-                this.totalHP++;
+                // this.totalHP++;
                 break;
             case 10:
                 messages = heal();
@@ -204,6 +214,7 @@ public class Player implements Serializable
     //if one item is used up, remove that item and put the other one
     public void updateItemOnHand()
     {
+        System.out.println("TEST");
         this.inventory.removeUsedItem(this.itemOnHand);
         if (this.inventory.getItemCount() > 0)
             this.itemOnHand = inventory.getItems().get(0);

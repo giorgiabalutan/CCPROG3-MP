@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
-import model.*;
+import model.Idol;
+import model.Model;
 
 public class DungeonPanel extends JPanel{
     private Model model;
@@ -8,6 +9,9 @@ public class DungeonPanel extends JPanel{
     private FloorPanel floorPanel;
     private CombatLogPanel logPanel;
     private Image yohaneDeadImage;
+    private Image bgImage;
+    private Image savedIdolImage;
+    private Image yohaneImage;
 
     private int floorNum;
 
@@ -31,7 +35,8 @@ public class DungeonPanel extends JPanel{
         defaultFont = new Font("Courier New", Font.BOLD, 20);
         
         this.yohaneDeadImage = new ImageIcon(getClass().getResource("assets/dungeonSprites/yohaneSprites/yohane_dead.png")).getImage();
-
+        this.yohaneImage = new ImageIcon(getClass().getResource("assets/yohaneInventoryImage.png")).getImage();
+        this.bgImage =  new ImageIcon(getClass().getResource("assets/intro7.png")).getImage();
     }
 
     // public void setKeyListener(KeyListener keyListener)
@@ -71,7 +76,7 @@ public class DungeonPanel extends JPanel{
             statusPanel.setVisible(false);
             floorPanel.setVisible(false);
             logPanel.setVisible(false);
-            showDungeonWon(g2D);
+            showDungeonWinScreen(g2D);
         }
         else
         {
@@ -110,7 +115,7 @@ public class DungeonPanel extends JPanel{
             "                Yohane has fallen from " + causeOfDeath,
         };
         
-        this.setForeground(Color.white);
+        this.setForeground(Color.red);
         this.setBackground(Color.black);
         g2D.drawImage(this.yohaneDeadImage, 374, 151, 350, 350, this);
         
@@ -118,42 +123,147 @@ public class DungeonPanel extends JPanel{
         int y = 54;
         int lineSpacing = 20;
         int i;
-        this.setFont(new Font("Courier New", Font.BOLD, 30));
+        g2D.setFont(new Font("Courier New", Font.BOLD, 30));
         for (i = 0; i < deathText.length; i++ )
         {
             g2D.drawString(deathText[i], x, y);
             y+=lineSpacing;
         }
-        
-        g2D.drawString("[E]xit to Main Menu", 374, 500);
+        g2D.setFont(new Font("Courier New", Font.BOLD, 18));
+        g2D.drawString("[E]xit to Main Menu", 450, 520);
         
     }
     
-    public void showDungeonWon(Graphics2D g2D)
+    public void showDungeonWinScreen(Graphics2D g2D)
     {
-        String[] deathText = {
-            "---------------------------------------------------------------------------",
-            "                           Dungeon cleared!                               ",
-            "---------------------------------------------------------------------------",
-            "        Dungeon Complete " +this.model.getDungeon().getIdol().getDungeonName(),
-            "        You have saved " +this.model.getDungeon().getIdol().getIdolName(),
+        Idol idol = this.model.getDungeon().getIdol();
+        this.savedIdolImage =  new ImageIcon(getClass().getResource(idol.getIdolImageFilePath())).getImage();
+        g2D.drawImage(bgImage, 0, 0, null);
+        String[] clearedText = {
+            "-------------------------------------------------------------------------------------",
+            "                                    Dungeon cleared!                                          ",
+            "-------------------------------------------------------------------------------------",
+            "Dungeon Complete: " +idol.getDungeonName() + "\n",
+            "You have saved " +idol.getIdolName(),
         };
         
-        this.setForeground(Color.white);
-        this.setBackground(Color.black);
-        g2D.drawImage(this.yohaneDeadImage, 374, 151, 350, 350, this);
-        
-        int x = 0;
-        int y = 54;
-        int lineSpacing = 20;
-        int i;
-        this.setFont(new Font("Courier New", Font.BOLD, 30));
-        for (i = 0; i < deathText.length; i++ )
+        String idolText[];
+        switch(idol.getIdolNumber())
         {
-            g2D.drawString(deathText[i], x, y);
-            y+=lineSpacing;
+            case 1:
+                idolText = new String[]
+                {
+                    "Chika: Waaah! Yoshiko-chan, you actually came!",
+                    "Yohane: Ugh, its Yohane!! but fufu, of course. A fallen angel never\nabandons those in need.",
+                    "Chika: I couldn't sing at all... it was so scary not having my voice.",
+                    "Lailaps: Onto the next, Yohane-chan."
+                };
+                break;
+            case 2:
+                idolText = new String[]
+                {
+                    "You: Land ho! I mean- Yohane-chan!, over here!",
+                    "Yohane: The seas were rough, but a fallen angel fears no tide.",
+                    "You: Ehehe, thanks for diving in after me. Literally."
+                };
+                break;
+            case 3:
+                idolText = new String[]
+                {
+                    "Riko: I... I was so scared down there in the dark.",
+                    "Yohane: Fear not. My holy shield reaches even the deepest trenches.",
+                    "Riko: Thank you, Yohane-chan. Really."
+                };
+                break;
+            case 4:
+                idolText = new String[]
+                {
+                    "Hanamaru: Yohane-chan, zura! You're a sight for sore eyes, zura.",
+                    "Yohane: Hanamaru! I felt your voice calling out to me through the mirror.",
+                    "Hanamaru: I knew you'd come. Fallen angels always keep their promises, zura.",
+                    "Hanamaru: Because of this, I'll open up my relic shop for you!!"
+                };
+                break;
+            case 5:
+                idolText = new String[]
+                {
+                    "Ruby: Y-Yoshiko-chan?! I was so scared, I couldn't even scream...",
+                    "Yohane: Do not fret, little one. The fallen angel Yohane has arrived. And uhm\n, it's Yohane...",
+                    "Ruby: Thank you... I mean it."
+                };
+                break;
+            case 6:
+                idolText = new String[]
+                {
+                    "Dia: Took you long enough. Though... I suppose I should thank you.",
+                    "Yohane: Hah! Even the great Dia Kurosawa cannot resist my aid.",
+                    "Dia: Don't get used to it. But truly, thank you, Yoshiko.",
+                    "Yohane: If you want to thank me, say my name correct at least!"
+                };
+                break;
+            case 7:
+                idolText = new String[]
+                {
+                    "Kanan: Yohane! I knew you'd come through for us.",
+                    "Yohane: Naturally. A fallen angel's wings carry her wherever she's needed.",
+                    "Kanan: Ruby and Dia will be relieved to hear you're clearing these out one\nby one."
+                };
+                break;
+            case 8:
+                idolText = new String[]
+                {
+                    "Mari: Yohane-chan~! Zuramaru said you'd come, and here you are!",
+                    "Yohane: Of course. My holy shield does not discriminate between rich or poor,\nidol or otherwise.",
+                    "Mari: Shishishi, as dramatic as ever. Thank you, truly."
+                };
+                break;
+                default:
+                    idolText = new String[]{ "Yohane: ...another voice returns." };
+                    break;
         }
         
-        g2D.drawString("[E]xit to Main Menu", 374, 500);
+        int x = 62;
+        int y = 250;
+        int width = 975;
+        int height = 243;
+        
+        g2D.drawImage(this.yohaneImage, 19, 20, null);
+        g2D.drawImage(this.savedIdolImage, 717, 0, null);
+        drawBox(g2D, x, y, width, height);
+        
+        this.setForeground(Color.white);
+        x = 75;
+        y = 275;
+        int lineSpacing = 20;
+        int i;
+        
+        g2D.setFont(new Font("Courier New", Font.BOLD, 18));
+        for (i = 0; i < clearedText.length; i++ )
+        {
+            g2D.drawString(clearedText[i], x, y);
+            y+=lineSpacing;
+        }
+        y+=20;
+        for (i = 0; i < idolText.length; i++ )
+        {
+            for (String line : idolText[i].split("\n"))
+            {
+                g2D.drawString(line, x, y);
+                y+=lineSpacing;
+            }
+            
+        }
+        g2D.drawString("[E]xit to Main Menu", 450, 520);
+    }
+    
+    public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
+    {
+        g2D.setColor(new Color(0, 0, 0, 220));
+        g2D.fillRoundRect(x, y, width, height, 35, 35);
+        
+        
+        g2D.setColor(Color.white);
+        g2D.setStroke(new BasicStroke(5));
+        g2D.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
 }

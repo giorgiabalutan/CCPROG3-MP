@@ -12,6 +12,7 @@ import model.Item;
 import model.Model;
 import model.creature.Creature;
 import model.dungeon.Dungeon;
+import model.dungeon.DungeonCode;
 import model.dungeon.Floor;
 import model.loot.Loot;
 import model.structure.Structure;
@@ -149,11 +150,16 @@ public class Controller implements ActionListener, KeyListener
                     this.model.load();
                     this.model.generateSaveList();
                     this.model.getPlayer().resetPlayer();
+                    this.model.resetDungeon();
+                    this.model.setAvailableShopItems();
                     this.model.setGameState(GameState.OVERWORLD);
                 }else{
                     //Start New Games
                     this.model.generateSaveList();
+                    this.model.getPlayer().resetPlayer();
+                    this.model.resetDungeon();
                     this.model.setIsIntroPlaying(true);
+                    this.model.setAvailableShopItems();
                     this.model.setGameState(GameState.OVERWORLD);
                     
                 }
@@ -308,38 +314,53 @@ public class Controller implements ActionListener, KeyListener
                 // this.model.setErrorMessage(message2);
                 break;
         }
-        if(this.model.tickDungeon(choice))
+        if(this.model.tickDungeon(choice) && !this.model.getDungeonWon() && !this.model.getFinalFightWon())
         {
             //Cutscene
             Idol savedIdol = this.model.getDungeon().getIdol();
             saveIdol(savedIdol);
             this.model.getIdolList().remove(savedIdol);
             
-            // this.view.finishedFloor(savedIdol);
-            // waitForContinue();
             this.model.setAvailableShopItems();
-            this.model.setGameState(GameState.OVERWORLD);
-            updateView();
-            // System.out.println(this.model.getGameState());
             
-            if (this.model.getDungeon().getDungeonCode().equals("SIRENS_LAIR"))
+            if (this.model.getDungeon().getDungeonCode() == DungeonCode.SIRENS_LAIR)
             {
                 this.model.incTimesSirenDefeated();
+                this.model.setPlaythroughExists(false);
+                this.model.save();
                 this.model.setGameState(GameState.MAIN_MENU);
+            }else{
+                this.model.setDungeonWon(true);
+                // this.model.setGameState(GameState.OVERWORLD);
             }
+            updateView();
+            this.view.repaintDungeon();
+
+            if("E".equals(command))
+            {
+                this.model.setGameState(GameState.OVERWORLD);
+                this.model.setDungeonWon(false);
+            }
+
+        }else if((this.model.getDungeonWon() || this.model.getFinalFightWon()) && "E".equals(command)){
+            this.model.setGameState(GameState.OVERWORLD);
+            this.model.setDungeonWon(false);
+            this.model.setFinalFightWon(false);
         }
+
         if(this.model.getPlayer().isDead())
         {
             this.model.incGameOvers();
             this.view.repaintDungeon();
+            this.model.setPlaythroughExists(false);
+            this.model.save();
             if("E".equals(command))
             {
                 this.model.setGameState(GameState.MAIN_MENU);
             }
-                
-            updateView();
             //To be expounded
         }
+        updateView();
     }
 
     public void saveIdol(Idol savedIdol)

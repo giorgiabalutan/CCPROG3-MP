@@ -55,6 +55,10 @@ public class Heat extends Structure
     @Override
     public boolean idle(Floor floor)
     {
+        if(floor.getPlayer().hasAirShoes() && !floor.getDungeonModifiers().contains(DungeonModifier.STRONGER_HEAT))
+        {
+            return false;
+        }
         floor.damagePlayer(1, "Heat");
         floor.addCombatLog("Yohane took 1 damage from the Heat!",CombatLogType.DAMAGE);
         return false;

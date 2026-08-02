@@ -186,20 +186,23 @@ public class Floor implements Serializable
                 break;
             case ' ':
                 String[] messages = this.player.useItem();
-                if(messages[0].charAt(0) == 'L')
+                if(messages.length > 0)
                 {
-                    // System.out.println(messages[0]);
-                    if(this.player.getItemOnHand().getQuantity() > 0)
+                    if(messages[0].charAt(0) == 'L')
                     {
-                        addCombatLog("Attempted to use " + this.player.getItemOnHand().getItemName() + " but HP is full!", CombatLogType.PLAYER_ACTION);
+                        // System.out.println(messages[0]);
+                        if(this.player.getItemOnHand().getQuantity() > 0)
+                        {
+                            addCombatLog("Attempted to use " + this.player.getItemOnHand().getItemName() + " but HP is full!", CombatLogType.PLAYER_ACTION);
+                        }else{
+                            addCombatLog("Attempted to use an Item but none were found.", CombatLogType.PLAYER_ACTION);
+                        }
                     }else{
-                        addCombatLog("Attempted to use an Item but none were found.", CombatLogType.PLAYER_ACTION);
-                    }
-                }else{
-                    addCombatLog(messages[0], CombatLogType.ITEM_USE);
-                    if(this.dungeonModifiers.contains(DungeonModifier.STRONGER_HEALS))
-                    {
-                        addCombatLog("The lingering magic in the dungeon healed an additional 0.5 hp!", CombatLogType.HEAL);
+                        addCombatLog(messages[0], CombatLogType.ITEM_USE);
+                        if(this.dungeonModifiers.contains(DungeonModifier.STRONGER_HEALS))
+                        {
+                            addCombatLog("The lingering magic in the dungeon healed an additional 0.5 hp!", CombatLogType.HEAL);
+                        }
                     }
                 }
                 idle(y,x);
@@ -235,10 +238,18 @@ public class Floor implements Serializable
             switchCheck();
             sirenCheck();
         }
-        if((isFinal && turnNumber%8 == 0))
+        if((isFinal && turnNumber%12 == 0))
         {
             Boolean spawned = false;
-            while(!spawned)
+            int creatureCount = 0;
+            for(Creature creature: creatures)
+            {
+                if(creature.getCreatureType() != CreatureType.ARROW)
+                {
+                    creatureCount++;
+                }
+            }
+            while(!spawned && creatureCount < 25)
             {
                 int posY = rand.nextInt(sizeY);
                 int posX = rand.nextInt(sizeX);
@@ -249,6 +260,32 @@ public class Floor implements Serializable
                     bat.setPosition(posY, posX);
                     grid[posY][posX].addCreature(bat);
                     this.creatures.add(bat);
+                    spawned = true;
+                }
+            }
+        }
+        if((isFinal && turnNumber%18 == 0))
+        {
+            Boolean spawned = false;
+            int creatureCount = 0;
+            for(Creature creature: creatures)
+            {
+                if(creature.getCreatureType() != CreatureType.ARROW)
+                {
+                    creatureCount++;
+                }
+            }
+            while(!spawned && creatureCount < 25)
+            {
+                int posY = rand.nextInt(sizeY);
+                int posX = rand.nextInt(sizeX);
+                Tile tile = grid[posY][posX];
+                if(tile.getStructures().isEmpty() && tile.getCreatures().isEmpty() && !(posY < 5 && posX > 11 && posX < 28) && !(posY == player.getPosition().getPosY() && posX == player.getPosition().getPosX()))
+                {
+                    Skeleton skeleton = new Skeleton(this.switchSetsPressed + 1, this.dungeonModifiers);
+                    skeleton.setPosition(posY, posX);
+                    grid[posY][posX].addCreature(skeleton);
+                    this.creatures.add(skeleton);
                     spawned = true;
                 }
             }
@@ -1154,6 +1191,11 @@ public class Floor implements Serializable
         {
             if(lailaps.getPosition().getPosY() == y && lailaps.getPosition().getPosX() == x)
             {
+                if(dmg < 500)
+                {
+                    lailaps.damageCreature(0.5);
+                    return true;
+                }
                 lailaps.damageCreature(dmg);
                 return true;
             }

@@ -37,7 +37,7 @@ public class Wall extends Structure
     @Override
     public boolean interact(Floor floor)
     {
-        if(strength)
+        if(strength && !floor.getPlayer().hasShovelUpgrade())
         {
             strength = false;
             floor.addCombatLog("The lingering magic protected the Wall!", CombatLogType.PLAYER_ACTION);

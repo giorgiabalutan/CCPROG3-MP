@@ -124,7 +124,11 @@ public class PlayerStatusPanel extends JPanel{
         itemOnHand = player.getItemOnHand();
 
         try {
-            heldItem = ImageIO.read(new File(itemOnHand.getItemImageFilePath()));
+            if(itemOnHand == null){
+                heldItem = ImageIO.read(new File("assets/itemSprites/None.png"));
+            }else{
+                heldItem = ImageIO.read(new File(itemOnHand.getItemImageFilePath()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             try{
@@ -134,9 +138,21 @@ public class PlayerStatusPanel extends JPanel{
             }
         }
 
-        if(itemOnHand.getQuantity()>0)
-        {
-            if(!g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this)){
+        g2D.drawImage(nextItem, 126, nextLineHeight, 48, 48,  this);
+
+        if(itemOnHand != null){
+            if(itemOnHand.getQuantity()>0)
+            {
+                if(!g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this)){
+                    try{
+                        heldItem = ImageIO.read(new File("assets/itemSprites/None.png"));
+                        g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this);
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+                }
+                g2D.drawString(""+itemOnHand.getQuantity(),115,nextLineHeight+50);
+            }else{
                 try{
                     heldItem = ImageIO.read(new File("assets/itemSprites/None.png"));
                     g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this);
@@ -144,17 +160,10 @@ public class PlayerStatusPanel extends JPanel{
                     e.printStackTrace();
                 }
             }
-            g2D.drawString(""+itemOnHand.getQuantity(),115,nextLineHeight+50);
         }else{
-            try{
-                heldItem = ImageIO.read(new File("assets/itemSprites/None.png"));
-                g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this);
-            }catch(IOException e){
-                e.printStackTrace();
-            }
+            g2D.drawImage(heldItem, 76, nextLineHeight, 48, 48,  this);
         }
 
-        g2D.drawImage(nextItem, 126, nextLineHeight, 48, 48,  this);
 
         nextLineHeight += 60;
 

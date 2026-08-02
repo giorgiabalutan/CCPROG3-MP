@@ -93,6 +93,11 @@ public class Model implements Serializable
         this.availableShopItems = new ArrayList<Item>();
         setAvailableShopItems();
     }
+
+    public void resetDungeon()
+    {
+        this.dungeon = new Dungeon(player);
+    }
     
     //Methods
     //Generate the list of 3 idols to save
@@ -380,7 +385,14 @@ public class Model implements Serializable
     {
         this.introIndex = introIndex;
     }
-    
+    public void setDungeonWon(boolean dungeonWon)
+    {
+        this.dungeonWon = dungeonWon;
+    }
+    public void setFinalFightWon(boolean finalFightWon)
+    {
+        this.finalFightWon = finalFightWon;
+    }
     public int getIntroIndex()
     {
         return this.introIndex;

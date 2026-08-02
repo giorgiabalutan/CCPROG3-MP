@@ -1,6 +1,7 @@
 package model.structure;
 
 import model.CombatLogType;
+import model.Player;
 import model.creature.Creature;
 import model.dungeon.Floor;
 /**
@@ -29,9 +30,13 @@ public class Spike extends Structure
     @Override
     public boolean interact(Floor floor)
     {
-        //Don't deal damage if Shovel upgraded (To implement later...)
-        floor.damagePlayer(0.5, "Spike");
-        floor.addCombatLog("Yohane took 0.5 recoil damage from the Spike!", CombatLogType.DAMAGE);
+        if(floor.getPlayer().hasShovelUpgrade())
+        {
+            return true;
+        }else{
+            floor.damagePlayer(0.5, "Spike");
+            floor.addCombatLog("Yohane took 0.5 recoil damage from the Spike!", CombatLogType.DAMAGE);
+        }
         return true;
     }
     /**

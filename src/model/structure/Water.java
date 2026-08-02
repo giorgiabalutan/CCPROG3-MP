@@ -41,7 +41,7 @@ public class Water extends Structure
     public boolean isBlocking(Floor floor)
     {
         //False if Player has Air Shoes (to be implemented later...)
-        if(floor.getDungeonModifiers().contains(DungeonModifier.REBREATHER))
+        if(floor.getDungeonModifiers().contains(DungeonModifier.REBREATHER) || floor.getPlayer().hasAirShoes())
         {
             return false;
         }
