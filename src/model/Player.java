@@ -133,40 +133,43 @@ public class Player implements Serializable
      */
     public String[] useItem()
     {
-        int itemCode = this.itemOnHand.getItemCode();
         String[] messages = {};
-        switch(itemCode)
+        if(this.itemOnHand != null)
         {
-            case 1: 
-                this.totalHP++;
-                break;
-            // case 2:
-                
-            //     break;
-            // case 3:
-                
-            //     break;
-            case 5:
-                // this.currHP = this.totalHP;
-                // itemOnHand.reduceQuantity();
-                // if (this.itemOnHand.getQuantity() == 0)
-                //     updateItemOnHand();
-                break;
-            case 6:
-                // this.totalHP++;
-                break;
-            // case 7:
-                
-            //     break;
-            case 8:
-                // this.totalHP++;
-                break;
-            case 10:
-                messages = heal();
-                break;
-            case 11:
-                messages = heal();
-                break;
+            int itemCode = this.itemOnHand.getItemCode();
+            switch(itemCode)
+            {
+                case 1: 
+                    this.totalHP++;
+                    break;
+                // case 2:
+                    
+                //     break;
+                // case 3:
+                    
+                //     break;
+                case 5:
+                    // this.currHP = this.totalHP;
+                    // itemOnHand.reduceQuantity();
+                    // if (this.itemOnHand.getQuantity() == 0)
+                    //     updateItemOnHand();
+                    break;
+                case 6:
+                    // this.totalHP++;
+                    break;
+                // case 7:
+                    
+                //     break;
+                case 8:
+                    // this.totalHP++;
+                    break;
+                case 10:
+                    messages = heal();
+                    break;
+                case 11:
+                    messages = heal();
+                    break;
+            }
         }
         return messages;
     }
