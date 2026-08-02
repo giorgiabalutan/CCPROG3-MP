@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.swing.text.View;
 import model.dungeon.Floor;
 import model.dungeon.Position;

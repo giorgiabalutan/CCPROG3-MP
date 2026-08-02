@@ -76,6 +76,7 @@ public class Dungeon implements Serializable
      */
     public void generateDungeon(Idol idol)
     {
+        this.dungeonCode = idol.getDungeonCode();
         this.dungeonModifiers = new HashSet<>();
         this.idol = idol;
         this.dungeonName = idol.getDungeonName();
@@ -94,7 +95,7 @@ public class Dungeon implements Serializable
                 maxFloor += 1;
                 break;
         }
-        switch(idol.getDungeonCode())
+        switch(this.dungeonCode)
         {
             case YASUDAYA_RYOKAN:
                 this.dungeonModifiers.add(DungeonModifier.STRONGER_HEAT);
@@ -138,11 +139,13 @@ public class Dungeon implements Serializable
         generateFloors(idol.getDungeonCode(), maxFloor);
         spawnPlayer();
         
+        
     }
 
     public void generateFinalDungeon()
     {
         this.dungeonName = "Siren's Lair";
+        this.dungeonCode = DungeonCode.SIRENS_LAIR;
         this.dungeonModifiers = new HashSet<>();
         floorNum = 0;
         maxFloor = 1;

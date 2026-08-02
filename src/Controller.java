@@ -302,6 +302,8 @@ public class Controller implements ActionListener, KeyListener
         {
             //Cutscene
             Idol savedIdol = this.model.getDungeon().getIdol();
+            savedIdol.idolIsSaved();
+            this.model.getSavedIdols().add(savedIdol);
             this.model.getIdolList().remove(savedIdol);
             
             // this.view.finishedFloor(savedIdol);
@@ -309,6 +311,9 @@ public class Controller implements ActionListener, KeyListener
             this.model.setGameState(GameState.OVERWORLD);
             updateView();
             // System.out.println(this.model.getGameState());
+            
+            if (this.model.getDungeon().getDungeonCode().equals("SIRENS_LAIR"))
+                this.model.incTimesSirenDefeated();
         }
         if(this.model.getPlayer().isDead())
         {

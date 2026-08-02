@@ -9,9 +9,11 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import model.Idol;
 import model.Model;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -146,6 +148,8 @@ public class MainMenuPanel extends JPanel{
             
             if (this.isManualShowing)
                 drawManual(g2D);
+            else if(this.isStatsShowing)
+                drawStats(g2D);
             else
                 showButtons();
             
@@ -209,13 +213,78 @@ public class MainMenuPanel extends JPanel{
                     y += lineSpacing;
                 }
             }
+        }
+        
+        public void drawStats(Graphics2D g2D)
+        {
+            int i = 0;
+            int x = 46;
+            int y = 33;
+            int width = 1009;
+            int length = 453;
+            int lineSpacing = 20;
             
+            this.quitButton.setText("Return");
+            this.quitButton.setActionCommand("R");
+            newGameButton.setVisible(false);
+            newGamePlusButton.setVisible(false);
+            continueButton.setVisible(false);
+            statusButton.setVisible(false);
+            howToPlayButton.setVisible(false);
+            this.buttonPanel.setBounds(800, 310, 250, 180);
             
+            g2D.setFont(new Font("Courier New", Font.PLAIN, 17));
+            ArrayList<Idol> savedIdols = this.model.getSavedIdols();
+            String[] textBlock = {
+                "-----------------------------------------------------------------------------------------------",
+                "                                         Overall Stats                                         ",
+                "-----------------------------------------------------------------------------------------------",
+                "Saved Idols"
+            };
+            String[] idolBlock = new String[savedIdols.size()];
+            String sirenDefeatedText = "Times Siren was defeated      " + this.model.getTimesSirenDefeated() + "\n";
+            String gameOversText = "No. of game overs      " + this.model.getGameOvers() + "\n";
+            String totalGoldSpentText = "Total gold spent      " + this.model.getPlayer().getTotalGold();
+            
+            for (i = 0; i < savedIdols.size(); i++)
+            {
+                idolBlock[i] = savedIdols.get(i).getIdolName() + "      " + savedIdols.get(i).getTimesSaved() + "\n";
+            }
+
+            drawBox(g2D, x, y, width, length);
+            
+            x = 62;
+            y = 56;
+            for (i = 0; i < textBlock.length; i++)
+            {   
+                for(String line : textBlock[i].split("\n"))
+                {
+                    g2D.drawString(line, x, y);
+                    y += lineSpacing;
+                }
+            }
+            for (i = 0; i < idolBlock.length; i++)
+            {   
+                for(String line : idolBlock[i].split("\n"))
+                {
+                    g2D.drawString(line, x, y);
+                    y += lineSpacing;
+                }
+            }
+            lineSpacing = 40;
+            g2D.drawString(sirenDefeatedText, x, y);
+            y+=lineSpacing;
+            
+            g2D.drawString(gameOversText, x, y);
+            y+=lineSpacing;
+            
+            g2D.drawString(totalGoldSpentText, x, y);
+            y+=lineSpacing;
         }
         
         public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
         {
-            g2D.setColor(new Color(0, 0, 0, 220));
+            g2D.setColor(new Color(0, 0, 0, 240));
             g2D.fillRoundRect(x, y, width, height, 35, 35);
 
 

@@ -64,6 +64,8 @@ public class Model implements Serializable
     private DataStorage dataStorage;
     private boolean isIntroPlaying;
     private int introIndex = 0;
+    private ArrayList<Idol> savedIdols;
+    private int timesSirenDefeated;
     //Constructors
     /**
      * Initializes the Model in the Main Menu
@@ -82,6 +84,8 @@ public class Model implements Serializable
         this.dungeon = new Dungeon(player);
         this.dataStorage = new DataStorage();
         this.isIntroPlaying = false;
+        this.savedIdols = new ArrayList<Idol>();
+        this.timesSirenDefeated = 0;
     }
     
     //Methods
@@ -105,14 +109,8 @@ public class Model implements Serializable
         Random r = new Random();
         for (i = 0; i < chosenIdols; i++)
         {
-            if (i == 0) //Temporary force first idol
-            {
-                idolList.add(new Idol(numList.remove(0)));
-            }else{
-                randIndex = r.nextInt(numList.size());
-                idolList.add(new Idol(numList.remove(randIndex)));
-            }
-
+            randIndex = r.nextInt(numList.size());
+            idolList.add(new Idol(numList.remove(randIndex)));
         }
     }
     
@@ -127,6 +125,8 @@ public class Model implements Serializable
             dataStorage.setIdolList(this.idolList);
             dataStorage.setPlayer(this.player);
             dataStorage.setDungeon(this.dungeon);
+            dataStorage.setSavedIdols(this.savedIdols);
+            dataStorage.setTimesSirenDefeated(this.timesSirenDefeated);
             
             oos.writeObject(dataStorage);
             System.out.println("Successfully saved!");
@@ -151,6 +151,8 @@ public class Model implements Serializable
             this.idolList = ds.getIdolList();
             this.player = ds.getPlayer();
             this.dungeon = ds.getDungeon();
+            this.savedIdols = ds.getSavedIdols();
+            this.timesSirenDefeated = ds.getTimesSirenDefeated();
         }
         catch(Exception e )
         {
@@ -320,6 +322,11 @@ public class Model implements Serializable
     {
         this.gameOvers++;
     }
+    
+    public void incTimesSirenDefeated()
+    {
+        this.timesSirenDefeated++;
+    }
     /**
      * Get the list of {@code Idols} for the player to save.
      * 
@@ -366,5 +373,15 @@ public class Model implements Serializable
     public int getIntroIndex()
     {
         return this.introIndex;
+    }
+    
+    public ArrayList<Idol> getSavedIdols()
+    {
+        return this.savedIdols;
+    }
+    
+    public int getTimesSirenDefeated()
+    {
+        return this.timesSirenDefeated;
     }
 }

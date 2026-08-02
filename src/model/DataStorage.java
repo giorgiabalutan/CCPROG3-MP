@@ -19,6 +19,8 @@ public class DataStorage implements Serializable{
     private ArrayList<Idol> idolList;
     private Player player;
     private Dungeon dungeon;
+    private ArrayList<Idol> savedIdols;
+    private int timesSirenDefeated;
     
     public void setNGPlusAvailable(boolean ngPlusAvailable)
     {
@@ -50,6 +52,16 @@ public class DataStorage implements Serializable{
         this.dungeon = dungeon;
     }
     
+    public void setSavedIdols(ArrayList<Idol> savedIdols)
+    {
+        this.savedIdols = savedIdols;
+    }
+    
+    public void setTimesSirenDefeated(int timesSirenDefeated)
+    {
+        this.timesSirenDefeated = timesSirenDefeated;
+    }
+    
     public boolean getNGPlusAvailable()
     {
         return this.ngPlusAvailable;
@@ -78,6 +90,16 @@ public class DataStorage implements Serializable{
     public Dungeon getDungeon()
     {
         return this.dungeon;
+    }
+    
+    public ArrayList<Idol> getSavedIdols()
+    {
+        return this.savedIdols;
+    }
+    
+    public int getTimesSirenDefeated()
+    {
+        return this.timesSirenDefeated;
     }
     
 }

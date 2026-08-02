@@ -30,7 +30,7 @@ public class Siren extends Creature
      * The amount of gold the Bat drops as {@link Loot}.
      */
     private int gold;
-
+    
     /**
      * Constructs a bat depending on the current {@code Dungeon}.
      * <p>
@@ -210,4 +210,5 @@ public class Siren extends Creature
                 this.gold += 5;
         }
     }
+    
 }

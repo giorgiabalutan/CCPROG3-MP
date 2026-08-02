@@ -94,6 +94,7 @@ public class Idol implements Serializable
                 this.idolImageFilePath = "/assets/mariOhara.png";
                 break;
         }
+        this.timesSaved = 0;
     }
 
     /**
@@ -127,5 +128,15 @@ public class Idol implements Serializable
     public String getIdolImageFilePath()
     {
         return this.idolImageFilePath;
+    }
+    
+    public int getTimesSaved()
+    {
+        return this.timesSaved;
+    }
+    
+    public void idolIsSaved()
+    {
+        this.timesSaved += 1;
     }
 }
