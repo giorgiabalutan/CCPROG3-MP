@@ -53,6 +53,15 @@ public class Player implements Serializable
     private Direction direction;
     private Boolean idle;
 
+    private boolean hasShovelUpgrade;
+    private boolean hasBatTamer;
+    private boolean hasAirShoes;
+    private boolean hasStewShine;
+    private boolean hasMikanMochi;
+    private boolean hasKurosawaMacha;
+    private boolean boughtTears;
+    private boolean boughtChoco;
+
     //Constructor
     /**
      * Constructs the player class.
@@ -73,6 +82,28 @@ public class Player implements Serializable
         isInventoryOpen = false;
         this.direction = Direction.DOWN;
         this.idle = true;
+    }
+
+    public void resetPlayer()
+    {
+        currHP = 3;
+        totalHP = 3;
+        goldSpent = 0;
+        attack = 1;
+        causeOfDeath = "";
+        inventory = new Inventory();
+        itemOnHand = inventory.getItems().get(0);
+        isInventoryOpen = false;
+        this.direction = Direction.DOWN;
+        this.idle = true;
+        this.hasAirShoes = false;
+        this.hasBatTamer = false;
+        this.hasAirShoes = false;
+        this.hasStewShine = false;
+        this.hasMikanMochi = false;
+        this.hasKurosawaMacha = false;
+        this.boughtTears = false;
+        this.boughtChoco = false;
     }
 
     //Methods
@@ -246,6 +277,10 @@ public class Player implements Serializable
     {
         this.totalGold += gold;
     }
+    public void spendGold(int gold)
+    {
+        this.goldSpent += gold;
+    }
     /**
      * Sets the player character's current position to the given coordinates.
      * 
@@ -397,4 +432,75 @@ public class Player implements Serializable
         return this.idle;
     }
 
+    public void setShovelUpgrade(Boolean bool)
+    {
+        this.hasShovelUpgrade = bool;
+    }
+    public void setBatTamer(Boolean bool)
+    {
+        this.hasBatTamer = bool;
+    }
+    public void setAirShoes(Boolean bool)
+    {
+        this.hasAirShoes = bool;
+    }
+    public void setStewShine(Boolean bool)
+    {
+        this.hasStewShine = bool;
+    }
+    public void setMikanMochi(Boolean bool)
+    {
+        this.hasMikanMochi = bool;
+    }
+    public void setKurosawaMacha(Boolean bool)
+    {
+        this.hasKurosawaMacha = bool;
+    }
+    public void setTears(Boolean bool)
+    {
+        this.boughtTears = bool;
+    }
+    public void setChoco(Boolean bool)
+    {
+        this.boughtChoco = bool;
+    }
+
+    public boolean hasShovelUpgrade()
+    {
+        return this.hasShovelUpgrade;
+    }
+    public boolean hasBatTamer()
+    {
+        return this.hasBatTamer;
+    }
+    public boolean hasAirShoes()
+    {
+        return this.hasAirShoes;
+    }
+    public boolean hasStewShine()
+    {
+        return this.hasStewShine;
+    }
+    public boolean hasMikanMochi()
+    {
+        return this.hasMikanMochi;
+    }
+    public boolean hasKurosawaMacha()
+    {
+        return this.hasKurosawaMacha;
+    }
+    public boolean boughtTears()
+    {
+        return this.boughtTears;
+    }
+    public boolean boughtChoco()
+    {
+        return this.boughtChoco;
+    }
+
+    public void incMaxHp(int hp)
+    {
+        this.totalHP += hp;
+        this.currHP += hp;
+    }
 }

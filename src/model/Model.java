@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 import java.util.Random;
 import model.dungeon.Dungeon;
@@ -90,6 +91,7 @@ public class Model implements Serializable
         this.savedIdols = new ArrayList<Idol>();
         this.timesSirenDefeated = 0;
         this.availableShopItems = new ArrayList<Item>();
+        setAvailableShopItems();
     }
     
     //Methods
@@ -183,7 +185,12 @@ public class Model implements Serializable
      * @return {@code true} if the {@code Dungeon} has been finished, {@code false} if not. This notifies the {@code Controller} if the dungeon is finished.
      */
     public boolean tickDungeon(char choice){
-        return this.dungeon.tick(choice);
+        if(this.dungeon.tick(choice))
+        {
+            setAvailableShopItems();
+            return true;
+        }
+        return false;
     }
 
     //Getters and Setters
@@ -400,13 +407,49 @@ public class Model implements Serializable
     
     public void setAvailableShopItems()
     {
+        this.availableShopItems = new ArrayList<>();
         this.availableShopItems.add(new Item(11));
-        this.availableShopItems.add(new Item(10));
+        if(!this.player.boughtTears())
+        {
+            this.availableShopItems.add(new Item(10));
+        }
         for (Idol idol : this.savedIdols)
         {
             Item newItem = new Item(idol.getIdolNumber());
             if(newItem.getItemName() != null)
-                availableShopItems.add(new Item(idol.getIdolNumber()));
+            {
+                boolean notAvailable = false;
+                switch(newItem.getItemCode())
+                {
+                        case 11:
+                            break;
+                        case 1: //MikanMochi
+                            notAvailable = this.player.hasMikanMochi();
+                            break;
+                        case 2: //AirShoes
+                            notAvailable = this.player.hasAirShoes();
+                            break;
+                        case 3: //BatTamer
+                            notAvailable = this.player.hasBatTamer();
+                            break;
+                        case 5: //ChocoMint
+                            notAvailable = this.player.boughtChoco();
+                            break;
+                        case 6: //KurosawaMacha
+                            notAvailable = this.player.hasKurosawaMacha();
+                            break;
+                        case 7: //ShovelUpgrade
+                            notAvailable = this.player.hasShovelUpgrade();
+                            break;
+                        case 8: //Stewshine
+                            notAvailable = this.player.hasStewShine();
+                            break;
+                }
+                if(!notAvailable)
+                {
+                    availableShopItems.add(new Item(idol.getIdolNumber()));
+                }
+            }
         }
     }
     

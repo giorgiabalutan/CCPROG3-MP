@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import model.Idol;
 import model.Item;
 import model.Model;
 import model.Player;
@@ -61,6 +60,7 @@ public class ShopPanel extends JPanel{
     {
         Player player = this.model.getPlayer();
         ArrayList<Item> availableItems = this.model.getAvailableShopItems();
+        // System.out.println(availableItems);
         
         g2D.setFont(this.defaultFont);
         g2D.drawImage(this.shopBackground, 0, 0, null);
@@ -85,14 +85,14 @@ public class ShopPanel extends JPanel{
         y = 45;
         int lineSpacing = 30;
         
-        String totalGoldText = String.format("Total gold: " + player.getTotalGold());
+        String totalGoldText = String.format("Gold: " + (player.getTotalGold() - player.getGoldSpent()));
         g2D.drawString(totalGoldText, x, y);
         y+=lineSpacing;
         
         int i;
         for (i = 0; i < availableItems.size(); i++)
         {
-            g2D.drawString("[" + i+1 + "] " + availableItems.get(i).getItemName() + "   " + availableItems.get(i).getPrice(), x, y);
+            g2D.drawString("[" + (i+1) + "] " + availableItems.get(i).getItemName() + "   " + availableItems.get(i).getPrice(), x, y);
                 y+=lineSpacing;
         }
         g2D.drawString("[R]eturn", x, y + 30);

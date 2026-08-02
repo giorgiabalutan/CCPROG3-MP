@@ -843,7 +843,7 @@ public class Floor implements Serializable
                 }
                 break;
             case UCHIURA_BAY_PIER:
-                i = this.rand.nextInt(2);
+                i = this.rand.nextInt(100);
                 if(i < 15){
                     convertLayout(Layouts.RIVER_DELTAS_1);
                     addLayout(Layouts.RIVER_DELTAS_2);
@@ -864,7 +864,7 @@ public class Floor implements Serializable
                 }
                 break;
             case AWASHIMA_MARINE_PARK:
-                i = this.rand.nextInt(2);
+                i = this.rand.nextInt(100);
                 if(i < 15){
                     convertLayout(Layouts.BAT_SWARM_NARROW_1);
                     addLayout(Layouts.BAT_SWARM_NARROW_2);

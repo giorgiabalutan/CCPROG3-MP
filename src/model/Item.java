@@ -74,6 +74,7 @@ public class Item implements Serializable
                 this.itemName = "Choco-Mint Ice Cream";
                 this.price = 2000;
                 this.isAvailable = false;
+                this.itemImageFilePath = "assets/ItemSprites/ChocoMintIceCream.png";
                 break;
             case 6:
                 this.itemName = "Kurosawa Macha";

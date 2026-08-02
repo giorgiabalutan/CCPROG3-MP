@@ -38,7 +38,8 @@ public class Main
         player.run();
 
         //For Testing
-        // player.skipIntroNew();
+        player.skipIntroNew();
         // player.SkipToSiren();
+        player.unlockShop();
     }
 }

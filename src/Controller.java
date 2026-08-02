@@ -124,6 +124,7 @@ public class Controller implements ActionListener, KeyListener
                     break;
                 case SHOP:
                     this.view.showPanel("SHOP");
+                    this.view.repaintShop();
                     break;
             }
         
@@ -145,6 +146,10 @@ public class Controller implements ActionListener, KeyListener
                 if(this.model.isNgPlusAvailable())
                 {
                     //Start New Game +
+                    this.model.load();
+                    this.model.generateSaveList();
+                    this.model.getPlayer().resetPlayer();
+                    this.model.setGameState(GameState.OVERWORLD);
                 }else{
                     //Start New Games
                     this.model.generateSaveList();
@@ -307,8 +312,7 @@ public class Controller implements ActionListener, KeyListener
         {
             //Cutscene
             Idol savedIdol = this.model.getDungeon().getIdol();
-            savedIdol.idolIsSaved();
-            this.model.getSavedIdols().add(savedIdol);
+            saveIdol(savedIdol);
             this.model.getIdolList().remove(savedIdol);
             
             // this.view.finishedFloor(savedIdol);
@@ -319,7 +323,10 @@ public class Controller implements ActionListener, KeyListener
             // System.out.println(this.model.getGameState());
             
             if (this.model.getDungeon().getDungeonCode().equals("SIRENS_LAIR"))
+            {
                 this.model.incTimesSirenDefeated();
+                this.model.setGameState(GameState.MAIN_MENU);
+            }
         }
         if(this.model.getPlayer().isDead())
         {
@@ -332,6 +339,24 @@ public class Controller implements ActionListener, KeyListener
                 
             updateView();
             //To be expounded
+        }
+    }
+
+    public void saveIdol(Idol savedIdol)
+    {
+        boolean alrSaved = false;
+        for(Idol idol : this.model.getSavedIdols())
+        {
+            if(idol.getIdolNumber() == savedIdol.getIdolNumber())
+            {
+                idol.idolIsSaved();
+                alrSaved = true;
+            }
+        }
+        if(!alrSaved)
+        {
+            savedIdol.idolIsSaved();
+            this.model.getSavedIdols().add(savedIdol);
         }
     }
 
@@ -357,6 +382,21 @@ public class Controller implements ActionListener, KeyListener
         updateView();
     }
 
+    public void unlockShop()
+    {
+        saveIdol(new Idol(1));
+        saveIdol(new Idol(2));
+        saveIdol(new Idol(3));
+        saveIdol(new Idol(4));
+        saveIdol(new Idol(5));
+        saveIdol(new Idol(6));
+        saveIdol(new Idol(7));
+        saveIdol(new Idol(8));
+        saveIdol(new Idol(1));
+        this.model.getPlayer().gainGold(999999);
+        this.model.setAvailableShopItems();
+    }
+
     private void startAnimationTimer()
     {
         Timer animationTimer = new Timer(300, e -> {
@@ -371,6 +411,63 @@ public class Controller implements ActionListener, KeyListener
         {
             case "R":
                 this.model.setGameState(GameState.OVERWORLD);
+                break;
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+            case "0":
+                int buy = Integer.parseInt(command) - 1;
+                if(buy < this.model.getAvailableShopItems().size())
+                {
+                    Item item =  this.model.getAvailableShopItems().get(buy);
+                    int price = item.getPrice();
+                    if(this.model.getPlayer().getTotalGold() - this.model.getPlayer().getGoldSpent() >= price)
+                    {
+                        switch(item.getItemCode())
+                        {
+                            case 5: //Choco
+                                this.model.getPlayer().setChoco(true);
+                            case 10:
+                                // System.out.println("TEST");
+                                this.model.getPlayer().setTears(true);
+                            case 11:
+                                this.model.getPlayer().pickUpItem(item);
+                                break;
+                            case 1: //MikanMochi
+                                this.model.getPlayer().setMikanMochi(true);
+                                this.model.getPlayer().incMaxHp(1);
+                                break;
+                            case 2: //AirShoes
+                                this.model.getPlayer().setAirShoes(true);
+                                break;
+                            case 3: //BatTamer
+                                this.model.getPlayer().setBatTamer(true);
+                                break;
+                            case 6: //KurosawaMacha
+                                this.model.getPlayer().setKurosawaMacha(true);
+                                this.model.getPlayer().incMaxHp(1);
+                                break;
+                            case 7: //ShovelUpgrade
+                                this.model.getPlayer().setShovelUpgrade(true);
+                                break;
+                            case 8: //Stewshine
+                                this.model.getPlayer().setStewShine(true);
+                                this.model.getPlayer().incMaxHp(1);
+                                break;
+                        }
+                        this.model.getPlayer().spendGold(price);
+                        this.model.setAvailableShopItems();
+                    }else{
+                        //Too Broke
+                    }
+                }
+                this.view.repaintShop();
                 break;
         }
     }

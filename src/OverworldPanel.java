@@ -242,7 +242,7 @@ public class OverworldPanel extends JPanel{
         for (Idol idol : this.model.getSavedIdols())
         {
             if(idol.getIdolName().equals("Hanamaru Kunikida"))
-                  g2D.drawString(hanamaruShopText, 799, 425);
+                g2D.drawString(hanamaruShopText, 799, 425);
         }
         
         for(int i = 0; i < idolList.size(); i++)

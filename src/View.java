@@ -119,6 +119,10 @@ public class View extends JFrame
     {
         this.dungeonPanel.repaint();
     }
+    public void repaintShop()
+    {
+        this.shopPanel.repaint();
+    }
     //Methods
     //Main Menu
     /**
