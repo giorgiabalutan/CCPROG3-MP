@@ -114,7 +114,7 @@ public class Player implements Serializable
      */
     public void damage(double dmg){
         currHP -= dmg;
-        if(currHP <= 0 && itemOnHand.getItemCode() == 5)
+        if(currHP <= 0 && itemOnHand != null && itemOnHand.getItemCode() == 5)
         {
             this.currHP = this.totalHP;
             itemOnHand.reduceQuantity();
