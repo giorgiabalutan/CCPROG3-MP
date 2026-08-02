@@ -107,12 +107,20 @@ public class Exit extends Structure
     {
         return false;
     }
-
+    /**
+     * Set whether this exit should be hidden.
+     * 
+     * @param bool whether this exit should be hidden.
+     */
     public void setHidden(Boolean bool)
     {
         this.isHidden = bool;
     }
-
+    /**
+     * Returns if this exit is currently hidden.
+     * 
+     * @return {@code true} if this exit is currently hidden.
+     */
     public Boolean isHidden()
     {
         return this.isHidden;

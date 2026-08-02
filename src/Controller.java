@@ -146,6 +146,8 @@ public class Controller implements ActionListener, KeyListener
      * <p>
      * It can Start a New Game, New Game Plus, or Continue a Game.
      * It can also print the player's Status, a Help Manual, or Quit the game.
+     * 
+     * @param command the indicator of which button was pressed.
      */
     private void processMenuInput(String command)
     {
@@ -201,6 +203,8 @@ public class Controller implements ActionListener, KeyListener
      * Processes the player's inputs in the Overworld.
      * <p>
      * It can start a {@link Dungeon}, open the {@link Inventory}, manage held {@link Item Items}, or save and quit the game.
+     * 
+     * @param command indicator of which key was pressed.
      */
     private void processOverworldInput(String command)
     {
@@ -291,6 +295,8 @@ public class Controller implements ActionListener, KeyListener
      * Interactions are handled at the {@link Floor#tick(char) Floor.tick} call.
      * <p>
      * This also manages the output for either beating or dying in the {@code Dungeon} and sending the player back to the Overworld or Menu after.
+     * 
+     * @param command indicator of which key was pressed.
      */
     private void processDungeonInput(String command)
     {

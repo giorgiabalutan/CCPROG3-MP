@@ -21,7 +21,7 @@ import model.Model;
  */
 
 /**
- *
+ * Shows the Main Menu Screen and the available Options in it.
  * @author LENOVO
  */
 public class MainMenuPanel extends JPanel{

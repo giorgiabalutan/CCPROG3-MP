@@ -183,26 +183,4 @@ public class Siren extends Creature
         floor.getLoot().add(goldDrop);
         floor.getGrid()[curY][curX].addLoot(goldDrop);
     }
-
-    public void setPower(int power)
-    {
-        this.damage = 0;
-        this.gold = 0;
-        this.moveInterval = 2;
-        switch(power)
-        {
-            default:
-            case 3:
-                this.damage += 0.5;
-                this.gold += 5;
-            case 2:
-                this.damage += 0.5;
-                this.moveInterval -= 1;
-                this.gold += 5;
-            case 1:
-                this.damage += 0.5;
-                this.gold += 5;
-        }
-    }
-    
 }

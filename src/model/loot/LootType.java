@@ -6,7 +6,7 @@ package model.loot;
  */
 public enum LootType{
     /**
-     * Random {@link Item} or Random amount of Gold.
+     * Random {@link model.Item} or Random amount of Gold.
      */
     TREASURE,
     /**

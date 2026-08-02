@@ -82,7 +82,7 @@ public class Floor implements Serializable
      */
     private DungeonCode dungeonCode;
     /**
-     * A HashSet containing the list of {@link DungeonModifiers} for the dungeon this floor is a part of.
+     * A HashSet containing the list of {@link DungeonModifier DungeonModifiers} for the dungeon this floor is a part of.
      */
     private HashSet<DungeonModifier> dungeonModifiers;
     /**
@@ -159,7 +159,7 @@ public class Floor implements Serializable
      * If the {@code Tile} interacted with is the {@code Exit}, the exit would have been set to {@code true} by the tile,
      * allowing the player to proceed to the next floor.
      * <p>
-     * The usage and switching of held {@link Item Items} is handled by the {@link Controller#processDungeonInput() Controller.processDungeonInput}.
+     * The usage and switching of held {@link Item Items} is handled by the {@link Controller}.
      * If the player fails to move during this cycle, they will idle and trigger any idle effects on their current {@code Tile}.
      * <p>
      * After these, the turn of every {@code Creature} on the floor is processed.
@@ -787,6 +787,7 @@ public class Floor implements Serializable
      * Chooses from a set of {@code Layouts} depending on the random number generator.
      * 
      * @param dungeonCode the code identifying which {@code DungeonCode} this floor is in.
+     * @param dungeonModifiers the list of {@code DungeonModifiers} active in the {@code Dungeon}.
      */
     public void generateFloor(DungeonCode dungeonCode, HashSet<DungeonModifier> dungeonModifiers)
     {

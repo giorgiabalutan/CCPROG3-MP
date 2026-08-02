@@ -18,7 +18,7 @@ import model.Player;
  */
 
 /**
- *
+ * Shows the Shop screen and the options in it.
  * @author LENOVO
  */
 public class ShopPanel extends JPanel{

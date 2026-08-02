@@ -20,8 +20,8 @@ public class CombatLogEntry implements Serializable{
     /**
      * Constructor that sets the Log's Message and {@code CombatLogType}.
      * 
-     * @param message
-     * @param type
+     * @param message the message in the Log.
+     * @param type the type of message being logged.
      */
     public CombatLogEntry(String message, CombatLogType type)
     {

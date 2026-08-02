@@ -224,6 +224,11 @@ public class Bat extends Creature
         floor.getGrid()[curY][curX].addLoot(goldDrop);
     }
 
+    /**
+     * Updates the Power Level for the bat when pressing Switches in the Final Boss Room.
+     * 
+     * @param power the dungeon order equivalent to set it to.
+     */
     public void setPower(int power)
     {
         this.damage = 0;

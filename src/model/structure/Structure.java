@@ -41,7 +41,6 @@ public abstract class Structure implements Serializable{
     /**
      * Constructs a structure of the given type.
      * <p>
-     * Sets the display character, {@link Color}.
      * Intended for use by a subclass via {@code super(...)}.
      * 
      * @param type decides the type of structure made.
@@ -180,6 +179,11 @@ public abstract class Structure implements Serializable{
     public String getColor(){
         return this.color;
     }
+    /**
+     * Returns the filepath to this entity's sprite.
+     * 
+     * @return the filepath to this entity's sprite.
+     */
     public String getImageFilePath(){
         return this.structureImageFilePath;
     }

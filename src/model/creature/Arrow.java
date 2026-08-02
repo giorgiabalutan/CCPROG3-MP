@@ -36,7 +36,7 @@ public class Arrow extends Creature{
      * Constructs an Arrow Creature via the {@link Creature#Creature(CreatureType) Creature constructor}.
      * Its characteristics depend on the damage of the {@code Skeleton} that shot it.
      * 
-     * @param order the order of the dungeon currently being challenged.
+     * @param damage the amount of damage this deals.
      * @param direction the direction the arrow moves in.
      */
     public Arrow(double damage, Direction direction)

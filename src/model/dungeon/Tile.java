@@ -99,7 +99,7 @@ public class Tile implements Serializable
      * then, the first entry in {@code structures}.
      * If there are no entities on the Tile, it returns the default tile character '.' with the default console color.
      * 
-     * @return the character representation of the Tile with the {@link Color} of the Tile.
+     * @return the character representation of the Tile with the {@code Color} of the Tile.
      */
     public char getTileChar()
     {

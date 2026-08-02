@@ -10,7 +10,7 @@ import model.loot.Loot;
  * <p>
  * Contains the shared characteristics and behaviors between different creatures.
  * Creatures have these characteristics determined by their {@link CreatureType},
- * hp and maxhp, display character and {@link Color}, {@link Position}, and various flags.
+ * hp and maxhp, {@link Position}, and various flags.
  */
 public abstract class Creature implements Serializable{
     /**
@@ -241,7 +241,7 @@ public abstract class Creature implements Serializable{
     /**
      * Returns the direction the creature is facing.
      * 
-     * @param direction the direction the creature is facing.
+     * @return the direction the creature is facing.
      */
     public Direction getDirection()
     {

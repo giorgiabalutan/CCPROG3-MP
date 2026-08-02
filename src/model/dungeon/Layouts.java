@@ -2,6 +2,7 @@ package model.dungeon;
 
 import model.creature.Bat;
 import model.loot.Treasure;
+import model.structure.Border;
 import model.structure.Exit;
 import model.structure.Heat;
 import model.structure.Spawn;
@@ -335,7 +336,7 @@ public class Layouts
         "******************",
     };
     /**
-     * 
+     * A map with a 2d representation of a Starfish.
      */
     public static final String[] STARFISH_PISKEL_ART = {
         "********************",

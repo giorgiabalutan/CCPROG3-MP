@@ -6,7 +6,7 @@ import model.dungeon.Floor;
  * Represents the Spawn Location of the floor.
  * <p>
  * Extends the {@link Structure} class.
- * Spawn is where the {@link Player} is placed when entering a {@link Floor}.
+ * Spawn is where the {@link model.Player} is placed when entering a {@link Floor}.
  */
 public class Spawn extends Structure
 {

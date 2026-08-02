@@ -39,7 +39,7 @@ public class Lailaps extends Creature{
     /**
      * Drops nothing on death.
      * 
-     * @param floor the {@code Floor} the Lailaps is on, allows the Lailaps to create {@link Gold} there.
+     * @param floor the {@code Floor} the Lailaps is on.
      */
     @Override
     public void dropLoot(Floor floor){}

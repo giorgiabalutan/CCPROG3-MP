@@ -4,14 +4,16 @@ import model.CombatLogEntry;
 import model.Idol;
 import model.Item;
 import model.Model;
-
+/**
+ * Displays information relevant to the dungeon.
+ */
 public class DungeonPanel extends JPanel{
     /**
      * {@link Model} to grab Data From.
      */
     private Model model;
     /**
-     * Component Panel to show {@link Player} Stats.
+     * Component Panel to show {@link model.Player} Stats.
      */
     private PlayerStatusPanel statusPanel;
     /**
@@ -19,7 +21,7 @@ public class DungeonPanel extends JPanel{
      */
     private FloorPanel floorPanel;
     /**
-     * Component Panel to show the current {@link Floor}.
+     * Component Panel to show the current {@link model.dungeon.Floor}.
      */
     private CombatLogPanel logPanel;
     /**
@@ -91,7 +93,7 @@ public class DungeonPanel extends JPanel{
     //     this.addKeyListener(keyListener);
     // }
     /**
-     * Loads in the current {@link Floor} for the component Panels.
+     * Loads in the current {@code Floor} for the component Panels.
      * Used when Switching Floors.
      */
     public void loadFloor()

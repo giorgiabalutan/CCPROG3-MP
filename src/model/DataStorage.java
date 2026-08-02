@@ -16,6 +16,10 @@ import model.dungeon.Dungeon;
  */
 public class DataStorage implements Serializable{
     /**
+     * Default Constructor.
+     */
+    public DataStorage(){}
+    /**
      * Tracks whether a New Game Plus is available.
      */
     private boolean ngPlusAvailable;

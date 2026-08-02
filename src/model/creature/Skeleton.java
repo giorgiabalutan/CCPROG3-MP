@@ -95,7 +95,7 @@ public class Skeleton extends Creature{
     /**
      * Reduces the Skeleton's move cooldown by one. Once it reaches 0, it resets the {@code curCooldown} to the {@code moveInterval} and takes its turn.
      * If the {@link Player} is adjacent to the Skeleton on its turn, the Skeleton skips and holds its turn,
-     * else, if the {@code Player} is aligned orthogonally, the Skeleton fires an {@link Arrow} through the {@link Floor.createArrow} method.
+     * else, if the {@code Player} is aligned orthogonally, the Skeleton fires an {@link Arrow} through the {@link Floor#createArrow(int, int, double, Direction)} method.
      * else, the Skeleton moves to a valid adjacent space closer to the {@code Player}.
      * The Skeleton also triggers any Structure Idle effects if it does not move during its turn.
      * With the {@code DungeonModifier}, {@code FASTER_SKELETONS}, on, it can fire an arrow after moving as well.

@@ -12,6 +12,9 @@ import model.loot.Loot;
 import model.structure.Exit;
 import model.structure.Structure;
 import model.structure.StructureType;
+/**
+ * Displays the current floor, with the Dungeon Name and Dungeon Modifiers.
+ */
 public class FloorPanel extends JPanel
 {
     /**
@@ -211,7 +214,7 @@ public class FloorPanel extends JPanel
      * @param rowLoc row location to draw on.
      * @param spriteWidth width to scale the sprite.
      * @param spriteHeight height to scale the sprite.
-     * @param idle decide to draw either an idle or a walking sprite.
+     * @param creature the creature to draw.
      */
     private void drawCreature(Graphics g2D, int colLoc, int rowLoc, int spriteWidth, int spriteHeight, Creature creature)
     {

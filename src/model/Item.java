@@ -121,6 +121,11 @@ public class Item implements Serializable
     {
         return this.itemName;
     }
+    /**
+     * Returns the filepath to the item's sprite.
+     * 
+     * @return the filepath to the item's sprite.
+     */
     public String getItemImageFilePath(){
         return this.itemImageFilePath;
     }

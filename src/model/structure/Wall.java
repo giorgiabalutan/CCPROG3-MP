@@ -9,7 +9,7 @@ import model.dungeon.Floor;
  * Represents a Wall on the floor.
  * <p>
  * Extends the {@link Structure} class.
- * Walls can get dug up by the {@link Player} when interacted with.
+ * Walls can get dug up by the {@link model.Player} when interacted with.
  */
 public class Wall extends Structure
 {
@@ -21,6 +21,8 @@ public class Wall extends Structure
      * Constructs a Wall via the {@link Structure#Structure(StructureType) Structure constructor}.
      * 
      * Sets {@code strength} to true if the floor has the {@link DungeonModifier#STRONGER_WALLS Stronger Walls Modifier}.
+     * 
+     * @param dungeonModifiers the list of {@code Dungeon Modifiers} of the floor this is on.
      */
     public Wall(HashSet<DungeonModifier> dungeonModifiers)
     {

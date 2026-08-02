@@ -23,7 +23,13 @@ public abstract class Loot implements Serializable{
      * The color of loot display. For use in console view.
      */
     private String color;
+    /**
+     * The filepath to this loot's sprite.
+     */
     private String lootImageFilePath;
+    /**
+     * The name of this loot.
+     */
     private String name;
     /**
      * The current position of the loot on the map.
@@ -34,7 +40,6 @@ public abstract class Loot implements Serializable{
     /**
      * Constructs Loot of the given type.
      * <p>
-     * Sets the display character, {@link Color}.
      * Intended for use by a subclass via {@code super(...)}.
      * 
      * @param type decides the type of loot given.
@@ -85,6 +90,11 @@ public abstract class Loot implements Serializable{
     public String getColor(){
         return this.color;
     }
+    /**
+     * Returns the filepath to this entity's sprite.
+     * 
+     * @return the filepath to this entity's sprite.
+     */
     public String getImageFilePath(){
         return this.lootImageFilePath;
     }

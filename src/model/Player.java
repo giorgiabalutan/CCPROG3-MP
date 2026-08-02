@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import javax.swing.text.View;
 import model.dungeon.Floor;
 import model.dungeon.Position;
 /**
@@ -158,7 +157,6 @@ public class Player implements Serializable
     /**
      * Uses the {@code Item} the {@code Player} is currently holding.
      * Returns an array of error messages depending on why the {@code Item} could not be used.
-     * The error message is printed at the next call of {@link View#printChoicePrompt() printChoicePrompt} to notify the {@code Player}.
      * If there was no error, an empty String array is returned causing no errors to print.
      * 
      * @return array of error messages stating why the {@code Item} could not be used.

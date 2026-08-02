@@ -6,11 +6,11 @@ package model.structure;
  */
 public enum StructureType{
     /**
-     * Marks the {@link Player} spawn location.
+     * Marks the {@link model.Player} spawn location.
      */
     SPAWN,
     /**
-     * Marks the exit of the current {@link Floor}.
+     * Marks the exit of the current {@link model.dungeon.Floor}.
      */
     EXIT,
     /**
@@ -30,7 +30,7 @@ public enum StructureType{
      */
     WATER,
     /**
-     * Tiles that damage the {@code Player} and {@link Creature Creatures} when idle.
+     * Tiles that damage the {@code Player} and {@link model.creature.Creature Creatures} when idle.
      */
     HEAT,
     /**

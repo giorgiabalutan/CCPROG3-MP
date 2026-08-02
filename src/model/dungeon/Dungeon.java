@@ -27,7 +27,7 @@ public class Dungeon implements Serializable
      */
     private DungeonCode dungeonCode;
     /**
-     * A HashSet containing the list of {@link DungeonModifiers} for this dungeon.
+     * A HashSet containing the list of {@link DungeonModifier DungeonModifiers} for this dungeon.
      */
     private HashSet<DungeonModifier> dungeonModifiers;
     /**
@@ -162,7 +162,7 @@ public class Dungeon implements Serializable
 
     /**
      * Generates a number of {@code floors} equal to the max number of floors for the dungeon.
-     * It initializes each {@code floor} and runs the {@link Floor#generateFloor(DungeonCode) Floor.generateFloor} method on it.
+     * It initializes each {@code floor} and runs the {@link Floor#generateFloor(DungeonCode, HashSet<DungeonModifier>) Floor.generateFloor} method on it.
      * It passes the {@code DungeonCode} to generate the corresponding type of {@code Floor}.
      * 
      * @param dungeonCode the type of dungeon this is.

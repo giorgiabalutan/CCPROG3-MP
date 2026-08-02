@@ -10,7 +10,10 @@ import model.Model;
 import model.Player;
 import model.creature.Lailaps;
 import model.dungeon.*;
-
+/**
+ * Displays the player's current status relevant to the dungeon.
+ * Also shows the player's gold and items.
+ */
 public class PlayerStatusPanel extends JPanel{
     /**
      * {@link Model} to grab data from.

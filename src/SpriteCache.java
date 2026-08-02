@@ -3,7 +3,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
-
+/**
+ * A static class to cache all of the sprites needed for the dungeon.
+ */
 public class SpriteCache {
     /**
      * HashMap Relating a list of String Filepaths to a BufferedImage object.
@@ -11,6 +13,10 @@ public class SpriteCache {
      */
     private static final HashMap<String, BufferedImage> cache = new HashMap<>();
 
+    /**
+     * Default Constructor
+     */
+    public SpriteCache(){}
     /**
      * Gets an image using a filepath.
      * If an image has been loaded from this previously, it refers to the hashmap.

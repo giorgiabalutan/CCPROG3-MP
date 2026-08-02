@@ -246,7 +246,6 @@ public class Model implements Serializable
     }
     /**
      * Sets the game to be inactive.
-     * This will cause the {@link Controller#run() Controller.run} method's main loop to end, thus ending the program.
      */
     public void quit()
     {

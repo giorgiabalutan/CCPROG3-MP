@@ -19,7 +19,7 @@ import model.Player;
  */
 
 /**
- *
+ * Shows the Overworld Screen and the available options in it.
  * @author LENOVO
  */
 public class OverworldPanel extends JPanel{
