@@ -700,27 +700,59 @@ public class Floor implements Serializable
         switch(dungeonCode)
         {
             case YASUDAYA_RYOKAN:
-                i = this.rand.nextInt(1000);
-                if(i < 100)
-                {
+                i = this.rand.nextInt(100);
+                if(i < 15){
                     convertLayout(Layouts.FOUR_POOLS);
-                }else if(i < 200)
-                {
+                }else if(i < 30){
                     convertLayout(Layouts.PISKEL_ART_POOL);
+                }else if(i < 40) {
+                    convertLayout(Layouts.BAT_SPRING);
+                }else if(i < 50){
+                    convertLayout(Layouts.SKELETON_SPRING);
+                }else if(i < 60){
+                    convertLayout(Layouts.LOVE_SPRING);
+                }else if(i < 70){
+                    convertLayout(Layouts.OVERHEATED_SPRING);
+                }else if(i < 80){
+                    convertLayout(Layouts.AIR_SHOES_CHALLENGE_1);
+                    addLayout(Layouts.AIR_SHOES_CHALLENGE_2);
+                }else if(i<90){
+                    convertLayout(Layouts.CHILL_WATER_AREA_1);
+                    addLayout(Layouts.CHILL_WATER_AREA_2);
+                }else if(i < 96){
+                    convertLayout(Layouts.THE_FLOOR_IS_LAVA_1);
+                    addLayout(Layouts.THE_FLOOR_IS_LAVA_2);
                 }else{
                     convertLayout(Layouts.YASUDAYA_RYOKAN_TREASURE_ROOM);
                 }
                 break;
             case IZU_MITO_SEA_PARADISE:
-                i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                i = this.rand.nextInt(100);
+                if(i < 15){
+                    convertLayout(Layouts.BREAK_IN);
+                }else if(i < 30){
+                    convertLayout(Layouts.DOLPHIN_PISKEL_ART_1);
+                    addLayout(Layouts.DOLPHIN_PISKEL_ART_2);
+                }else if(i < 40) {
+                    convertLayout(Layouts.STARFISH_PISKEL_ART);
+                }else if(i < 50){
+                    convertLayout(Layouts.AQUARIUM_MAZE_1);
+                    addLayout(Layouts.AQUARIUM_MAZE_2);
+                }else if(i < 60){
+                    convertLayout(Layouts.BREAK_IN_TWO);
+                }else if(i < 70){
+                    convertLayout(Layouts.BREAK_IN_THREE);
+                }else if(i < 80){
+                    convertLayout(Layouts.SWARMING_CHAOS_1);
+                    addLayout(Layouts.SWARMING_CHAOS_2);
+                }else if(i<90){
+                    convertLayout(Layouts.CHILL_AQUARIUM_1);
+                    addLayout(Layouts.CHILL_AQUARIUM_2);
+                }else if(i < 96){
+                    convertLayout(Layouts.SWARMED_PATH_1);
+                    addLayout(Layouts.SWARMED_PATH_2);
+                }else{
+                    convertLayout(Layouts.IZU_MITO_SEA_PARADISE_TREASURE_ROOM);
                 }
                 break;
             case NUMAZU_DEEP_SEA_AQUARIUM:
@@ -819,6 +851,13 @@ public class Floor implements Serializable
         this.sizeY = layout.length;
         this.sizeX = layout[0].length();
         this.grid = new Tile[sizeY][sizeX];
+        for(int i = 0; i < sizeY; i++)
+        {
+            for (int j = 0; j < sizeX; j++)
+            {
+                grid[i][j] = new Tile();
+            }
+        }
         addLayout(layout);
     }
 
@@ -840,7 +879,6 @@ public class Floor implements Serializable
         {
             for (int j = 0; j < sizeX; j++)
             {
-                grid[i][j] = new Tile();
                 char c = layout[i].charAt(j);
                 switch(c)
                 {

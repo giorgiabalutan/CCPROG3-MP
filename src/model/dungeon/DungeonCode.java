@@ -6,7 +6,7 @@ public enum DungeonCode{
     /**
      * Yasudaya Ryokan, a Hot Springs dungeon.
      * Modifiers - Stronger Heat, Hot Waters
-     * Dungeon Style - Many Pools
+     * Dungeon Style - Pools
      * Unlocks Mikan Mochi
      */
     YASUDAYA_RYOKAN,
@@ -59,5 +59,8 @@ public enum DungeonCode{
      * Unlocks Stewshine
      */
     AWASHIMA_MARINE_PARK,
+    /**
+     * The Siren's Lair.
+     */
     SIRENS_LAIR
 }
