@@ -131,7 +131,10 @@ public class View extends JFrame
     
 
     //Overworld
-
+    public void setOverworldLailapsText(String lailapsText)
+    {
+        this.overworldPanel.setLailapsText(lailapsText);
+    }
     //Dungeon
     /**
      * Displays the current {@link Floor} of the {@code Dungeon}.

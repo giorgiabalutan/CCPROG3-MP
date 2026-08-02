@@ -66,6 +66,13 @@ public class DungeonPanel extends JPanel{
             logPanel.setVisible(false);
             showDeathScreen(g2D, this.model.getPlayer().getCauseOfDeath());
         }
+        else if(this.model.getDungeonWon())
+        {
+            statusPanel.setVisible(false);
+            floorPanel.setVisible(false);
+            logPanel.setVisible(false);
+            showDungeonWon(g2D);
+        }
         else
         {
             statusPanel.setVisible(true);
@@ -100,7 +107,7 @@ public class DungeonPanel extends JPanel{
             "---------------------------------------------------------------------------",
             "                           GAME OVER                                ",
             "---------------------------------------------------------------------------",
-            "                Yohane has fallen from " + causeOfDeath
+            "                Yohane has fallen from " + causeOfDeath,
         };
         
         this.setForeground(Color.white);
@@ -120,5 +127,33 @@ public class DungeonPanel extends JPanel{
         
         g2D.drawString("[E]xit to Main Menu", 374, 500);
         
+    }
+    
+    public void showDungeonWon(Graphics2D g2D)
+    {
+        String[] deathText = {
+            "---------------------------------------------------------------------------",
+            "                           Dungeon cleared!                               ",
+            "---------------------------------------------------------------------------",
+            "        Dungeon Complete " +this.model.getDungeon().getIdol().getDungeonName(),
+            "        You have saved " +this.model.getDungeon().getIdol().getIdolName(),
+        };
+        
+        this.setForeground(Color.white);
+        this.setBackground(Color.black);
+        g2D.drawImage(this.yohaneDeadImage, 374, 151, 350, 350, this);
+        
+        int x = 0;
+        int y = 54;
+        int lineSpacing = 20;
+        int i;
+        this.setFont(new Font("Courier New", Font.BOLD, 30));
+        for (i = 0; i < deathText.length; i++ )
+        {
+            g2D.drawString(deathText[i], x, y);
+            y+=lineSpacing;
+        }
+        
+        g2D.drawString("[E]xit to Main Menu", 374, 500);
     }
 }

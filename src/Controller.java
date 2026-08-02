@@ -230,22 +230,25 @@ public class Controller implements ActionListener, KeyListener
                         this.model.getPlayer().setIsInventoryOpen(false);
                     break;
                 case "H":
-                    this.model.setGameState(GameState.SHOP);
+                    for (Idol idol : this.model.getSavedIdols())
+                    {
+                        if(idol.getIdolName().equals("Hanamaru Kunikida"))
+                            this.model.setGameState(GameState.SHOP);
+                    }
                     break;
                 case "Space":
-                    System.out.println("Command: " + command);
-    //                String[] msg = this.model.getPlayer().useItem();
-    //                this.model.setErrorMessages(msg);
+                    String msg[] = this.model.getPlayer().useItem();
+                    this.view.setOverworldLailapsText(msg[0]);
                     break;
                 case "Open Bracket":
-                    System.out.println("Command: " + command);
-    //                String message1 = this.model.getPlayer().previousItem();
-    //                this.model.setErrorMessage(message1);
+                    String msg1 = this.model.getPlayer().previousItem();
+                    if (!msg1.equals(""))
+                        this.view.setOverworldLailapsText(msg1);
                     break;
                 case "Close Bracket":
-                    System.out.println("Command: " + command);
-    //                String message2 = this.model.getPlayer().nextItem();
-    //                this.model.setErrorMessage(message2);
+                    String msg2 = this.model.getPlayer().previousItem();
+                    if (!msg2.equals(""))
+                        this.view.setOverworldLailapsText(msg2);
                     break;
                 case "S":
                     //Save
@@ -310,6 +313,7 @@ public class Controller implements ActionListener, KeyListener
             
             // this.view.finishedFloor(savedIdol);
             // waitForContinue();
+            this.model.setAvailableShopItems();
             this.model.setGameState(GameState.OVERWORLD);
             updateView();
             // System.out.println(this.model.getGameState());
@@ -322,7 +326,10 @@ public class Controller implements ActionListener, KeyListener
             this.model.incGameOvers();
             this.view.repaintDungeon();
             if("E".equals(command))
+            {
                 this.model.setGameState(GameState.MAIN_MENU);
+            }
+                
             updateView();
             //To be expounded
         }
@@ -366,28 +373,6 @@ public class Controller implements ActionListener, KeyListener
                 this.model.setGameState(GameState.OVERWORLD);
                 break;
         }
-    }
-    //Cutscenes
-    /**
-     * Calls the intro sequence in parts.
-     * Waits for a player input before showing the next part.
-     */
-
-    //Generic Character Input
-    /**
-     * Waits for the player to input into the console.
-     * Only grabs the first character of the input.
-     * If the Input is empty, it returns a space instead.
-     * 
-     * @return a character representing the player's choice.
-     */
-    private char input()
-    {
-        String line = sc.nextLine().toUpperCase();
-        if(line.trim().isEmpty())
-            return ' ';
-        else
-            return line.isEmpty() ? ' ' : line.charAt(0);
     }
     
     @Override

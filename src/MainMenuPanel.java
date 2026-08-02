@@ -34,7 +34,6 @@ public class MainMenuPanel extends JPanel{
         private JButton statusButton;
         private JButton howToPlayButton;
         private JButton quitButton;
-        private JButton returnButton;
         private boolean isStatsShowing;
         private boolean isManualShowing;
         

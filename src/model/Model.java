@@ -66,6 +66,9 @@ public class Model implements Serializable
     private int introIndex = 0;
     private ArrayList<Idol> savedIdols;
     private int timesSirenDefeated;
+    private ArrayList<Item> availableShopItems;
+    private boolean dungeonWon;
+    private boolean finalFightWon;
     //Constructors
     /**
      * Initializes the Model in the Main Menu
@@ -86,6 +89,7 @@ public class Model implements Serializable
         this.isIntroPlaying = false;
         this.savedIdols = new ArrayList<Idol>();
         this.timesSirenDefeated = 0;
+        this.availableShopItems = new ArrayList<Item>();
     }
     
     //Methods
@@ -383,5 +387,41 @@ public class Model implements Serializable
     public int getTimesSirenDefeated()
     {
         return this.timesSirenDefeated;
+    }
+    
+    public boolean getDungeonWon()
+    {
+        return this.dungeonWon;
+    }
+    public boolean getFinalFightWon()
+    {
+        return this.finalFightWon;
+    }
+    
+    public void setAvailableShopItems()
+    {
+        this.availableShopItems.add(new Item(11));
+        this.availableShopItems.add(new Item(10));
+        for (Idol idol : this.savedIdols)
+        {
+            Item newItem = new Item(idol.getIdolNumber());
+            if(newItem.getItemName() != null)
+                availableShopItems.add(new Item(idol.getIdolNumber()));
+        }
+    }
+    
+    public ArrayList<Item> getAvailableShopItems()
+    {
+        return this.availableShopItems;
+    }
+    
+    public void buyItem(Item item)
+    {
+        int currentGold = this.player.getTotalGold() - this.player.getGoldSpent();
+        
+        if (currentGold > item.getPrice())
+            this.player.pickUpItem(item);
+        else
+            System.out.println("u broke");
     }
 }

@@ -6,8 +6,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import model.Idol;
+import model.Item;
 import model.Model;
 import model.Player;
 /*
@@ -27,8 +30,7 @@ public class ShopPanel extends JPanel{
     
     private String hanamaruText;
 
-    
-    
+
     public ShopPanel(Model model, int panelWidth, int panelHeight)
     {
         this.model = model;
@@ -58,6 +60,7 @@ public class ShopPanel extends JPanel{
     public void drawShop(Graphics2D g2D)
     {
         Player player = this.model.getPlayer();
+        ArrayList<Item> availableItems = this.model.getAvailableShopItems();
         
         g2D.setFont(this.defaultFont);
         g2D.drawImage(this.shopBackground, 0, 0, null);
@@ -75,14 +78,25 @@ public class ShopPanel extends JPanel{
         x = 642;
         y = 19;
         int width = 429;
-        int height = 172;
+        int height = (availableItems.size() + 3) * 40;
         drawBox(g2D, x, y, width, height);
         
         x = 656;
         y = 45;
+        int lineSpacing = 30;
+        
         String totalGoldText = String.format("Total gold: " + player.getTotalGold());
         g2D.drawString(totalGoldText, x, y);
-        g2D.drawString("[R]eturn", x, 83);
+        y+=lineSpacing;
+        
+        int i;
+        for (i = 0; i < availableItems.size(); i++)
+        {
+            g2D.drawString("[" + i+1 + "] " + availableItems.get(i).getItemName() + "   " + availableItems.get(i).getPrice(), x, y);
+                y+=lineSpacing;
+        }
+        g2D.drawString("[R]eturn", x, y + 30);
+        
         
     }
     

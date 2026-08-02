@@ -144,8 +144,7 @@ public class Player implements Serializable
         String[] messages;
         if (this.currHP < this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
-            System.out.println("Healed for 0.5 using " + this.itemOnHand.getItemName() + ".");
-            messages = new String[]{"Healed for 0.5 using " + this.itemOnHand.getItemName() + "."};
+            messages = new String[]{"Lailaps: You healed for 0.5\nusing " + this.itemOnHand.getItemName() + "."};
             this.currHP += 0.5;
             itemOnHand.reduceQuantity();
 
@@ -156,13 +155,12 @@ public class Player implements Serializable
         else if (this.currHP == this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
             messages = new String[]{
-                "Lailaps: You're still fully healed Yohane-chan",
-                "Lailaps: Stop being nervous eh"
+                "Lailaps: You're still fully\nhealed Yohane-chan\nStop being nervous eh."
             };
         }
         else
         {
-            messages = new String[]{"Lailaps: You've used up all your items Yohane-chan."};
+            messages = new String[]{"Lailaps: You've used up all your\nitems Yohane-chan."};
         }
         return messages;
     }
@@ -179,6 +177,8 @@ public class Player implements Serializable
         this.inventory.removeUsedItem(this.itemOnHand);
         if (this.inventory.getItemCount() > 0)
             this.itemOnHand = inventory.getItems().get(0);
+        else
+            this.itemOnHand = null;
     }
     /**
      * Switches the held {@code Item} to the previous one in the {@code Inventory}.
@@ -201,7 +201,7 @@ public class Player implements Serializable
             }
         }
         else if (this.inventory.getItemCount() == 0)
-            message = "Lailaps: You've used up all your items Yohane-chan.";
+            message = "Lailaps: You've used up all your\nitems Yohane-chan.";
         return message;
     }
     /**
@@ -233,7 +233,7 @@ public class Player implements Serializable
             }
         }
         else if (this.inventory.getItemCount() == 0)
-            message = "Lailaps: You've used up all your items Yohane-chan.";
+            message = "Lailaps: You've used up all your\nitems Yohane-chan.";
         return message;
     }
 

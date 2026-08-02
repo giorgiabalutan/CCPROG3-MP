@@ -48,6 +48,8 @@ public class OverworldPanel extends JPanel{
         this.lailapsAndYohaneImage = new ImageIcon(getClass().getResource("/assets/lailapsAndYohaneImage.png")).getImage();
         this.yohaneInventoryImage = new ImageIcon(getClass().getResource("/assets/yohaneInventoryImage.png")).getImage();
         defaultFont = new Font("Courier New", Font.BOLD, 20);
+        this.lailapsText = "Lailaps: Yohane! What should we\ndo next?";
+
     }
     
     // public void setKeyListener(KeyListener keyListener)
@@ -208,7 +210,13 @@ public class OverworldPanel extends JPanel{
         
         
         String hpText = String.format("HP: %.1f / %.1f", player.getCurrHP(), player.getTotalHP());
-        String itemOnHandText = "Item on Hand: " + player.getItemOnHand().getItemName();
+        
+        String itemOnHandText;
+        if (player.getItemOnHand() != null)
+            itemOnHandText = "Item on Hand: " + player.getItemOnHand().getItemName();
+        else
+            itemOnHandText = "Item on Hand: None";
+        
         String totalGoldText = String.format("Total gold: " + player.getTotalGold());
         String inventoryText = "[I]nventory";
         String saveAndQuitText = "[S]ave and Quit";
@@ -231,6 +239,12 @@ public class OverworldPanel extends JPanel{
         g2D.drawString(itemOnHandText, 38, 400);
         g2D.drawString(inventoryText, 645, 400);
         g2D.drawString(saveAndQuitText, 799, 400);
+        for (Idol idol : this.model.getSavedIdols())
+        {
+            if(idol.getIdolName().equals("Hanamaru Kunikida"))
+                  g2D.drawString(hanamaruShopText, 799, 425);
+        }
+        
         for(int i = 0; i < idolList.size(); i++)
         {
             g2D.drawString(dungeon[i], 38, 450+(i*20));
@@ -241,9 +255,8 @@ public class OverworldPanel extends JPanel{
         }
         
         //Dialogue box between Yohane and Lailaps
-        drawBox(g2D, 360, 46, 405, 100);
-        this.lailapsText = "Lailaps: Yohane! What should we\ndo next?";
-        this.yohaneText = "Yohane: Hmmmmm...";
+        drawBox(g2D, 360, 46, 415, 125);
+        
         
         y = 75;
         for(String line : lailapsText.split("\n"))
@@ -251,8 +264,8 @@ public class OverworldPanel extends JPanel{
             g2D.drawString(line, 376, y);
             y += 20;
         }
-        
-        g2D.drawString(yohaneText, 376, 125);
+        this.yohaneText = "Yohane: Hmmmmm...";
+        g2D.drawString(yohaneText, 376, 145);
     }
     
     public void drawInventory(Graphics2D g2D)

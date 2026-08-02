@@ -25,6 +25,8 @@ public class Idol implements Serializable
     private int timesSaved;
     
     private String idolImageFilePath;
+    
+    private int idolNumber;
 
     /**
      * Constructs an Idol based on the provided idolNumber. The following numbers correspond to:
@@ -43,6 +45,7 @@ public class Idol implements Serializable
      */
     public Idol(int idolNumber)
     {
+        this.idolNumber = idolNumber;
         switch(idolNumber)
         {
             case 1: 
@@ -138,5 +141,10 @@ public class Idol implements Serializable
     public void idolIsSaved()
     {
         this.timesSaved += 1;
+    }
+    
+    public int getIdolNumber()
+    {
+        return this.idolNumber;
     }
 }
