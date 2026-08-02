@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import javax.swing.text.View;
 import model.dungeon.Floor;
 import model.dungeon.Position;
@@ -144,7 +143,7 @@ public class Player implements Serializable
         String[] messages;
         if (this.currHP < this.totalHP && this.itemOnHand.getQuantity() > 0)
         {
-            messages = new String[]{"Lailaps: You healed for 0.5\nusing " + this.itemOnHand.getItemName() + "."};
+            messages = new String[]{"You healed for 0.5 using " + this.itemOnHand.getItemName() + "."};
             this.currHP += 0.5;
             itemOnHand.reduceQuantity();
 
