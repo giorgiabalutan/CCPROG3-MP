@@ -128,20 +128,7 @@ public class View extends JFrame
      * Also prints the choices to start a New Game, a New Game Plus, or to Continue depending on availability.
      */
     
-    /**
-     * Prints the lifetime stats of the {@link Player}.
-     */
-    public void printStatus()
-    {
-        System.out.println("PRINT STATUS");
-    }
-    /**
-     * Prints a manual on how to play the game.
-     */
-    public void printManual()
-    {
-        System.out.println("Instructions");
-    }
+    
 
     //Overworld
 
@@ -161,7 +148,6 @@ public class View extends JFrame
         Tile[][] grid = floor.getGrid();
         Player player = this.model.getPlayer();
 
-        clearWithANSICodes();
 
         //Print Status
         System.out.println("Dungeon #" + dungeon.getOrder() + ": " + dungeon.getName());
@@ -205,7 +191,6 @@ public class View extends JFrame
      */
     public void deathMessage(String cause)
     {
-        clearWithANSICodes();
         System.out.println("GAME OVER");
         System.out.println("Yohane has fallen due to " + cause);
     }
@@ -217,7 +202,6 @@ public class View extends JFrame
      */
     public void finishedFloor(Idol idol)
     {
-        clearWithANSICodes();
         System.out.println("************************************************************");
         System.out.println("                     Dungeon Cleared!                       ");
         System.out.println("           "+idol.getDungeonName()+" Completed!          ");
@@ -252,23 +236,7 @@ public class View extends JFrame
         }
         System.out.print("Your choice: ");
     }
-    /**
-     * Prints a prompt asking for the player to enter anything to continue.
-     * Used for cutscenes where the player's input does not matter.
-     */
-    public void printContinuePrompt()
-    {
-        System.out.println();
-        System.out.print("Press ENTER to continue: ");
-    }
-    /**
-     * Clears the current screen using ANSI codes.
-     */
-    private static void clearWithANSICodes() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
+    
     public void loadFloor()
     {
         this.dungeonPanel.loadFloor();

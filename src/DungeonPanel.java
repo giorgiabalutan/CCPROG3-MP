@@ -7,6 +7,7 @@ public class DungeonPanel extends JPanel{
     private PlayerStatusPanel statusPanel;
     private FloorPanel floorPanel;
     private CombatLogPanel logPanel;
+    private Image yohaneDeadImage;
 
     private int floorNum;
 
@@ -28,6 +29,8 @@ public class DungeonPanel extends JPanel{
         this.add(logPanel);
 
         defaultFont = new Font("Courier New", Font.BOLD, 20);
+        
+        this.yohaneDeadImage = new ImageIcon(getClass().getResource("assets/dungeonSprites/yohaneSprites/yohane_dead.png")).getImage();
 
     }
 
@@ -56,11 +59,25 @@ public class DungeonPanel extends JPanel{
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
         
-        if(this.floorNum != this.model.getDungeon().getFloorNum())
+        if(this.model.getPlayer().isDead())
         {
-            loadFloor();
-            this.floorNum = this.model.getDungeon().getFloorNum();
+            statusPanel.setVisible(false);
+            floorPanel.setVisible(false);
+            logPanel.setVisible(false);
+            showDeathScreen(g2D, this.model.getPlayer().getCauseOfDeath());
         }
+        else
+        {
+            statusPanel.setVisible(true);
+            floorPanel.setVisible(true);
+            logPanel.setVisible(true);
+            if(this.floorNum != this.model.getDungeon().getFloorNum())
+            {
+                loadFloor();
+                this.floorNum = this.model.getDungeon().getFloorNum();
+            }
+        }
+        
 
         // g2D.drawString();
 
@@ -75,7 +92,33 @@ public class DungeonPanel extends JPanel{
         //     else
         //         drawOverworld(g2D);
         // }
+    }
+    
+    public void showDeathScreen(Graphics2D g2D, String causeOfDeath)
+    {
+        String[] deathText = {
+            "---------------------------------------------------------------------------",
+            "                           GAME OVER                                ",
+            "---------------------------------------------------------------------------",
+            "                Yohane has fallen from " + causeOfDeath
+        };
         
+        this.setForeground(Color.white);
+        this.setBackground(Color.black);
+        g2D.drawImage(this.yohaneDeadImage, 374, 151, 350, 350, this);
+        
+        int x = 0;
+        int y = 54;
+        int lineSpacing = 20;
+        int i;
+        this.setFont(new Font("Courier New", Font.BOLD, 30));
+        for (i = 0; i < deathText.length; i++ )
+        {
+            g2D.drawString(deathText[i], x, y);
+            y+=lineSpacing;
+        }
+        
+        g2D.drawString("[E]xit to Main Menu", 374, 500);
         
     }
 }

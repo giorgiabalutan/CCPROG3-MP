@@ -320,9 +320,9 @@ public class Controller implements ActionListener, KeyListener
         if(this.model.getPlayer().isDead())
         {
             this.model.incGameOvers();
-            this.view.deathMessage(this.model.getPlayer().getCauseOfDeath());
-            // waitForContinue();
-            this.model.setGameState(GameState.MAIN_MENU);
+            this.view.repaintDungeon();
+            if("E".equals(command))
+                this.model.setGameState(GameState.MAIN_MENU);
             updateView();
             //To be expounded
         }
@@ -389,17 +389,7 @@ public class Controller implements ActionListener, KeyListener
         else
             return line.isEmpty() ? ' ' : line.charAt(0);
     }
-    //Stalls until the user presses enter, drops whatever the line may have contained
-    /**
-     * Waits for the player to input anything into the console.
-     * Drops whatever input was accepted.
-     */
-    private void waitForContinue()
-    {
-        this.view.printContinuePrompt();
-        sc.nextLine();
-    }
-
+    
     @Override
     public void keyTyped(KeyEvent e) {}
 
