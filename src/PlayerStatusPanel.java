@@ -56,6 +56,13 @@ public class PlayerStatusPanel extends JPanel{
         reset = new Color(0,0,0);
     }
 
+    public void loadFloor()
+    {
+        this.dungeon = this.model.getDungeon();
+        this.player = this.model.getPlayer();
+        this.itemOnHand = this.player.getItemOnHand();
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {

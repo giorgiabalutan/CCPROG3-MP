@@ -45,6 +45,7 @@ public class FloorPanel extends JPanel
     {
         this.floor = model.getDungeon().getFloor();
         this.floorNum = model.getDungeon().getFloorNum();
+        this.player = model.getPlayer();
         this.grid = this.floor.getGrid();
         this.sizeRow = floor.getSizeY();
         this.sizeCol = floor.getSizeX();
@@ -162,6 +163,7 @@ public class FloorPanel extends JPanel
 
     @Override
     public void paintComponent(Graphics g) {
+        // System.out.println("FloorPanel created: " + System.identityHashCode(this));
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
 

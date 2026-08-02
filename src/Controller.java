@@ -157,6 +157,7 @@ public class Controller implements ActionListener, KeyListener
                 if(this.model.isPlaythroughExists())
                 {
                     this.model.load();
+                    this.model.setIsIntroPlaying(false);
                     this.model.setGameState(GameState.OVERWORLD);
                 }else{
                     this.model.setErrorMessage("No Save Found");
@@ -210,6 +211,7 @@ public class Controller implements ActionListener, KeyListener
                         this.model.getDungeon().generateDungeon(idolList.get(index));
                         this.view.loadFloor();
                         this.model.setGameState(GameState.DUNGEON);
+                        // System.out.println(idolList.get(index).getDungeonCode());
                     }else{
                         this.model.setErrorMessage("Idol already saved");
                     }
@@ -407,8 +409,14 @@ public class Controller implements ActionListener, KeyListener
     //For Testing Only
     public void skipIntroNew(){
         processMenuInput("N");
-        // processOverworldInput(" ");
-        processOverworldInput("1");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        processOverworldInput("Enter");
+        // processOverworldInput("1");
         updateView();
     }
 }

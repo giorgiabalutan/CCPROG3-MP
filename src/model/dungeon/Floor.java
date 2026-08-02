@@ -1138,6 +1138,10 @@ public class Floor implements Serializable
         }else{
             blocked = true;
         }
+        if(checkForPlayer(y, x))
+        {
+            blocked = true;
+        }
         return blocked;
     }
 

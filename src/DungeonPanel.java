@@ -39,6 +39,8 @@ public class DungeonPanel extends JPanel{
     public void loadFloor()
     {
         this.floorNum = this.model.getDungeon().getFloorNum();
+        // System.out.println(this.model.getDungeon().getDungeonCode());
+        this.statusPanel.loadFloor();
         this.floorPanel.loadFloor();
         this.logPanel.loadFloor();
     }
