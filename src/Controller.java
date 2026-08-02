@@ -353,6 +353,7 @@ public class Controller implements ActionListener, KeyListener
             this.model.incGameOvers();
             this.view.repaintDungeon();
             this.model.setPlaythroughExists(false);
+            this.model.setNGPlusAvailable(true);
             this.model.save();
             if("E".equals(command))
             {

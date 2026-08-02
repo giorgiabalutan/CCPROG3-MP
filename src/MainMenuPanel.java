@@ -29,7 +29,6 @@ public class MainMenuPanel extends JPanel{
         private Model model;
         private Image bgImage;
         private JButton newGameButton;
-        private JButton newGamePlusButton;
         private JButton continueButton;
         private JButton statusButton;
         private JButton howToPlayButton;
@@ -65,10 +64,6 @@ public class MainMenuPanel extends JPanel{
             styleButton(newGameButton);
             newGameButton.setActionCommand("N");
             
-            newGamePlusButton = new JButton("New Game+");
-            styleButton(newGamePlusButton);
-            newGamePlusButton.setActionCommand("N");
-            
             continueButton = new JButton("Continue");
             styleButton(continueButton);
             continueButton.setActionCommand("C");
@@ -86,12 +81,11 @@ public class MainMenuPanel extends JPanel{
             quitButton.setActionCommand("Q");
             
             
-            
             if (this.model.isNgPlusAvailable())
-                this.buttonPanel.add(newGamePlusButton);
+                this.newGameButton.setText("New Game+");
             else
-                this.buttonPanel.add(newGameButton);
-            
+                this.newGameButton.setText("New Game");
+            buttonPanel.add(newGameButton);
             if (this.model.isPlaythroughExists())
                 this.buttonPanel.add(continueButton);
             
@@ -105,7 +99,6 @@ public class MainMenuPanel extends JPanel{
         public void setButtonActionListener(ActionListener actionListener)
         {
             this.newGameButton.addActionListener(actionListener);
-            this.newGamePlusButton.addActionListener(actionListener);
             this.continueButton.addActionListener(actionListener);
             this.statusButton.addActionListener(actionListener);
             this.howToPlayButton.addActionListener(actionListener);
@@ -158,8 +151,9 @@ public class MainMenuPanel extends JPanel{
         {
             this.quitButton.setText("Quit");
             this.quitButton.setActionCommand("Q");
+            if (this.model.isNgPlusAvailable())
+                this.newGameButton.setText("New Game+");
             newGameButton.setVisible(true);
-            newGamePlusButton.setVisible(true);
             continueButton.setVisible(true);
             statusButton.setVisible(true);
             howToPlayButton.setVisible(true);
@@ -171,7 +165,6 @@ public class MainMenuPanel extends JPanel{
             this.quitButton.setText("Return");
             this.quitButton.setActionCommand("R");
             newGameButton.setVisible(false);
-            newGamePlusButton.setVisible(false);
             continueButton.setVisible(false);
             statusButton.setVisible(false);
             howToPlayButton.setVisible(false);
@@ -226,7 +219,6 @@ public class MainMenuPanel extends JPanel{
             this.quitButton.setText("Return");
             this.quitButton.setActionCommand("R");
             newGameButton.setVisible(false);
-            newGamePlusButton.setVisible(false);
             continueButton.setVisible(false);
             statusButton.setVisible(false);
             howToPlayButton.setVisible(false);
