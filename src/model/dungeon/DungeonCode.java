@@ -48,7 +48,7 @@ public enum DungeonCode{
     /**
      * Uchiura Bay Pier, a Beach dungeon.
      * Modifiers - Stronger Walls, Rebreather, Faster Skeletons
-     * Dungeon Style - A Lotta Treasure
+     * Dungeon Style - Bodies of Water
      * Unlocks Shovel Upgrade
      */
     UCHIURA_BAY_PIER,

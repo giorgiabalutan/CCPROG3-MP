@@ -89,6 +89,7 @@ public class Floor implements Serializable
     private ArrayList<Switch> switches;
     private int switchSetsPressed;
     private ArrayList<Arrow> arrows;
+    private boolean frozenSkeletons;
 
     private ArrayList<CombatLogEntry> combatLogs;
     private int turnNumber;
@@ -118,6 +119,7 @@ public class Floor implements Serializable
         this.switches = new ArrayList<Switch>();
         this.lailapses = new ArrayList<Lailaps>();
         this.arrows = new ArrayList<Arrow>();
+        this.frozenSkeletons = false;
     }
 
     //Methods
@@ -716,7 +718,7 @@ public class Floor implements Serializable
                 }else if(i < 80){
                     convertLayout(Layouts.AIR_SHOES_CHALLENGE_1);
                     addLayout(Layouts.AIR_SHOES_CHALLENGE_2);
-                }else if(i<90){
+                }else if(i < 90){
                     convertLayout(Layouts.CHILL_WATER_AREA_1);
                     addLayout(Layouts.CHILL_WATER_AREA_2);
                 }else if(i < 96){
@@ -745,7 +747,7 @@ public class Floor implements Serializable
                 }else if(i < 80){
                     convertLayout(Layouts.SWARMING_CHAOS_1);
                     addLayout(Layouts.SWARMING_CHAOS_2);
-                }else if(i<90){
+                }else if(i < 90){
                     convertLayout(Layouts.CHILL_AQUARIUM_1);
                     addLayout(Layouts.CHILL_AQUARIUM_2);
                 }else if(i < 96){
@@ -756,75 +758,127 @@ public class Floor implements Serializable
                 }
                 break;
             case NUMAZU_DEEP_SEA_AQUARIUM:
-                i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.SKELETON_TEST);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.SKELETON_TEST);
-                        break; 
+                i = this.rand.nextInt(100);
+                if(i < 15){
+                    convertLayout(Layouts.DIVE_IN_1);
+                    addLayout(Layouts.DIVE_IN_2);
+                }else if(i < 30){
+                    convertLayout(Layouts.FISHKEL_ART_1);
+                    addLayout(Layouts.FISHKEL_ART_2);
+                }else if(i < 40) {
+                    convertLayout(Layouts.FISHESKEL_ART_1);
+                    addLayout(Layouts.FISHESKEL_ART_2);
+                }else if(i < 50){
+                    convertLayout(Layouts.SHARK_ATTACK_1);
+                    addLayout(Layouts.SHARK_ATTACK_2);
+                    this.frozenSkeletons = true;
+                }else if(i < 60){
+                    convertLayout(Layouts.FISH_TANK_1);
+                    addLayout(Layouts.FISH_TANK_2);
+                }else if(i < 70){
+                    convertLayout(Layouts.BONEFISH_TANK_1);
+                    addLayout(Layouts.BONEFISH_TANK_2);
+                }else if(i < 80){
+                    convertLayout(Layouts.BAT_CAVES_2);
+                    addLayout(Layouts.BAT_CAVES_1);
+                }else if(i < 90){
+                    convertLayout(Layouts.CHILL_AQUARIUM_TWO_1);
+                    addLayout(Layouts.CHILL_AQUARIUM_TWO_2);
+                }else if(i < 96){
+                    this.frozenSkeletons = true;
+                    convertLayout(Layouts.FIRING_SQUAD_1);
+                    addLayout(Layouts.FIRING_SQUAD_2);
+                }else{
+                    convertLayout(Layouts.NUMAZU_DEEP_SEA_AQUARIUM_TREASURE_ROOM_1);
+                    addLayout(Layouts.NUMAZU_DEEP_SEA_AQUARIUM_TREASURE_ROOM_2);
                 }
                 break;
             case SHOUGETSU_CONFECTIONARY:
-                i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                i = this.rand.nextInt(100);
+                if(i < 15){
+                    convertLayout(Layouts.CANDY_PISKEL_ART);
+                }else if(i < 30){
+                    convertLayout(Layouts.LOLLIPOP_PISKEL_ART);
+                }else if(i < 45) {
+                    convertLayout(Layouts.CHOCOLATE_PISKEL_ART);
+                }else if(i < 70){
+                    convertLayout(Layouts.CHILL_BACKROOM);
+                }else if(i < 90){
+                    convertLayout(Layouts.HP_SHOP);
+                }else{
+                    convertLayout(Layouts.SHOUGETSU_CONFECTIONARY_TREASURE_ROOM);
                 }
                 break;
             case NAGAHAMA_CASTLE_RUINS:
-                i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                i = this.rand.nextInt(100);
+                if(i < 15){
+                    convertLayout(Layouts.CASTLE_BRIDGE_ASSAULT);
+                }else if(i < 30){
+                    convertLayout(Layouts.CASTLE_TOWER_ASSAULT);
+                }else if(i < 45) {
+                    convertLayout(Layouts.CASTLE_VAULT_ASSAULT);
+                }else if(i < 70){
+                    convertLayout(Layouts.CHILL_RUINED_CREVICE);
+                }else if(i < 90){
+                    this.frozenSkeletons = true;
+                    convertLayout(Layouts.FIRING_SQUAD_EX);
+                }else{
+                    convertLayout(Layouts.NAGAHAMA_CASTLE_RUINS_TREASURE_ROOM);
                 }
                 break;
             case NUMAZUGOYOTEI:
-                i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                i = this.rand.nextInt(100);
+                if(i < 15){
+                    convertLayout(Layouts.FOREST_EXPLORATION);
+                }else if(i < 30){
+                    convertLayout(Layouts.BAT_SWARM);
+                }else if(i < 45) {
+                    convertLayout(Layouts.BATS_OR_SLOP);
+                }else if(i < 70){
+                    convertLayout(Layouts.CHILL_HUT);
+                }else if(i < 90){
+                    convertLayout(Layouts.GUERILLA_CHALLENGE);
+                }else{
+                    convertLayout(Layouts.NUMAZUGOYOTEI_TREASURE_ROOM);
                 }
                 break;
             case UCHIURA_BAY_PIER:
                 i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                if(i < 15){
+                    convertLayout(Layouts.RIVER_DELTAS_1);
+                    addLayout(Layouts.RIVER_DELTAS_2);
+                }else if(i < 30){
+                    convertLayout(Layouts.DEAD_SEA_1);
+                    addLayout(Layouts.DEAD_SEA_2);
+                }else if(i < 45) {
+                    convertLayout(Layouts.BEACH_1);
+                    addLayout(Layouts.BEACH_2);
+                }else if(i < 70){
+                    convertLayout(Layouts.CHILL_LAKE);
+                }else if(i < 90){
+                    convertLayout(Layouts.DDAY_CHALLENGE_1);
+                    addLayout(Layouts.DDAY_CHALLENGE_2);
+                }else{
+                    convertLayout(Layouts.UCHIURA_BAY_PIER_TREASURE_ROOM_1);
+                    addLayout(Layouts.UCHIURA_BAY_PIER_TREASURE_ROOM_2);
                 }
                 break;
             case AWASHIMA_MARINE_PARK:
                 i = this.rand.nextInt(2);
-                switch(i)
-                {
-                    case 0:
-                        convertLayout(Layouts.REFERENCE);
-                        break;
-                    case 1:
-                        convertLayout(Layouts.BAT_WATER_TEST);
-                        break; 
+                if(i < 15){
+                    convertLayout(Layouts.BAT_SWARM_NARROW_1);
+                    addLayout(Layouts.BAT_SWARM_NARROW_2);
+                }else if(i < 30){
+                    convertLayout(Layouts.PARRY_CHALLENGE);
+                }else if(i < 45) {
+                    convertLayout(Layouts.REFERENCE);
+                }else if(i < 70){
+                    convertLayout(Layouts.CHILL_HALL);
+                }else if(i < 90){
+                    convertLayout(Layouts.BE_CRUSHED_BY_A_SPEEDING_ARROWS);
+                }else{
+                    convertLayout(Layouts.AWASHIMA_MARINE_PARK_TRASURE_ROOM_1);
+                    addLayout(Layouts.AWASHIMA_MARINE_PARK_TREASURE_ROOM_2);
                 }
                 break;
             case SIRENS_LAIR:
@@ -1130,7 +1184,7 @@ public class Floor implements Serializable
             }
             for(Creature creatureN: this.grid[y][x].getCreatures())
             {
-                if(creatureN.getCreatureType() == creature.getCreatureType() && creatureN.getCreatureType() != CreatureType.ARROW)
+                if(creatureN.getCreatureType() == creature.getCreatureType() && creatureN.getCreatureType() != CreatureType.ARROW && creature.getCreatureType() != CreatureType.ARROW)
                 {
                     blocked = true;
                 }
@@ -1138,7 +1192,7 @@ public class Floor implements Serializable
         }else{
             blocked = true;
         }
-        if(checkForPlayer(y, x))
+        if(checkForPlayer(y, x) && creature.getCreatureType() != CreatureType.ARROW)
         {
             blocked = true;
         }
@@ -1296,5 +1350,15 @@ public class Floor implements Serializable
     public HashSet<DungeonModifier> getDungeonModifiers()
     {
         return this.dungeonModifiers;
+    }
+
+    public void setFrozenSkeletons(boolean bool)
+    {
+        this.frozenSkeletons = bool;
+    }
+
+    public boolean isFrozenSkeletons()
+    {
+        return this.frozenSkeletons;
     }
 }

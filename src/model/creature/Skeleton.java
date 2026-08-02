@@ -105,90 +105,96 @@ public class Skeleton extends Creature{
                     floor.createArrow(y-1, x, this.damage, Direction.UP);
                 }
             }else{
-                int offY = 0;
-                int offX = 0;
-
-                if(distY > distX)
+                if(floor.isFrozenSkeletons())
                 {
-                    if(x < playerX)
-                    {
-                        offX = 1;
-                    }
-                    if(x > playerX)
-                    {
-                        offX = -1;
-                    }
+                    floor.creatureIdle(this);
+                    preserveTurn = true;
                 }else{
-                    if(y < playerY)
-                    {
-                        offY = 1;
-                    }
-                    if(y > playerY)
-                    {
-                        offY = -1;
-                    }
-                }
+                    int offY = 0;
+                    int offX = 0;
 
-                if(offY > 0)
-                {
-                    this.setDirection(Direction.DOWN);
-                    if(!floor.isCreatureBlocked(this, y+offY, x))
+                    if(distY > distX)
                     {
-                        floor.moveCreature(this, offY, 0);
-                    }else{
-                        floor.creatureIdle(this);
-                        preserveTurn = true;
-                    }
-                }else if(offY<0)
-                {
-                    this.setDirection(Direction.UP);
-                    if(!floor.isCreatureBlocked(this, y+offY, x))
-                    {
-                        floor.moveCreature(this, offY, 0);
-                    }else{
-                        floor.creatureIdle(this);
-                        preserveTurn = true;
-                    }
-                }else if(offX>0)
-                {
-                    this.setDirection(Direction.RIGHT);
-                    if(!floor.isCreatureBlocked(this, y, x+offX))
-                    {
-                        floor.moveCreature(this, 0, offX);
-                    }else{
-                        floor.creatureIdle(this);
-                        preserveTurn = true;
-                    }
-                }else{
-                    this.setDirection(Direction.LEFT);
-                    if(!floor.isCreatureBlocked(this, y, x+offX))
-                    {
-                        floor.moveCreature(this, 0, offX);
-                    }else{
-                        floor.creatureIdle(this);
-                        preserveTurn = true;
-                    }
-                }
-                if(floor.getDungeonModifiers().contains(DungeonModifier.FASTER_SKELETONS))
-                {
-                    //Attack
-                    if(distY == 0){
                         if(x < playerX)
                         {
-                            floor.createArrow(y, x+1, this.damage, Direction.RIGHT);
+                            offX = 1;
                         }
                         if(x > playerX)
                         {
-                            floor.createArrow(y, x-1, this.damage, Direction.LEFT);
+                            offX = -1;
                         }
-                    }else if (distX == 0){
+                    }else{
                         if(y < playerY)
                         {
-                            floor.createArrow(y+1, x, this.damage, Direction.DOWN);
+                            offY = 1;
                         }
                         if(y > playerY)
                         {
-                            floor.createArrow(y-1, x, this.damage, Direction.UP);
+                            offY = -1;
+                        }
+                    }
+
+                    if(offY > 0)
+                    {
+                        this.setDirection(Direction.DOWN);
+                        if(!floor.isCreatureBlocked(this, y+offY, x))
+                        {
+                            floor.moveCreature(this, offY, 0);
+                        }else{
+                            floor.creatureIdle(this);
+                            preserveTurn = true;
+                        }
+                    }else if(offY<0)
+                    {
+                        this.setDirection(Direction.UP);
+                        if(!floor.isCreatureBlocked(this, y+offY, x))
+                        {
+                            floor.moveCreature(this, offY, 0);
+                        }else{
+                            floor.creatureIdle(this);
+                            preserveTurn = true;
+                        }
+                    }else if(offX>0)
+                    {
+                        this.setDirection(Direction.RIGHT);
+                        if(!floor.isCreatureBlocked(this, y, x+offX))
+                        {
+                            floor.moveCreature(this, 0, offX);
+                        }else{
+                            floor.creatureIdle(this);
+                            preserveTurn = true;
+                        }
+                    }else{
+                        this.setDirection(Direction.LEFT);
+                        if(!floor.isCreatureBlocked(this, y, x+offX))
+                        {
+                            floor.moveCreature(this, 0, offX);
+                        }else{
+                            floor.creatureIdle(this);
+                            preserveTurn = true;
+                        }
+                    }
+                    if(floor.getDungeonModifiers().contains(DungeonModifier.FASTER_SKELETONS))
+                    {
+                        //Attack
+                        if(distY == 0){
+                            if(x < playerX)
+                            {
+                                floor.createArrow(y, x+1, this.damage, Direction.RIGHT);
+                            }
+                            if(x > playerX)
+                            {
+                                floor.createArrow(y, x-1, this.damage, Direction.LEFT);
+                            }
+                        }else if (distX == 0){
+                            if(y < playerY)
+                            {
+                                floor.createArrow(y+1, x, this.damage, Direction.DOWN);
+                            }
+                            if(y > playerY)
+                            {
+                                floor.createArrow(y-1, x, this.damage, Direction.UP);
+                            }
                         }
                     }
                 }

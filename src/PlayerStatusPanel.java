@@ -72,8 +72,8 @@ public class PlayerStatusPanel extends JPanel{
         g2D.setFont(defaultFont);
         // g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         
-        g2D.drawString("" + dungeon.getName() + "", 10, nextLineHeight);
-        nextLineHeight += 20;
+        // g2D.drawString("" + dungeon.getName() + "", 10, nextLineHeight);
+        // nextLineHeight += 20;
 
         if(dungeon.getDungeonCode() == DungeonCode.SIRENS_LAIR)
         {
@@ -85,6 +85,10 @@ public class PlayerStatusPanel extends JPanel{
 
         g2D.drawString("Floor   " + (dungeon.getFloorNum()+1) + " of " + dungeon.getMaxFloor(), 10, nextLineHeight);
         nextLineHeight += 10;
+
+
+        g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/YohaneIcon.png"),10,nextLineHeight,128,128,this);
+        nextLineHeight += 140;
 
         // g2D.drawString("HP: " + player.getCurrHP() +  "/" + player.getTotalHP(), 10, 60);
         // System.out.println(player.getCurrHP());
@@ -157,6 +161,8 @@ public class PlayerStatusPanel extends JPanel{
         ArrayList<Lailaps> lailapses = this.dungeon.getFloor().getLailapses();
         for(Lailaps lailaps : lailapses)
         {
+            g2D.drawImage(SpriteCache.getImage("assets/dungeonSprites/LailapsIcon.png"),10,nextLineHeight,128,128,this);
+            nextLineHeight += 140;
             int LailapsMaxHp = (int)Math.ceil(lailaps.getMaxHp());
             int LailapsFullHearts = (int)Math.floor(lailaps.getHp());
             boolean LailapsPartial = (lailaps.getHp()%1)>0;
