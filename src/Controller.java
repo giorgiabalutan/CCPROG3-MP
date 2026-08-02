@@ -326,12 +326,12 @@ public class Controller implements ActionListener, KeyListener
             if (this.model.getDungeon().getDungeonCode() == DungeonCode.SIRENS_LAIR)
             {
                 this.model.incTimesSirenDefeated();
+                this.model.setFinalFightWon(true);
                 this.model.setPlaythroughExists(false);
                 this.model.save();
                 this.model.setGameState(GameState.MAIN_MENU);
             }else{
                 this.model.setDungeonWon(true);
-                // this.model.setGameState(GameState.OVERWORLD);
             }
             updateView();
             this.view.repaintDungeon();
@@ -485,7 +485,7 @@ public class Controller implements ActionListener, KeyListener
                         this.model.getPlayer().spendGold(price);
                         this.model.setAvailableShopItems();
                     }else{
-                        //Too Broke
+                        this.view.setShopHanamaruText("Hanamaru: Eh... Yohane-chan\nyou don't have enough money...");
                     }
                 }
                 this.view.repaintShop();

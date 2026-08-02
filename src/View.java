@@ -139,6 +139,11 @@ public class View extends JFrame
     {
         this.overworldPanel.setLailapsText(lailapsText);
     }
+    
+    public void setShopHanamaruText(String hanamaruText)
+    {
+        this.shopPanel.setHanamaruText(hanamaruText);
+    }
     //Dungeon
     /**
      * Displays the current {@link Floor} of the {@code Dungeon}.
@@ -191,58 +196,8 @@ public class View extends JFrame
         // System.out.println(player.getPosition().getPosY()+" "+player.getPosition().getPosX());
     }
 
-    /**
-     * Prints a death message if the {@code Player} dies.
-     * 
-     * @param cause a string holding the name of the entity that caused the death.
-     */
-    public void deathMessage(String cause)
-    {
-        System.out.println("GAME OVER");
-        System.out.println("Yohane has fallen due to " + cause);
-    }
-
-    /**
-     * Prints a victory message if the {@code Player} clears a {@code Dungeon}.
-     * 
-     * @param idol the {@link Idol} that the player rescued.
-     */
-    public void finishedFloor(Idol idol)
-    {
-        System.out.println("************************************************************");
-        System.out.println("                     Dungeon Cleared!                       ");
-        System.out.println("           "+idol.getDungeonName()+" Completed!          ");
-        System.out.println("                "+idol.getIdolName()+" rescued!                 ");
-        System.out.println("************************************************************");
-
-    }
-
     //Generic
-    /**
-     * Prints the prompt asking for the player's next choice.
-     * <p>
-     * Also prints an error message or list of error messages grabbed from {@code Model} if any exist.
-     */
-    public void printChoicePrompt()
-    {
-        System.out.println();
-        String errorMessage = this.model.getErrorMessage();
-        if(!errorMessage.equals(""))
-        {
-            System.out.println(errorMessage);
-            this.model.setErrorMessage("");
-        }
-        String[] errorMessages = this.model.getErrorMessages();
-        if(errorMessages != null && errorMessages.length > 0)
-        {
-            for(String msg : errorMessages)
-            {
-                System.out.println(msg);
-            }
-            this.model.setErrorMessages(new String[0]);
-        }
-        System.out.print("Your choice: ");
-    }
+    
     
     public void loadFloor()
     {

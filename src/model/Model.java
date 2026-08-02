@@ -470,13 +470,4 @@ public class Model implements Serializable
         return this.availableShopItems;
     }
     
-    public void buyItem(Item item)
-    {
-        int currentGold = this.player.getTotalGold() - this.player.getGoldSpent();
-        
-        if (currentGold > item.getPrice())
-            this.player.pickUpItem(item);
-        else
-            System.out.println("u broke");
-    }
 }

@@ -12,6 +12,8 @@ public class DungeonPanel extends JPanel{
     private Image bgImage;
     private Image savedIdolImage;
     private Image yohaneImage;
+    private Image sirenImage;
+    private Image finalFightBg;
 
     private int floorNum;
 
@@ -37,6 +39,8 @@ public class DungeonPanel extends JPanel{
         this.yohaneDeadImage = new ImageIcon(getClass().getResource("assets/dungeonSprites/yohaneSprites/yohane_dead.png")).getImage();
         this.yohaneImage = new ImageIcon(getClass().getResource("assets/yohaneInventoryImage.png")).getImage();
         this.bgImage =  new ImageIcon(getClass().getResource("assets/intro7.png")).getImage();
+        this.sirenImage = new ImageIcon(getClass().getResource("assets/sirenImage.png")).getImage();
+        this.finalFightBg = new ImageIcon(getClass().getResource("assets/finalFightBg.png")).getImage();
     }
 
     // public void setKeyListener(KeyListener keyListener)
@@ -77,6 +81,13 @@ public class DungeonPanel extends JPanel{
             floorPanel.setVisible(false);
             logPanel.setVisible(false);
             showDungeonWinScreen(g2D);
+        }
+        else if(this.model.getFinalFightWon())
+        {
+            statusPanel.setVisible(false);
+            floorPanel.setVisible(false);
+            logPanel.setVisible(false);
+            showSirenWinScreen(g2D);
         }
         else
         {
@@ -253,6 +264,50 @@ public class DungeonPanel extends JPanel{
             }
             
         }
+        g2D.drawString("[E]xit to Main Menu", 450, 520);
+    }
+    
+    public void showSirenWinScreen(Graphics2D g2D)
+    {
+        g2D.drawImage(finalFightBg, 0, 0, null);
+        String[] clearedText = {
+            "-------------------------------------------------------------------------------------",
+            "                                    Siren defeated!                                          ",
+            "-------------------------------------------------------------------------------------\n\n",
+            "Siren: N-no... my voice, my power...",
+            "Yohane: You've caused enough trouble stealing everyone's voices, Siren.",
+            "Siren: I only wanted... to be heard. Is that so wrong?",
+            "Yohane: ...Perhaps not. But this was never the way to do it.",
+            "Yohane: As a fallen angel, I hereby free these voices to their owners!",
+            "Siren: . . .",
+            "Yohane: You... already have a beautiful voice. So you don't have to steal. Hmp, take\nthis as my mercy"
+        };
+        
+        int x = 62;
+        int y = 260;
+        int width = 975;
+        int height = 240;
+        
+        g2D.drawImage(this.yohaneImage, 650, 0, null);
+        g2D.drawImage(this.sirenImage, 19, 0, null);
+        drawBox(g2D, x, y, width, height);
+        
+        this.setForeground(Color.white);
+        x = 75;
+        y = 285;
+        int lineSpacing = 20;
+        int i;
+        
+        g2D.setFont(new Font("Courier New", Font.BOLD, 18));
+        for (i = 0; i < clearedText.length; i++ )
+        {
+            for (String line : clearedText[i].split("\n"))
+            {
+                g2D.drawString(line, x, y);
+                y+=lineSpacing;
+            }
+        }
+        y+=20;
         g2D.drawString("[E]xit to Main Menu", 450, 520);
     }
     

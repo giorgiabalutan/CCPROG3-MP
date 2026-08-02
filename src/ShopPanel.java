@@ -100,6 +100,11 @@ public class ShopPanel extends JPanel{
         
     }
     
+    public void setHanamaruText(String text)
+    {
+        this.hanamaruText = text;
+    }
+    
     public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
     {
         g2D.setColor(new Color(0, 0, 0, 220));
