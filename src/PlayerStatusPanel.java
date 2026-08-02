@@ -12,23 +12,71 @@ import model.creature.Lailaps;
 import model.dungeon.*;
 
 public class PlayerStatusPanel extends JPanel{
+    /**
+     * {@link Model} to grab data from.
+     */
     private Model model;
+    /**
+     * {@link Dungeon} to grab data from.
+     */
     private Dungeon dungeon;
+    /**
+     * {@link Player} to grab data from.
+     */
     private Player player;
+    /**
+     * The {@link Item} the {@code Player} is currently holding.
+     */
     private Item itemOnHand;
+    /**
+     * Image Sprite for an Empty Heart.
+     */
     private transient BufferedImage emptyHeart;
+    /**
+     * Image Sprite for a Full Heart.
+     */
     private transient BufferedImage fullHeart;
+    /**
+     * Image Sprite for Gold.
+     */
     private transient BufferedImage gold;
+    /**
+     * Image Sprite for the next Item Icon.
+     */
     private transient BufferedImage nextItem;
+    /**
+     * Image Sprite for the previous Item Icon.
+     */
     private transient BufferedImage prevItem;
+    /**
+     * Image Sprite for the currently held item.
+     */
     private transient BufferedImage heldItem;
-
+    /**
+     * Font to draw text with.
+     */
     private Font defaultFont;
+    /**
+     * Font to draw Gold Amount with.
+     */
     private Font goldFont;
+    /**
+     * Gold Color for the goldFont.
+     */
     private Color golden;
+    /**
+     * Reset color for default font.
+     */
     private Color reset;
 
-
+    /**
+     * Constructor for the Status Panel.
+     * Initializes all the images.
+     * 
+     * @param model Model to grab data from.
+     * @param x how far to the right this is.
+     * @param panelHeight how tall this is.
+     */
     public PlayerStatusPanel(Model model, int x, int panelHeight){
         this.model = model;
         this.dungeon = model.getDungeon();
@@ -56,13 +104,20 @@ public class PlayerStatusPanel extends JPanel{
         reset = new Color(0,0,0);
     }
 
+    /**
+     * Load the current floor into this panel.
+     */
     public void loadFloor()
     {
         this.dungeon = this.model.getDungeon();
         this.player = this.model.getPlayer();
         this.itemOnHand = this.player.getItemOnHand();
     }
-
+    /**
+     * Paints the player's current status relevant to the floor.
+     * This includes HP, Items, and Gold.
+     * Along with the Dungeon number and Floor Number.
+     */
     @Override
     public void paintComponent(Graphics g)
     {

@@ -1,24 +1,67 @@
 import java.awt.*;
 import javax.swing.*;
+import model.CombatLogEntry;
 import model.Idol;
+import model.Item;
 import model.Model;
 
 public class DungeonPanel extends JPanel{
+    /**
+     * {@link Model} to grab Data From.
+     */
     private Model model;
+    /**
+     * Component Panel to show {@link Player} Stats.
+     */
     private PlayerStatusPanel statusPanel;
+    /**
+     * Component Panel to show {@link CombatLogEntry Combat Log Entries}.
+     */
     private FloorPanel floorPanel;
+    /**
+     * Component Panel to show the current {@link Floor}.
+     */
     private CombatLogPanel logPanel;
+    /**
+     * Image for if Yohane Dies.
+     */
     private Image yohaneDeadImage;
+    /**
+     * Background Image.
+     */
     private Image bgImage;
+    /**
+     * An image of the {@link Idol} to be saved in this Dungeon.
+     */
     private Image savedIdolImage;
+    /**
+     * Big sprite of Yohane.
+     */
     private Image yohaneImage;
+    /**
+     * Image of the Siren.
+     */
     private Image sirenImage;
+    /**
+     * Background for the Final Fight.
+     */
     private Image finalFightBg;
-
+    /**
+     * Number of the current floor.
+     */
     private int floorNum;
-
+    /**
+     * Font to print text with.
+     */
     private Font defaultFont;
-
+    /**
+     * Constructor to initialize the Panel.
+     * Also initializes the component panels.
+     * 
+     * @param model Model to grab data from.
+     * @param panelWidth How wide this panel is.
+     * @param panelHeight How tall this panel is.
+     */
     public DungeonPanel(Model model, int panelWidth, int panelHeight){
         this.model = model;
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
@@ -47,7 +90,10 @@ public class DungeonPanel extends JPanel{
     // {
     //     this.addKeyListener(keyListener);
     // }
-
+    /**
+     * Loads in the current {@link Floor} for the component Panels.
+     * Used when Switching Floors.
+     */
     public void loadFloor()
     {
         this.floorNum = this.model.getDungeon().getFloorNum();
@@ -56,12 +102,17 @@ public class DungeonPanel extends JPanel{
         this.floorPanel.loadFloor();
         this.logPanel.loadFloor();
     }
-
+    /**
+     * Ticks the Animation in {@code FloorPanel}.
+     */
     public void tickAnimation()
     {
         this.floorPanel.tickAnimation();
     }
-
+    /**
+     * Draws Outcome screens, for Death, Win, and Final Boss Win.
+     * Otherwise, just calls the paints of component panels from the usual behavior.
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -116,7 +167,12 @@ public class DungeonPanel extends JPanel{
         //         drawOverworld(g2D);
         // }
     }
-    
+    /**
+     * Shows a Death Screen on Player Death.
+     * 
+     * @param g2D graphics2D object from the paint method.
+     * @param causeOfDeath what caused Yohane to die.
+     */
     public void showDeathScreen(Graphics2D g2D, String causeOfDeath)
     {
         String[] deathText = {
@@ -144,10 +200,15 @@ public class DungeonPanel extends JPanel{
         g2D.drawString("[E]xit to Main Menu", 450, 520);
         
     }
-    
+    /**
+     * Shows a Win Screen on Dungeon Clear.
+     * 
+     * @param g2D graphics2D object from the paint method.
+     */
     public void showDungeonWinScreen(Graphics2D g2D)
     {
         Idol idol = this.model.getDungeon().getIdol();
+        Item item = new Item(idol.getIdolNumber());
         this.savedIdolImage =  new ImageIcon(getClass().getResource(idol.getIdolImageFilePath())).getImage();
         g2D.drawImage(bgImage, 0, 0, null);
         String[] clearedText = {
@@ -155,8 +216,14 @@ public class DungeonPanel extends JPanel{
             "                                    Dungeon cleared!                                          ",
             "-------------------------------------------------------------------------------------",
             "Dungeon Complete: " +idol.getDungeonName() + "\n",
-            "You have saved " +idol.getIdolName(),
+            "You have saved " +idol.getIdolName()
         };
+        
+        String unlockedItem;
+        if (idol.getIdolNumber() != 4)
+            unlockedItem = "Unlocked: " + item.getItemName();
+        else
+            unlockedItem = "Unlocked: Hanamaru's Shop";
         
         String idolText[];
         switch(idol.getIdolNumber())
@@ -254,6 +321,7 @@ public class DungeonPanel extends JPanel{
             g2D.drawString(clearedText[i], x, y);
             y+=lineSpacing;
         }
+        g2D.drawString(unlockedItem, x, y);
         y+=20;
         for (i = 0; i < idolText.length; i++ )
         {
@@ -266,7 +334,11 @@ public class DungeonPanel extends JPanel{
         }
         g2D.drawString("[E]xit to Main Menu", 450, 520);
     }
-    
+    /**
+     * Shows a Win Screen for a Final Boss Clear.
+     * 
+     * @param g2D graphics2D object from the paint method.
+     */
     public void showSirenWinScreen(Graphics2D g2D)
     {
         g2D.drawImage(finalFightBg, 0, 0, null);
@@ -310,7 +382,15 @@ public class DungeonPanel extends JPanel{
         y+=20;
         g2D.drawString("[E]xit to Main Menu", 450, 520);
     }
-    
+    /**
+     * Draws a Box.
+     * 
+     * @param g2D graphics2D object from the paint method.
+     * @param x Start Position X.
+     * @param y Start Position Y.
+     * @param width How wide the box is.
+     * @param height How tall the box is.
+     */
     public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
     {
         g2D.setColor(new Color(0, 0, 0, 220));

@@ -4,11 +4,30 @@ import javax.swing.*;
 import model.CombatLogEntry;
 import model.Model;
 
+/**
+ * Displays Combat Logs while in the Dungeon.
+ */
 public class CombatLogPanel extends JPanel {
+    /**
+     * ArrayList containing all the {@link CombatLogEntry Combat Log Entries}.
+     */
     private ArrayList<CombatLogEntry> combatLogs;
+    /**
+     * Font used to draw text.
+     */
     private Font defaultFont;
+    /**
+     * Model to grab data from.
+     */
     private Model model;
 
+    /**
+     * Constructor to make the panel.
+     * 
+     * @param model Model to grab data from.
+     * @param x How far to the right this is.
+     * @param panelHeight How tall this is.
+     */
     public CombatLogPanel(Model model, int x, int panelHeight){
         this.setBounds(x,0,200,panelHeight);
         this.setBackground(Color.YELLOW);//Placeholders
@@ -16,7 +35,9 @@ public class CombatLogPanel extends JPanel {
 
         this.defaultFont = new Font("Courier New", Font.BOLD, 10);
     }
-
+    /**
+     * Load in the logs from the current floor.
+     */
     public void loadFloor()
     {
         this.combatLogs = this.model.getDungeon().getFloor().getCombatLogs();
@@ -54,7 +75,14 @@ public class CombatLogPanel extends JPanel {
     //     }
     //     return finalLines;
     // }
-
+    /**
+     * Returns an ArrayList of the Text so that it does not exceed the bounds.
+     * 
+     * @param entry The entry needed to print.
+     * @param fm FontMetrics object ot do calculations.
+     * @param maxWidth Width of the panel to fit in.
+     * @return ArrayList of Strings to print.
+     */
     private ArrayList<String> wrapText(CombatLogEntry entry, FontMetrics fm, int maxWidth)
     {
         ArrayList<String> finalLines = new ArrayList<>();
@@ -82,7 +110,9 @@ public class CombatLogPanel extends JPanel {
         }
         return finalLines;
     }
-
+    /**
+     * Paints the Combat Logs of the current floor.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

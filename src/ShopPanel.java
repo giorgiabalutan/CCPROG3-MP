@@ -22,14 +22,34 @@ import model.Player;
  * @author LENOVO
  */
 public class ShopPanel extends JPanel{
+    /**
+     * Model to grab data from.
+     */
     private Model model;
+    /**
+     * Background image for the shop area.
+     */
     private Image shopBackground;
+    /**
+     * Image showing Hanamaru, the shopkeeper.
+     */
     private Image hanamaruImage;
+    /**
+     * Font to draw text with.
+     */
     Font defaultFont;
-    
+    /**
+     * Dialogue Hanamaru should be saying.
+     */
     private String hanamaruText;
 
-
+    /**
+     * Constructs the Shop Panel, along with initial Hanamaru Dialogue.
+     * 
+     * @param model Model to grab data from.
+     * @param panelWidth how wide this is.
+     * @param panelHeight how tall this is.
+     */
     public ShopPanel(Model model, int panelWidth, int panelHeight)
     {
         this.model = model;
@@ -44,7 +64,9 @@ public class ShopPanel extends JPanel{
     // {
     //     this.addKeyListener(keyListener);
     // }
-    
+    /**
+     * Draws the Shop.
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -55,7 +77,13 @@ public class ShopPanel extends JPanel{
         
         
     }
-    
+    /**
+     * Draws the Shop.
+     * Shows the items available to be bought and their corresponding sprite.
+     * Also draws Hanamaru and her dialogue.
+     * 
+     * @param g2D graphics2D object to draw with.
+     */
     public void drawShop(Graphics2D g2D)
     {
         Player player = this.model.getPlayer();
@@ -99,12 +127,24 @@ public class ShopPanel extends JPanel{
         
         
     }
-    
+    /**
+     * Sets the Dialogue Hanamaru should be saying.
+     * 
+     * @param text the Dialogue Hanamaru should be saying.
+     */
     public void setHanamaruText(String text)
     {
         this.hanamaruText = text;
     }
-    
+    /**
+     * Draw a rounded box.
+     * 
+     * @param g2D graphics2D object to draw with.
+     * @param x starting position X.
+     * @param y starting position Y.
+     * @param width how wide this is.
+     * @param height how tall this is.
+     */
     public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
     {
         g2D.setColor(new Color(0, 0, 0, 220));

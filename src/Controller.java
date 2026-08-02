@@ -64,7 +64,9 @@ public class Controller implements ActionListener, KeyListener
         updateView();
         startAnimationTimer();
     }
-    
+    /**
+     * Process Button Clicks on the Main Menu.
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -80,7 +82,11 @@ public class Controller implements ActionListener, KeyListener
         else
             this.view.dispose();
     }
-    
+    /**
+     * Processes Keyboard Inputs on the Main Menu.
+     * <p>
+     * Defers to the appropriate functions for each {@code GameState}.
+     */
     @Override
     public void keyPressed(KeyEvent e)
     {
@@ -106,7 +112,9 @@ public class Controller implements ActionListener, KeyListener
             this.view.dispose();
     }
     
-    
+    /**
+     * Updates the panel to show the correct one for the current {@code GameState}.
+     */
     public void updateView()
     {
         switch(model.getGameState())
@@ -365,7 +373,11 @@ public class Controller implements ActionListener, KeyListener
         }
         updateView();
     }
-
+    /**
+     * Increments Idol Save Counter.
+     * 
+     * @param savedIdol which Idol to increment.
+     */
     public void saveIdol(Idol savedIdol)
     {
         boolean alrSaved = false;
@@ -384,6 +396,10 @@ public class Controller implements ActionListener, KeyListener
         }
     }
 
+    /**
+     * For Debugging.
+     * Skip Straight to the Final Boss from a New Game State.
+     */
     public void SkipToSiren()
     {
         processMenuInput("N");
@@ -405,7 +421,10 @@ public class Controller implements ActionListener, KeyListener
         processOverworldInput("1");
         updateView();
     }
-
+    /**
+     * For Debugging.
+     * Unlocks All The Shop Items and give large amounts of Gold.
+     */
     public void unlockShop()
     {
         saveIdol(new Idol(1));
@@ -420,7 +439,9 @@ public class Controller implements ActionListener, KeyListener
         this.model.getPlayer().gainGold(999999);
         this.model.setAvailableShopItems();
     }
-
+    /**
+     * Starts the Animation Timer for Dungeon Sprite Animations.
+     */
     private void startAnimationTimer()
     {
         Timer animationTimer = new Timer(300, e -> {
@@ -428,7 +449,11 @@ public class Controller implements ActionListener, KeyListener
         });
         animationTimer.start();
     }
-    
+    /**
+     * Process Shop Purchases.
+     * 
+     * @param command Inputs in the Shop to either Buy or Exit.
+     */
     private void processShopInput(String command)
     {
         switch(command)
@@ -496,13 +521,23 @@ public class Controller implements ActionListener, KeyListener
         }
     }
     
+    /**
+     * Key Typed override.
+     */
     @Override
     public void keyTyped(KeyEvent e) {}
 
+    /**
+     * Key Released override.
+     */
     @Override
     public void keyReleased(KeyEvent e) {}
 
     //For Testing Only
+    /**
+     * For Debugging.
+     * Skip straight to Dungeon 1 from a New Game State.
+     */
     public void skipIntroNew(){
         processMenuInput("N");
         processOverworldInput("Enter");

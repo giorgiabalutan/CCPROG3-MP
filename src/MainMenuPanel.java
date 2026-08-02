@@ -25,19 +25,54 @@ import model.Model;
  * @author LENOVO
  */
 public class MainMenuPanel extends JPanel{
-    
+        /**
+         * {@link Model} to grab data from/
+         */
         private Model model;
+        /**
+         * Background image.
+         */
         private Image bgImage;
+        /**
+         * Button to start a new game.
+         */
         private JButton newGameButton;
+        /**
+         * Button to continue a save.
+         */
         private JButton continueButton;
+        /**
+         * Button to show player stats.
+         */
         private JButton statusButton;
+        /**
+         * Button to open the manual.
+         */
         private JButton howToPlayButton;
+        /**
+         * Button to quit the game.
+         */
         private JButton quitButton;
+        /**
+         * Indicates if the Stats screen is showing.
+         */
         private boolean isStatsShowing;
+        /**
+         * Indicates if the Manual screen is showing.
+         */
         private boolean isManualShowing;
-        
+        /**
+         * A panel to hold the buttons.
+         */
         private JPanel buttonPanel;
 
+        /**
+         * Constructs the Menu panel.
+         * 
+         * @param model Model to grab data from.
+         * @param panelWidth How wide this is.
+         * @param panelHeight How tall this is.
+         */
         public MainMenuPanel(Model model, int panelWidth, int panelHeight)
         {
             this.model = model;
@@ -51,13 +86,19 @@ public class MainMenuPanel extends JPanel{
             this.add(buttonPanel);
         }
         
+        /**
+         * Sets the panel's style.
+         * The layout type, bounds, and opacity.
+         */
         public void stylePanel()
         {
             this.buttonPanel.setLayout(new GridLayout(0, 1, 0, 2));
             this.buttonPanel.setBounds(800, 310, 250, 180);
             this.buttonPanel.setOpaque(false);
         }
-        
+        /**
+         * Adds in all of the buttons.
+         */
         public void addButtons()
         {
             newGameButton = new JButton("New Game");
@@ -95,7 +136,11 @@ public class MainMenuPanel extends JPanel{
             
             
         }
-        
+        /**
+         * Attaches a listener to all of the buttons to detect when the player clicks them.
+         * 
+         * @param actionListener Listener from the JFrame.
+         */
         public void setButtonActionListener(ActionListener actionListener)
         {
             this.newGameButton.addActionListener(actionListener);
@@ -105,6 +150,11 @@ public class MainMenuPanel extends JPanel{
             this.quitButton.addActionListener(actionListener);
         }
         
+        /**
+         * Styles the buttons.
+         * 
+         * @param button the button to apply the styles to.
+         */
         public void styleButton(JButton button)
         {
             button.setFocusable(false);
@@ -131,6 +181,9 @@ public class MainMenuPanel extends JPanel{
             });
         }
         
+        /**
+         * Draws the Menu Screen.
+         */
         @Override
         public void paintComponent(Graphics g)
         {
@@ -146,7 +199,9 @@ public class MainMenuPanel extends JPanel{
                 showButtons();
             
         }
-        
+        /**
+         * Sets the buttons to be visible (if available).
+         */
         public void showButtons()
         {
             this.quitButton.setText("Quit");
@@ -159,7 +214,11 @@ public class MainMenuPanel extends JPanel{
             howToPlayButton.setVisible(true);
             this.buttonPanel.setBounds(800, 310, 250, 180);
         }
-       
+        /**
+         * Draws the manual when opened.
+         * 
+         * @param g2D graphics2D object to draw with.
+         */
         public void drawManual(Graphics2D g2D)
         {
             this.quitButton.setText("Return");
@@ -206,7 +265,11 @@ public class MainMenuPanel extends JPanel{
                 }
             }
         }
-        
+        /**
+         * Draws the status panel when opened.
+         * 
+         * @param g2D graphics2D object to draw with.
+         */
         public void drawStats(Graphics2D g2D)
         {
             int i = 0;
@@ -272,7 +335,15 @@ public class MainMenuPanel extends JPanel{
             g2D.drawString(totalGoldSpentText, x, y);
             y+=lineSpacing;
         }
-        
+        /**
+         * Draws a rounded box.
+         * 
+         * @param g2D graphics2D object to draw with.
+         * @param x starting position X.
+         * @param y starting position Y.
+         * @param width how wide the box is.
+         * @param height how tall the box is.
+         */
         public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
         {
             g2D.setColor(new Color(0, 0, 0, 240));
@@ -283,12 +354,20 @@ public class MainMenuPanel extends JPanel{
             g2D.setStroke(new BasicStroke(5));
             g2D.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
         }
-        
+        /**
+         * Sets if the manual should be showing.
+         * 
+         * @param isManualShowing if the manual should be showing.
+         */
         public void setIsManualShowing(boolean isManualShowing)
         {
             this.isManualShowing = isManualShowing;
         }
-        
+        /**
+         * Sets if the status screen should be showing.
+         * 
+         * @param isStatsShowing if the status screen should be showing.
+         */
         public void setIsStatsShowing(boolean isStatsShowing)
         {
             this.isStatsShowing = isStatsShowing;

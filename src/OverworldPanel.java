@@ -23,22 +23,58 @@ import model.Player;
  * @author LENOVO
  */
 public class OverworldPanel extends JPanel{
-    
+    /**
+     * {@link Model} to grab data from.
+     */
     private Model model;
+    /**
+     * Background Image for the Overworld.
+     */
     private Image overworldBackground;
+    /**
+     * Image for Lailaps and Yohane.
+     */
     private Image lailapsAndYohaneImage;
+    /**
+     * Background Image for the Intro.
+     */
     private Image introBackground;
+    /**
+     * Image for Inventory Screen.
+     */
     private Image yohaneInventoryImage;
+    /**
+     * Image for first {@link Idol} needed to save.
+     */
     private Image idol1Image;
+    /**
+     * Image for second {@code Idol} needed to save.
+     */
     private Image idol2Image;
+    /**
+     * Image for third {@code Idol} needed to save.
+     */
     private Image idol3Image;
-    
+    /**
+     * Font to draw text with.
+     */
     Font defaultFont;
-    
+    /**
+     * String for Lailaps Dialogue.
+     */
     private String lailapsText;
+    /**
+     * String for Yohane Dialogue.
+     */
     private String yohaneText;
     
-    
+    /**
+     * Constructor for the Overworld Panel.
+     * 
+     * @param model Model to grab data from.
+     * @param panelWidth How wide this is.
+     * @param panelHeight How tall this is.
+     */
     public OverworldPanel(Model model, int panelWidth, int panelHeight)
     {
         this.model = model;
@@ -56,7 +92,10 @@ public class OverworldPanel extends JPanel{
     // {
     //     this.addKeyListener(keyListener);
     // }
-    
+    /**
+     * Paints the Overworld menu with the available options.
+     * Calls the drawIntroSequence if the player shoulld be in the intro currently.
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -76,7 +115,11 @@ public class OverworldPanel extends JPanel{
         // System.out.println("TEST@");
         
     }
-    
+    /**
+     * Draws the current screen of the Intro Sequence.
+     * 
+     * @param g2D graphics2D object to draw with.
+     */
     public void drawIntroSequence(Graphics2D g2D)
     {
         int i;
@@ -197,6 +240,11 @@ public class OverworldPanel extends JPanel{
         
     }
     
+    /**
+     * Drawing the Overworld Menu with the available options.
+     * 
+     * @param g2D graphics2D object to draw with.
+     */
     public void drawOverworld(Graphics2D g2D)
     {
         g2D.drawImage(this.overworldBackground, 0, 0, null);
@@ -267,7 +315,11 @@ public class OverworldPanel extends JPanel{
         this.yohaneText = "Yohane: Hmmmmm...";
         g2D.drawString(yohaneText, 376, 145);
     }
-    
+    /**
+     * Draws the players Inventory.
+     * 
+     * @param g2D graphics2D object to draw with.
+     */
     public void drawInventory(Graphics2D g2D)
     {
         g2D.drawImage(this.overworldBackground, 0, 0, null);
@@ -326,17 +378,34 @@ public class OverworldPanel extends JPanel{
         }
         g2D.drawString(returnText, 310, y+40);
     }
-    
+    /**
+     * Set Lailaps' dialogue text.
+     * 
+     * @param lailapsText what Lailaps should say.
+     */
     public void setLailapsText(String lailapsText)
     {
         this.lailapsText = lailapsText;
     }
-    
+    /**
+     * Set Yohane's dialogue text.
+     * 
+     * @param yohaneText what Yohane should say.
+     */
     public void setYohaneText(String yohaneText)
     {
         this.yohaneText = yohaneText;
     }
     
+    /**
+     * Draw a rounded box.
+     * 
+     * @param g2D graphics2D object to draw with.
+     * @param x starting position X.
+     * @param y starting position Y.
+     * @param width how wide this is.
+     * @param height how tall this is.
+     */
     public void drawBox(Graphics2D g2D, int x, int y, int width, int height)
     {
         g2D.setColor(new Color(0, 0, 0, 220));

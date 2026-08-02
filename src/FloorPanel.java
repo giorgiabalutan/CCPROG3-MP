@@ -14,26 +14,75 @@ import model.structure.Structure;
 import model.structure.StructureType;
 public class FloorPanel extends JPanel
 {
+    /**
+     * How much to scale the sprite by. Just 2 here usually.
+     */
     private int tileScale;
+    /**
+     * How many Rows can be fit on the screen.
+     */
     private int viewRows;
+    /**
+     * How many Columns can be fit on the screen.
+     */
     private int viewCols;
+    /**
+     * {@link Model} to grab data from.
+     */
     private Model model;
+    /**
+     * {@link Dungeon} to grab data from.
+     */
     private Dungeon dungeon;
+    /**
+     * {@link Floor} to grab data from.
+     */
     private Floor floor;
+    /**
+     * {@link Player} to grab data from.
+     */
     private Player player;
+    /**
+     * Grid of the dungeon to print.
+     */
     private Tile[][] grid;
+    /**
+     * How many Rows the grid has.
+     */
     private int sizeRow;
+    /**
+     * If the number of rows is small enough to center.
+     */
     private boolean centerRow;
+    /**
+     * How many Columns the grid has.
+     */
     private int sizeCol;
+    /**
+     * If the number of columns is small enough to center.
+     */
     private boolean centerCol;
-
+    /**
+     * The number of the current floor.
+     */
     private int floorNum;
-
+    /**
+     * Which frame of animation to draw in.
+     */
     private int animationFrame;
-
+    /**
+     * Font to draw text with.
+     */
     private Font defaultFont;
 
-
+    /**
+     * Constructor to initialize the panel.
+     * The tile scale and how many rows and columns are set here.
+     * 
+     * @param model Model to grab data from.
+     * @param x How far to the right this is.
+     * @param panelHeight How tall this is.
+     */
     public FloorPanel(Model model, int x, int panelHeight)
     {
         this.setBounds(x,0,700,panelHeight);
@@ -48,6 +97,9 @@ public class FloorPanel extends JPanel
         defaultFont = new Font("Courier New", Font.BOLD, 20);
     }
 
+    /**
+     * Loads in the new floor to show.
+     */
     public void loadFloor()
     {
         this.dungeon = model.getDungeon();
@@ -68,7 +120,15 @@ public class FloorPanel extends JPanel
             this.centerCol = true;
         }
     }
-
+    /**
+     * Calculates the Row/Column to start painting on.
+     * 
+     * @param playerPos Position of the Player on the Row/Column.
+     * @param actualSize Size of the Grid on the Row/Column.
+     * @param halfViewSize Half of how many Rows/Columns fits on screen.
+     * @param viewSize How many Rows/Columns fits on screen.
+     * @return Which Row/Column of the grid to start printing.
+     */
     private int getStartPaint(int playerPos, int actualSize, int halfViewSize, int viewSize)
     {
         int start = playerPos-halfViewSize;
@@ -80,12 +140,28 @@ public class FloorPanel extends JPanel
         return start;
     }
 
+    /**
+     * Increments AnimationFrame by one.
+     * Resets it to zero at a high number to prevent overflow.
+     * Calls a Repaint to shift {@code Creature} sprites.
+     */
     public void tickAnimation()
     {
         this.animationFrame = (animationFrame + 1) % 720720; //Divisible from one to sixteen waow
         repaint();
     }
 
+    /**
+     * Draw Yohane on the Grid.
+     * 
+     * @param g2D graphics2D object to draw with.
+     * @param colLoc column location to draw on.
+     * @param rowLoc row location to draw on.
+     * @param spriteWidth width to scale the sprite.
+     * @param spriteHeight height to scale the sprite.
+     * @param direction which sprite direction to draw.
+     * @param idle decide to draw either an idle or a walking sprite.
+     */
     private void drawYohane(Graphics2D g2D, int colLoc, int rowLoc, int spriteWidth, int spriteHeight, Direction direction, Boolean idle)
     {
         String filepath = "assets/dungeonSprites/yohaneSprites/";
@@ -127,6 +203,16 @@ public class FloorPanel extends JPanel
         g2D.drawImage(SpriteCache.getImage(filepath), colLoc, rowLoc, spriteWidth, spriteHeight, this);
     }
 
+    /**
+     * Draw a creature.
+     * 
+     * @param g2D graphics2D object to draw with.
+     * @param colLoc column location to draw on.
+     * @param rowLoc row location to draw on.
+     * @param spriteWidth width to scale the sprite.
+     * @param spriteHeight height to scale the sprite.
+     * @param idle decide to draw either an idle or a walking sprite.
+     */
     private void drawCreature(Graphics g2D, int colLoc, int rowLoc, int spriteWidth, int spriteHeight, Creature creature)
     {
         String filepath = "assets/dungeonSprites/creatureSprites/";
@@ -169,6 +255,13 @@ public class FloorPanel extends JPanel
         g2D.drawImage(SpriteCache.getImage(filepath), colLoc, rowLoc, spriteWidth, spriteHeight, this);
     }
 
+    /**
+     * Paints the current floor of the Dungeon.
+     * Also shows the Dungeon Name and Dungeon Modifiers.
+     * Images to be drawn are loaded using the {@link SpriteCache} to avoid frequent calls.
+     * 
+     * Is repainted every animation tick and every time the Player does something.
+     */
     @Override
     public void paintComponent(Graphics g) {
         // System.out.println("FloorPanel created: " + System.identityHashCode(this));

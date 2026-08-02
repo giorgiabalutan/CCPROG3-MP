@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import model.Idol;
 import model.Model;
 import model.Player;
 import model.dungeon.Dungeon;
@@ -19,16 +18,37 @@ public class View extends JFrame
      * The access to the data in {@link Model} for printing information from it.
      */
     private Model model;
-    
+    /**
+     * How wide the frame should be.
+     */
     private int frameWidth = 1100;
+    /**
+     * How tall the frame should be.
+     */
     private int frameHeight = 540;
-    
+    /**
+     * Layout type for the JFrame.
+     */
     private CardLayout cardLayout;
+    /**
+     * Container to hold all the content.
+     */
     private Container contentPane;
-    
+    /**
+     * The Panel to show Main Menu options.
+     */
     private MainMenuPanel mainMenuPanel;
+    /**
+     * The Panel to show Overworld options.
+     */
     private OverworldPanel overworldPanel;
+    /**
+     * The Panel to show the current state of the Dungeon.
+     */
     private DungeonPanel dungeonPanel;
+    /**
+     * The Panel to show Shop Options.
+     */
     private ShopPanel shopPanel;
     
     //Constructors
@@ -64,12 +84,20 @@ public class View extends JFrame
         // System.out.println("Constructor contentPane: " + System.identityHashCode(contentPane));
 
     }
-    
+    /**
+     * Gives Main Menu access to the Action Listener.
+     * 
+     * @param listener the Action Listener
+     */
     public void setActionListener(ActionListener listener)
     {
         this.mainMenuPanel.setButtonActionListener(listener);
     }
-
+    /**
+     * Adds a Key Listener to this JFrame.
+     * 
+     * @param keyListener the Key Listener.
+     */
     public void setKeyListener(KeyListener keyListener)
     {
         this.addKeyListener(keyListener);
@@ -80,7 +108,11 @@ public class View extends JFrame
     //     this.overworldPanel.setKeyListener(keyListener);
     //     this.shopPanel.setKeyListener(keyListener);
     // }
-    
+    /**
+     * Switches which panel should be shown using the CardLayout layout.
+     * 
+     * @param panelName which panel should be shown.
+     */
     public void showPanel(String panelName)
     {
         cardLayout.show(contentPane, panelName);
@@ -93,7 +125,11 @@ public class View extends JFrame
         //     System.out.println(c.getClass().getSimpleName() + " visible: " + c.isVisible());
         // }
     }
-    
+    /**
+     * Repaints the Main Menu depending on the command from the Action Listener.
+     * 
+     * @param command indicating which button was pressed.
+     */
     public void repaintMainMenu(String command)
     {
         switch(command)
@@ -111,14 +147,23 @@ public class View extends JFrame
         }
         this.mainMenuPanel.repaint();
     }
+    /**
+     * A call to repaint the Overworld after something was changed.
+     */
     public void repaintOverworld()
     {
         this.overworldPanel.repaint();
     }
+    /**
+     * A call to repaint the Dungeon after something was changed.
+     */
     public void repaintDungeon()
     {
         this.dungeonPanel.repaint();
     }
+    /**
+     * A call to repaint the Shop after something was changed.
+     */
     public void repaintShop()
     {
         this.shopPanel.repaint();
@@ -135,11 +180,20 @@ public class View extends JFrame
     
 
     //Overworld
+    /**
+     * Sets the dialogue Lailaps should be saying.
+     * 
+     * @param lailapsText the dialogue Lailaps should be saying.
+     */
     public void setOverworldLailapsText(String lailapsText)
     {
         this.overworldPanel.setLailapsText(lailapsText);
     }
-    
+    /**
+     * Sets the dialogue Hanamaru should be saying.
+     * 
+     * @param hanamaruText the dialogue Hanamaru should be saying.
+     */
     public void setShopHanamaruText(String hanamaruText)
     {
         this.shopPanel.setHanamaruText(hanamaruText);
@@ -149,6 +203,7 @@ public class View extends JFrame
      * Displays the current {@link Floor} of the {@code Dungeon}.
      * <p>
      * Prints the {@code Dungeon} information, {@code Dungeon} information, and the current {@code Floor}.
+     * Deprecated method used for Command Interface.
      */
     public void printDungeon()
     {
@@ -198,12 +253,16 @@ public class View extends JFrame
 
     //Generic
     
-    
+    /**
+     * Loads the new floor onto {@link DungeonPanel}
+     */
     public void loadFloor()
     {
         this.dungeonPanel.loadFloor();
     }
-
+    /**
+     * Ticks the animation one frame in {@code DungeonPanel}
+     */
     public void tickAnimation()
     {
         this.dungeonPanel.tickAnimation();

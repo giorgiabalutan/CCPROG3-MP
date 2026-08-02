@@ -47,19 +47,49 @@ public class Player implements Serializable
      * Stores the name of the entity that caused the player to die.
      */
     private String causeOfDeath;
-    
+    /**
+     * Indicates if the Player is in the inventory screen.
+     */
     private boolean isInventoryOpen;
-
+    /**
+     * Indicates the {@link Direction} the player is currently facing.
+     */
     private Direction direction;
+    /**
+     * Indicates if the player is currently idle.
+     */
     private Boolean idle;
-
+    /**
+     * Indicates if the player has bought the Shovel Upgrade.
+     */
     private boolean hasShovelUpgrade;
+    /**
+     * Indicates if the player has bought the Bat Tamer.
+     */
     private boolean hasBatTamer;
+    /**
+     * Indicates if the player has bought the Air Shoes.
+     */
     private boolean hasAirShoes;
+    /**
+     * Indicates if the player has bought the StewShine.
+     */
     private boolean hasStewShine;
+    /**
+     * Indicates if the player has bought the Mikan Mochi.
+     */
     private boolean hasMikanMochi;
+    /**
+     * Indicates if the player has bought the Kurosawa Macha.
+     */
     private boolean hasKurosawaMacha;
+    /**
+     * Indiciates if the player has bought the Tears of a Fallen Angel.
+     */
     private boolean boughtTears;
+    /**
+     * Indicates if the player has bought the Choco Mint Ice Cream.
+     */
     private boolean boughtChoco;
 
     //Constructor
@@ -83,7 +113,9 @@ public class Player implements Serializable
         this.direction = Direction.DOWN;
         this.idle = true;
     }
-
+    /**
+     * Reseets the Player's info on a New Game (plus).
+     */
     public void resetPlayer()
     {
         currHP = 3;
@@ -291,6 +323,11 @@ public class Player implements Serializable
     {
         this.totalGold += gold;
     }
+    /**
+     * Increments the player's spent gold.
+     * 
+     * @param gold how much gold is spent.
+     */
     public void spendGold(int gold)
     {
         this.goldSpent += gold;
@@ -415,103 +452,209 @@ public class Player implements Serializable
     {
         return this.causeOfDeath;
     }
-    
+    /**
+     * Indicates if the player has their inventory open.
+     * 
+     * @return {@code true} if the player has their inventory open.
+     */
     public boolean isInventoryOpen()
     {
         return this.isInventoryOpen;
     }
-    
+    /**
+     * Sets if the inventory should be open.
+     * 
+     * @param isInventoryOpen if the inventory should be open.
+     */
     public void setIsInventoryOpen(boolean isInventoryOpen)
     {
         this.isInventoryOpen = isInventoryOpen;
     }
-
+    /**
+     * Set the direction the player should be facing.
+     * 
+     * @param direction the direction the player should be facing.
+     */
     public void setDirection(Direction direction)
     {
         this.direction = direction;
     }
-
+    /**
+     * Get the direction the player is facing.
+     * 
+     * @return the direction the player is facing.
+     */
     public Direction getDirection()
     {
         return this.direction;
     }
-
+    /**
+     * Sets if the player should be idle.
+     * 
+     * @param bool if the player should be idle.
+     */
     public void setIdle(boolean bool)
     {
         this.idle = bool;
     }
-
+    /**
+     * Return if the player is currently idle.
+     * 
+     * @return {@code true} if the player is currently idle.
+     */
     public Boolean isIdle()
     {
         return this.idle;
     }
-
+    /**
+     * Sets if the player should have the Shovel Upgrade.
+     * 
+     * @param bool if the player should have the Shovel Upgrade.
+     */
     public void setShovelUpgrade(Boolean bool)
     {
         this.hasShovelUpgrade = bool;
     }
+    /**
+     * Sets if the player should have the Bat Tamer.
+     * 
+     * @param bool if the player should have the Bat Tamer.
+     */
     public void setBatTamer(Boolean bool)
     {
         this.hasBatTamer = bool;
     }
+    /**
+     * Sets if the player should have the Air Shoes.
+     * 
+     * @param bool if the player should have the Air Shoes.
+     */
     public void setAirShoes(Boolean bool)
     {
         this.hasAirShoes = bool;
     }
+    /**
+     * Sets if the player should have the StewShine.
+     * 
+     * @param bool if the player should have the StewShine.
+     */
     public void setStewShine(Boolean bool)
     {
         this.hasStewShine = bool;
     }
+    /**
+     * Sets if the player should have the Mikan Mochi.
+     * 
+     * @param bool if the player should have the Mikan Mochi.
+     */
     public void setMikanMochi(Boolean bool)
     {
         this.hasMikanMochi = bool;
     }
+    /**
+     * Sets if the player should have the Kurosawa Macha.
+     * 
+     * @param bool if the player should have the Kurosawa Macha.
+     */
     public void setKurosawaMacha(Boolean bool)
     {
         this.hasKurosawaMacha = bool;
     }
+    /**
+     * Sets if the player should have bought the Tears of a Fallen Angel.
+     * 
+     * @param bool if the player should have bought the Tears of a Fallen Angel.
+     */
     public void setTears(Boolean bool)
     {
         this.boughtTears = bool;
     }
+    /**
+     * Sets if the player should have bought the Choco Mint Ice Cream.
+     * 
+     * @param bool if the player should have bought the Choco Mint Ice Cream.
+     */
     public void setChoco(Boolean bool)
     {
         this.boughtChoco = bool;
     }
-
+    /**
+     * Returns if the player has bought the Shovel Upgrade.
+     * 
+     * @return {@code true} if the player has bought the Shovel Upgrade.
+     */
     public boolean hasShovelUpgrade()
     {
         return this.hasShovelUpgrade;
     }
+    /**
+     * Returns if the player has bought the Bat Tamer.
+     * 
+     * @return {@code true} if the player has bought the Bat Tamer.
+     */
     public boolean hasBatTamer()
     {
         return this.hasBatTamer;
     }
+    /**
+     * Returns if the player has bought the Air Shoes.
+     * 
+     * @return {@code true} if the player has bought the Air Shoes.
+     */
     public boolean hasAirShoes()
     {
         return this.hasAirShoes;
     }
+    /**
+     * Returns if the player has bought the StewShine.
+     * 
+     * @return {@code true} if the player has bought the StewShine.
+     */
     public boolean hasStewShine()
     {
         return this.hasStewShine;
     }
+    /**
+     * Returns if the player has bought the Mikan Mochi.
+     * 
+     * @return {@code true} if the player has bought the Mikan Mochi.
+     */
     public boolean hasMikanMochi()
     {
         return this.hasMikanMochi;
     }
+    /**
+     * Returns if the player has bought the Kurosawa Macha.
+     * 
+     * @return {@code true} if the player has bought the Kurosawa Macha.
+     */
     public boolean hasKurosawaMacha()
     {
         return this.hasKurosawaMacha;
     }
+    /**
+     * Returns if the player has bought the Tears of a Fallen Angel.
+     * 
+     * @return {@code true} if the player has bought the Tears of a Fallen Angel.
+     */
     public boolean boughtTears()
     {
         return this.boughtTears;
     }
+    /**
+     * Returns if the player has bought the Choco Mint Ice Cream.
+     * 
+     * @return {@code true} if the player has bought the Choco Mint Ice Cream.
+     */
     public boolean boughtChoco()
     {
         return this.boughtChoco;
     }
-
+    /**
+     * Increments the player's max hp by the amount given. Also increases the current hp by the same amount.
+     * 
+     * @param hp how much to increment by.
+     */
     public void incMaxHp(int hp)
     {
         this.totalHP += hp;

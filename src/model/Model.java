@@ -426,43 +426,84 @@ public class Model implements Serializable
     {
         return this.isIntroPlaying;
     }
-    
+    /**
+     * Sets which screen of the Intro should be currently playing.
+     * 
+     * @param introIndex which screen of the Intro should be currently playing.
+     */
     public void setIntroIndex(int introIndex)
     {
         this.introIndex = introIndex;
     }
+    /**
+     * Sets if the dungeon is currently Won.
+     * 
+     * @param dungeonWon {@code true} if the dungeon is currently Won.
+     */
     public void setDungeonWon(boolean dungeonWon)
     {
         this.dungeonWon = dungeonWon;
     }
+    /**
+     * Sets if the Final Fight is currently Won.
+     * 
+     * @param finalFightWon {@code true} if the Final Fight is currently Won.
+     */
     public void setFinalFightWon(boolean finalFightWon)
     {
         this.finalFightWon = finalFightWon;
     }
+    /**
+     * Get which screen of the Intro should be currently playing.
+     * 
+     * @return which screen of the Intro should be currently playing.
+     */
     public int getIntroIndex()
     {
         return this.introIndex;
     }
-    
+    /**
+     * Returns how many times each Idol has been saved.
+     * 
+     * @return how many times each Idol has been saved.
+     */
     public ArrayList<Idol> getSavedIdols()
     {
         return this.savedIdols;
     }
-    
+    /**
+     * Returns how many times the Siren has been defeated.
+     * 
+     * @return how many times the Siren has been defeated.
+     */
     public int getTimesSirenDefeated()
     {
         return this.timesSirenDefeated;
     }
-    
+    /**
+     * Return if the Dungeon is currently won.
+     * 
+     * @return {@code true} if the Dungeon is currently won.
+     */
     public boolean getDungeonWon()
     {
         return this.dungeonWon;
     }
+    /**
+     * Return if the Final Fight isi currently won.
+     * 
+     * @return {@code true} if the Final Fight isi currently won.
+     */
     public boolean getFinalFightWon()
     {
         return this.finalFightWon;
     }
-    
+    /**
+     * Sets the available items to buy in the shop.
+     * <p>
+     * Iterates through each Idol's item, adding them if the Item has not been bought, and the Idol has been saved.
+     * Hides Tears of a Fallen Angel if it has been bought.
+     */
     public void setAvailableShopItems()
     {
         this.availableShopItems = new ArrayList<>();
@@ -510,7 +551,11 @@ public class Model implements Serializable
             }
         }
     }
-    
+    /**
+     * Returns an ArrayList of the list of available Items in the Shop.
+     * 
+     * @return an ArrayList of the list of available Items in the Shop.
+     */
     public ArrayList<Item> getAvailableShopItems()
     {
         return this.availableShopItems;
